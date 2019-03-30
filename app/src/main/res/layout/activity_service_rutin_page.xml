@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".customer.ServiceRutinPage">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pilih transmisi motor"
+        android:id="@+id/titleTransmisiMotor"
+        android:layout_marginTop="10dp"
+        android:gravity="center"/>
+    <LinearLayout
+        android:layout_below="@+id/titleTransmisiMotor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:elevation="3dp"
+        android:translationZ="3dp"
+        android:stateListAnimator="@null"
+        android:layout_margin="10dp"
+        android:background="@drawable/customborder"
+        android:id="@+id/transmisiMotor">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/motorMatic"
+            android:layout_margin="10dp"
+            android:src="@drawable/matic"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/motorKopling"
+            android:layout_margin="10dp"
+            android:src="@drawable/kopling"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/motorManual"
+            android:layout_margin="10dp"
+            android:src="@drawable/manual"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/transmisiMotor"
+        android:id="@+id/textMerekMotor"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pilih merek motor"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textMerekMotor"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_margin="20dp">
+        <Spinner
+            android:id="@+id/listMerekMotor"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:textAlignment="center"
+            android:background="@drawable/customborder"
+            android:visibility="invisible"
+            android:entries="@array/merekMotor">
+        </Spinner>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="20dp">
+            <Spinner
+                android:id="@+id/tipeMotor"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:textAlignment="center"
+                android:visibility="invisible"
+                android:background="@drawable/customborder">
+            </Spinner>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnNextServiceRutin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:text="Next"
+            android:visibility="invisible"
+            android:drawableRight="@drawable/ic_navigate_next_black_24dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

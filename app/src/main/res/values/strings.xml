@@ -1,0 +1,79 @@
+<resources>
+    <string name="app_name">Skripsi Customer 1</string>
+    <string name="Open">Skripsi Customer 1</string>
+    <string name="Close">Skripsi Customer 1</string>
+
+    <string name="serviceRutin">Service Rutin</string>
+    <string name="checkUp">Check Up</string>
+
+    <string-array name="merekMotor">
+        <item>-</item>
+        <item>Yamaha</item>
+        <item>Honda</item>
+    </string-array>
+
+
+    <string-array name="HondaMatic">
+        <item>Beat</item>
+        <item>Beat FI</item>
+        <item>Vario</item>
+        <item>Vario FI</item>
+        <item>PCX</item>
+    </string-array>
+    <string-array name="HondaManual">
+        <item>Supra</item>
+        <item>Supra 125</item>
+        <item>Supra 125 FI</item>
+        <item>Supra 125R</item>
+        <item>Supra 125R FI</item>
+        <item>Blade</item>
+        <item>Blade 125</item>
+        <item>Blade 125 FI</item>
+        <item>Revo</item>
+        <item>Revo injection</item>
+    </string-array>
+    <string-array name="HondaKopling">
+        <item>CBR250 RR</item>
+        <item>CRF250 Rally</item>
+        <item>CBR150 R</item>
+        <item>CB150 R Exmotion</item>
+        <item>CB150 R Streetfire</item>
+        <item>Verca</item>
+        <item>Mega Pro FI</item>
+        <item>Sonic 150R</item>
+        <item>CMX 500 REBEL</item>
+        <item>CBR500 R</item>
+    </string-array>
+    <string-array name="YamahaMatic">
+        <item>Mio</item>
+        <item>Mio Injection</item>
+        <item>Nmax</item>
+        <item>Xmax</item>
+        <item>Aerox</item>
+        <item>All New Soul GT</item>
+        <item>X-Ride</item>
+        <item>Tricity 155</item>
+        <item>TMAX</item>
+    </string-array>
+    <string-array name="YamahaManual">
+        <item>Jupiter Z</item>
+        <item>Jupiter MX</item>
+    </string-array>
+    <string-array name="YamahaKopling">
+        <item>Vixion R</item>
+        <item>All new Yamaha R15</item>
+        <item>R25 Movistar</item>
+        <item>Xabre</item>
+        <item>All new Yamaha Vixion</item>
+        <item>MT-25</item>
+        <item>Byson FI</item>
+        <item>R1M</item>
+        <item>R1</item>
+        <item>MT-09</item>
+        <item>R6</item>
+        <item>MT-09 Tracer</item>
+        <item>MT-10</item>
+        <item>MT-07</item>
+        <item>R6 2017</item>
+    </string-array>
+</resources>

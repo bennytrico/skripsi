@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/notification"
+        android:title="Notification"
+        android:icon="@drawable/ic_add_alert_black_24dp">
+
+    </item>
+    <item
+        android:id="@+id/order"
+        android:title="Order"
+        android:icon="@drawable/ic_assignment_black_24dp">
+
+    </item>
+    <item
+        android:id="@+id/logout"
+        android:title="Log out"
+        android:icon="@drawable/ic_exit_to_app_black_24dp">
+
+    </item>
+</menu>
