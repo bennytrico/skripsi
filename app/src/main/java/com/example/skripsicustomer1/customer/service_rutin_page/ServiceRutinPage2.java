@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -52,7 +53,34 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             }
         });
 
+        btnInfoOli.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+            }
+        });
 
+    }
+    private void showDialog(){
+        final Dialog dialog = new Dialog(ServiceRutinPage2.this);
+        dialog.setContentView(R.layout.custom_dialog);
+        dialog.setTitle("Info");
+
+        TextView text = (TextView)dialog.findViewById(R.id.textTitleDialog);
+        text.setText("Oli menggunakan standart Oli dari merek");
+        text.setTypeface(null,Typeface.BOLD);
+        ImageView image = (ImageView)dialog.findViewById(R.id.imgIconInfo);
+        image.setImageResource(R.drawable.info_dialog_fragment);
+
+
+        Button btn = (Button)dialog.findViewById(R.id.okButtonDialog);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -77,7 +105,7 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             jam.setTypeface(null, Typeface.BOLD);
             jam.setText(mTime1);
         }
-
+        jam.setText(mTime1);
     }
 
     public void getCurrentDate(){
