@@ -3,6 +3,7 @@ package com.example.skripsicustomer1.customer.service_rutin_page;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -35,12 +36,17 @@ import java.util.List;
 public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
 
-
+    private int harga;
+    private String transmisi;
+    private String jenis;
+    private String tipe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_rutin_page2);
         getCurrentDate();
+
+        getIntentValue();
 
         Button btnHours = (Button) findViewById(R.id.getHours);
         ImageButton btnInfoOli = (ImageButton) findViewById(R.id.infoPergantianOli);
@@ -81,6 +87,13 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             }
         });
         dialog.show();
+    }
+    public void getIntentValue(){
+        Intent intent = getIntent();
+        Bundle extra = intent.getExtras();
+        transmisi = extra.getString("EXTRA_TRANSMISI");
+        jenis = extra.getString("EXTRA_JENIS");
+        tipe = extra.getString("EXTRA_TIPE");
     }
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {

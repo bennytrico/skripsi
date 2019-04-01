@@ -28,7 +28,7 @@ import java.util.List;
 
 public class ServiceRutinPage extends Fragment {
 
-    String temp = "";
+    private String temp = "";
     Spinner tipeMotorSpinner ;
     @Nullable
     @Override
