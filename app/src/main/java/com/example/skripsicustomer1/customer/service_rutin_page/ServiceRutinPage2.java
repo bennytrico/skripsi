@@ -27,6 +27,7 @@ import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.helper.TimePickerFragment;
 
 import java.lang.reflect.Field;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,9 +49,14 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
 
         getIntentValue();
 
+        TextView textHarga = (TextView)findViewById(R.id.hargaServiceRutin);
         Button btnHours = (Button) findViewById(R.id.getHours);
-        ImageButton btnInfoOli = (ImageButton) findViewById(R.id.infoPergantianOli);
+        ImageButton btnInfoOliMesin = (ImageButton) findViewById(R.id.infoPergantianOli);
+        ImageButton btnInfoOliGanda = (ImageButton) findViewById(R.id.infoPergantianOliGanda);
 
+
+
+        textHarga.setText("Rp. "+transmisi);
         btnHours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,21 +65,48 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             }
         });
 
-        btnInfoOli.setOnClickListener(new View.OnClickListener() {
+        btnInfoOliMesin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                showDialogOlimesin();
+            }
+        });
+        btnInfoOliMesin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogOliGanda();
             }
         });
 
     }
-    private void showDialog(){
+    private void showDialogOliGanda(){
         final Dialog dialog = new Dialog(ServiceRutinPage2.this);
         dialog.setContentView(R.layout.custom_dialog);
         dialog.setTitle("Info");
 
         TextView text = (TextView)dialog.findViewById(R.id.textTitleDialog);
-        text.setText("Oli menggunakan standart Oli dari merek");
+        text.setText("Oli menggunakan standart Oli dari merek dengan penambahan harga 20.000");
+        text.setTypeface(null,Typeface.BOLD);
+        ImageView image = (ImageView)dialog.findViewById(R.id.imgIconInfo);
+        image.setImageResource(R.drawable.info_dialog_fragment);
+
+
+        Button btn = (Button)dialog.findViewById(R.id.okButtonDialog);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    private void showDialogOlimesin(){
+        final Dialog dialog = new Dialog(ServiceRutinPage2.this);
+        dialog.setContentView(R.layout.custom_dialog);
+        dialog.setTitle("Info");
+
+        TextView text = (TextView)dialog.findViewById(R.id.textTitleDialog);
+        text.setText("Oli menggunakan standart Oli dari merek ");
         text.setTypeface(null,Typeface.BOLD);
         ImageView image = (ImageView)dialog.findViewById(R.id.imgIconInfo);
         image.setImageResource(R.drawable.info_dialog_fragment);
