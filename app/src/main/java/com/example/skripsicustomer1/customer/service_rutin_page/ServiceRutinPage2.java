@@ -6,28 +6,25 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListPopupWindow;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.helper.TimePickerFragment;
 
-import java.lang.reflect.Field;
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,6 +38,10 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
     private String transmisi;
     private String jenis;
     private String tipe;
+    private ImageButton btnInfoOliGanda;
+    private ImageButton btnInfoOliMesin;
+    private CheckBox checkButtonGantiOliMesin;
+    private CheckBox checkButtonGantiOliGanda;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,14 +50,15 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
 
         getIntentValue();
 
-        TextView textHarga = (TextView)findViewById(R.id.hargaServiceRutin);
+        final TextView textHarga = (TextView)findViewById(R.id.hargaServiceRutin);
         Button btnHours = (Button) findViewById(R.id.getHours);
-        ImageButton btnInfoOliMesin = (ImageButton) findViewById(R.id.infoPergantianOli);
-        ImageButton btnInfoOliGanda = (ImageButton) findViewById(R.id.infoPergantianOliGanda);
+        btnInfoOliMesin = (ImageButton) findViewById(R.id.infoPergantianOli);
+        btnInfoOliGanda = (ImageButton) findViewById(R.id.infoPergantianOliGanda);
+        checkButtonGantiOliMesin = (CheckBox) findViewById(R.id.checkboxOliMesin);
+        checkButtonGantiOliGanda = (CheckBox) findViewById(R.id.checkboxOliGanda);
 
 
-
-        textHarga.setText("Rp. "+transmisi);
+        textHarga.setText(formatNumber(harga));
         btnHours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,16 +70,39 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         btnInfoOliMesin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogOlimesin();
+                showDialogOliMesin();
             }
         });
-        btnInfoOliMesin.setOnClickListener(new View.OnClickListener() {
+        btnInfoOliGanda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialogOliGanda();
             }
         });
-
+        checkButtonGantiOliMesin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(((CheckBox)v).isChecked()){
+                    harga+=45000;
+                    textHarga.setText(formatNumber(harga));
+                }else if(!((CheckBox)v).isChecked()){
+                    harga-=45000;
+                    textHarga.setText(formatNumber(harga));
+                }
+            }
+        });
+        checkButtonGantiOliGanda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(((CheckBox)v).isChecked()){
+                    harga+=25000;
+                    textHarga.setText(formatNumber(harga));
+                }else if(!((CheckBox)v).isChecked()){
+                    harga-=25000;
+                    textHarga.setText(formatNumber(harga));
+                }
+            }
+        });
     }
     private void showDialogOliGanda(){
         final Dialog dialog = new Dialog(ServiceRutinPage2.this);
@@ -100,7 +125,7 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         });
         dialog.show();
     }
-    private void showDialogOlimesin(){
+    private void showDialogOliMesin(){
         final Dialog dialog = new Dialog(ServiceRutinPage2.this);
         dialog.setContentView(R.layout.custom_dialog);
         dialog.setTitle("Info");
@@ -127,6 +152,14 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         transmisi = extra.getString("EXTRA_TRANSMISI");
         jenis = extra.getString("EXTRA_JENIS");
         tipe = extra.getString("EXTRA_TIPE");
+        harga += 60000;
+        LinearLayout layoutOliganda = (LinearLayout) findViewById(R.id.oliGandaOption);
+        if(transmisi.equals("Matic")){
+            layoutOliganda.setVisibility(View.VISIBLE);
+        }else{
+            layoutOliganda.setVisibility(View.GONE);
+
+        }
     }
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -178,8 +211,17 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
 
         datesSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tanggalSpinner.setAdapter(datesSpinner);
+    }
+    public String formatNumber(int money){
+        DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+        DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
 
+        formatRp.setCurrencySymbol("Rp. ");
+        formatRp.setMonetaryDecimalSeparator(',');
+        formatRp.setGroupingSeparator('.');
 
-
+        kursIndonesia.setDecimalFormatSymbols(formatRp);
+//        System.out.printf("Hargaah: %s %n", kursIndonesia.format(harga));
+        return kursIndonesia.format((money));
     }
 }
