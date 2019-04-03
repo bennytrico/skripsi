@@ -56,7 +56,15 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         btnInfoOliGanda = (ImageButton) findViewById(R.id.infoPergantianOliGanda);
         checkButtonGantiOliMesin = (CheckBox) findViewById(R.id.checkboxOliMesin);
         checkButtonGantiOliGanda = (CheckBox) findViewById(R.id.checkboxOliGanda);
+        Button btnServicePage3 = (Button) findViewById(R.id.btnNextServiceRutin2);
 
+        btnServicePage3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),ServiceRutinPage3.class);
+                startActivity(intent);
+            }
+        });
 
         textHarga.setText(formatNumber(harga));
         btnHours.setOnClickListener(new View.OnClickListener() {
