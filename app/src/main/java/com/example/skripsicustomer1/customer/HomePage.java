@@ -15,7 +15,6 @@ import com.example.skripsicustomer1.R;
 
 public class HomePage extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
 
     @Override
@@ -52,6 +51,7 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
 
 
     public void navigation(){
+        DrawerLayout dl;
         dl = (DrawerLayout) findViewById(R.id.draw_layout);
         abdt = new ActionBarDrawerToggle(this,dl,R.string.Open,R.string.Close);
 
@@ -60,7 +60,6 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         dl.addDrawerListener(abdt);
         abdt.syncState();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         final NavigationView navView = (NavigationView)findViewById(R.id.nav_view);

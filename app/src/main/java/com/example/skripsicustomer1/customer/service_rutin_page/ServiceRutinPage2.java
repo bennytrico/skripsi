@@ -38,10 +38,6 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
     private String transmisi;
     private String jenis;
     private String tipe;
-    private ImageButton btnInfoOliGanda;
-    private ImageButton btnInfoOliMesin;
-    private CheckBox checkButtonGantiOliMesin;
-    private CheckBox checkButtonGantiOliGanda;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +45,10 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         getCurrentDate();
 
         getIntentValue();
+        ImageButton btnInfoOliGanda;
+        ImageButton btnInfoOliMesin;
+        CheckBox checkButtonGantiOliMesin;
+        CheckBox checkButtonGantiOliGanda;
 
         final TextView textHarga = (TextView)findViewById(R.id.hargaServiceRutin);
         Button btnHours = (Button) findViewById(R.id.getHours);
