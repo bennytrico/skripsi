@@ -44,9 +44,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        initMap();
         searchText = (EditText) findViewById(R.id.inputSearch);
         mobileGPS = (ImageView) findViewById(R.id.ic_gps);
-        initMap();
         init();
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -124,12 +124,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void init() {
-        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        searchText.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH
-                        || actionId == EditorInfo.IME_ACTION_DONE
-                        || event.getAction() == KeyEvent.ACTION_DOWN
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == EditorInfo.IME_ACTION_SEARCH  || keyCode == EditorInfo.IME_ACTION_DONE
                         || event.getAction() == KeyEvent.KEYCODE_ENTER) {
                     geoLocation();
                 }
