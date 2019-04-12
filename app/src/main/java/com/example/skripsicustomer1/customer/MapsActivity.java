@@ -1,6 +1,7 @@
 package com.example.skripsicustomer1.customer;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -10,16 +11,19 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.skripsicustomer1.R;
+import com.example.skripsicustomer1.customer.service_rutin_page.ServiceRutinPage3;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,7 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager locationManager;
     private float DEFAULT_ZOOM = 15.5f;
     private ImageView mobileGPS;
-
+    private String flagActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,87 +53,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mobileGPS = (ImageView) findViewById(R.id.ic_gps);
         init();
 
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    LatLng latLng = new LatLng(latitude, longitude);
-                    Geocoder geocoder = new Geocoder(getApplicationContext());
-                    try {
-                        String str = null;
-                            List<Address> addressList = geocoder.getFromLocation(latitude, longitude, 1);
-                            str += addressList.get(0).getAddressLine(0);
+        getDeviceLocation();
+        Intent getValue = getIntent();
+        Bundle extra = getValue.getExtras();
+        flagActivity = extra.getString("flagActivity");
 
-                        moveCamera(latLng, DEFAULT_ZOOM, str);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
 
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
-                @Override
-                public void onProviderEnabled(String provider) {
-
-                }
-
-                @Override
-                public void onProviderDisabled(String provider) {
-
-                }
-            });
-        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    LatLng latLng = new LatLng(latitude, longitude);
-                    Geocoder geocoder = new Geocoder(getApplicationContext());
-                    try {
-                        String str = null;
-                            List<Address> addressList = geocoder.getFromLocation(latitude, longitude, 1);
-                            str += addressList.get(0).getAddressLine(0);
-                        moveCamera(latLng, DEFAULT_ZOOM, str);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
-                @Override
-                public void onProviderEnabled(String provider) {
-
-                }
-
-                @Override
-                public void onProviderDisabled(String provider) {
-
-                }
-            });
-        }
     }
 
     private void init() {
-        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        searchText.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH  || actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.ACTION_DOWN
-                        || event.getAction() == KeyEvent.KEYCODE_ENTER) {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
                     geoLocation();
                 }
                 return false;
@@ -157,32 +93,115 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         if (list.size() > 0) {
             Address address = list.get(0);
-            Toast.makeText(getApplicationContext()," "+address.getAddressLine(0),Toast.LENGTH_LONG).show();
             moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
         }
     }
 
-    private void moveCamera(LatLng latLng, float zoom, String title) {
+    private void moveCamera(LatLng latLng, float zoom,String title) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-
+        mMap.clear();
         if (!title.equals("My Location")) {
             MarkerOptions options = new MarkerOptions().position(latLng).title(title);
             mMap.addMarker(options);
         }
+        Button getLocation = (Button)findViewById(R.id.setMapLocation);
+        final String address = title;
+        getLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (flagActivity.equals("Service Rutin")) {
+                    Intent intent = new Intent(getApplicationContext(), ServiceRutinPage3.class);
+                    Bundle extra = new Bundle();
+                    extra.putString("EXTRA_ADDRESS",address);
+                    intent.putExtras(extra);
+                    startActivity(intent);
+                }
+            }
+        });
         hideSoftKeyBoard();
     }
 
     private void getDeviceLocation() {
-        GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
-            @Override
-            public void onMyLocationChange(Location location) {
-                LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(loc));
-                if(mMap != null){
-                    moveCamera(loc,DEFAULT_ZOOM,"My Location");
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    List<Address> addressList = new ArrayList<>();
+                    Geocoder geocoder = new Geocoder(getApplicationContext());
+                    try {
+                        addressList = geocoder.getFromLocation(latitude, longitude, 1);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (addressList.size() > 0) {
+                    Address address = addressList.get(0);
+
+                    moveCamera(latLng, DEFAULT_ZOOM, address.getAddressLine(0));
+                    }
                 }
-            }
-        };
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            });
+        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    List<Address> addressList = new ArrayList<>();
+                    Geocoder geocoder = new Geocoder(getApplicationContext());
+                    try {
+                        addressList = geocoder.getFromLocation(latitude, longitude, 1);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (addressList.size() > 0) {
+                        Address address = addressList.get(0);
+
+                        moveCamera(latLng, DEFAULT_ZOOM, address.getAddressLine(0));
+                    }
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            });
+        }
     }
     /**
      * Manipulates the map once available.

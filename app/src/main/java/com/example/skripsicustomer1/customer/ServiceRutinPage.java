@@ -75,6 +75,7 @@ public class ServiceRutinPage extends Fragment {
                 extras.putString("EXTRA_JENIS",merekSpinner.getSelectedItem().toString());
                 extras.putString("EXTRA_TIPE",tipeMotorSpinner.getSelectedItem().toString());
                 startActivityServiceRutin.putExtras(extras);
+
                 startActivity(startActivityServiceRutin);
             }
         });
@@ -136,6 +137,7 @@ public class ServiceRutinPage extends Fragment {
 
         ArrayAdapter<String> typeMotor = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_spinner_dropdown_item,tipeMotors);
         typeMotor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         tipeMotorSpinner.setAdapter(typeMotor);
     }
 
