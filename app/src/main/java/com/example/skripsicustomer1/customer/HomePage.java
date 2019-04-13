@@ -60,7 +60,7 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         dl.addDrawerListener(abdt);
         abdt.syncState();
 
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final NavigationView navView = (NavigationView)findViewById(R.id.nav_view);
 
