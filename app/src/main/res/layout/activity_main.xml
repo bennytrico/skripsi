@@ -31,7 +31,7 @@
                 android:layout_marginRight="50dp"
                 android:imeOptions="actionNext"
                 android:singleLine="true"
-                android:hint="Username" />
+                android:hint="Email" />
 
             <EditText
                 android:id="@+id/txtPassword"
