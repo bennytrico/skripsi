@@ -6,6 +6,14 @@
     <string name="serviceRutin">Service Rutin</string>
     <string name="checkUp">Check Up</string>
 
+    <string-array name="CheckUpListType">
+        <item>-</item>
+        <item>Electrical</item>
+        <item>Bracking system</item>
+        <item>Engine</item>
+        <item>Mechanical</item>
+    </string-array>
+
     <string-array name="merekMotor">
         <item>-</item>
         <item>Yamaha</item>

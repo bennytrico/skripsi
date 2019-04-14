@@ -32,7 +32,7 @@ public class ServiceRutinPage extends Fragment {
         ImageButton btnManual = (ImageButton) view.findViewById(R.id.motorManual);
         final Button btnNextServiceRutin = (Button) view.findViewById(R.id.btnNextServiceRutin);
         final Spinner merekSpinner = (Spinner) view.findViewById(R.id.listMerekMotor);
-        tipeMotorSpinner = (Spinner) view.findViewById(R.id.tipeMotor);;
+        tipeMotorSpinner = (Spinner) view.findViewById(R.id.tipeMotor);
 
 
         btnMatic.setOnClickListener(new View.OnClickListener() {

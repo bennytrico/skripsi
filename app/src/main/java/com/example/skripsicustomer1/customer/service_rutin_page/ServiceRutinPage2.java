@@ -38,6 +38,11 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
     private String transmisi;
     private String jenis;
     private String tipe;
+    private String mTime1;
+    private boolean oliMesin = false;
+    private boolean oliGanda = false;
+    private int hours;
+    private int minutes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +67,18 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),ServiceRutinPage3.class);
+                Bundle extras = new Bundle();
+                extras.putString("EXTRA_TRANSMISI",transmisi);
+                extras.putString("EXTRA_JENIS",jenis);
+                extras.putString("EXTRA_TIPE",tipe);
+                extras.putInt("EXTRA_HARGA",harga);
+                extras.putInt("EXTRA_HOUR",hours);
+                extras.putInt("EXTRA_MINUTE",minutes);
+                extras.putBoolean("EXTRA_GANTI_OLI",oliMesin);
+                extras.putBoolean("EXTRA_GANTI_GANDA",oliGanda);
+
+                intent.putExtras(extras);
+
                 startActivity(intent);
             }
         });
@@ -92,9 +109,11 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             public void onClick(View v) {
                 if(((CheckBox)v).isChecked()){
                     harga+=45000;
+                    oliMesin = true;
                     textHarga.setText(formatNumber(harga));
                 }else if(!((CheckBox)v).isChecked()){
                     harga-=45000;
+                    oliMesin = false;
                     textHarga.setText(formatNumber(harga));
                 }
             }
@@ -104,9 +123,11 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             public void onClick(View v) {
                 if(((CheckBox)v).isChecked()){
                     harga+=25000;
+                    oliGanda = true;
                     textHarga.setText(formatNumber(harga));
                 }else if(!((CheckBox)v).isChecked()){
                     harga-=25000;
+                    oliGanda = false;
                     textHarga.setText(formatNumber(harga));
                 }
             }
@@ -171,7 +192,6 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
     }
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        String mTime1;
         TextView jam = (TextView) findViewById(R.id.jamServiceRutin);
         if (minute < 10) {
             mTime1 = hourOfDay + ":" + "0" + minute;
@@ -192,6 +212,8 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             jam.setTypeface(null, Typeface.BOLD);
             jam.setText(mTime1);
         }
+        hours = hourOfDay;
+        minutes = minute;
         jam.setText(mTime1);
     }
 
