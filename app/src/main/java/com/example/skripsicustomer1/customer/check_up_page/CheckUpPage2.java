@@ -29,6 +29,8 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
     private String jenis;
     private String tipe;
     private String mTime1;
+    private int hours;
+    private int minutes;
     Spinner typeCheckupSpinner;
 
     @Override
@@ -66,8 +68,6 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
             dates.add(dateFormat.format(dt));
         }
 
-
-
         Spinner tanggalSpinner = (Spinner) findViewById(R.id.spinnerTanggal);
 
 
@@ -99,7 +99,8 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
             jam.setTypeface(null, Typeface.BOLD);
             jam.setText(mTime1);
         }
-        Toast.makeText(getApplicationContext()," " + mTime1,Toast.LENGTH_LONG).show();
+        hours = hourOfDay;
+        minutes = minute;
         jam.setText(mTime1);
     }
     public void setSpinnerTypeCheckup(String typeCheckup[]) {

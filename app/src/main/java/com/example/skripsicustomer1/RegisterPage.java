@@ -1,6 +1,7 @@
 package com.example.skripsicustomer1;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.skripsicustomer1.customer.HomePage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -35,7 +38,7 @@ public class RegisterPage extends AppCompatActivity {
     private EditText regisRePassword;
     private Button buttonRegister;
     private ProgressDialog progressDialog;
-
+    private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
     @Override
@@ -45,7 +48,9 @@ public class RegisterPage extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
+//        db = FirebaseFirestore.getInstance();
 
         progressDialog = new ProgressDialog(this);
 
@@ -66,10 +71,16 @@ public class RegisterPage extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        if (firebaseAuth.getCurrentUser() != null) {
-
-        }
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                if (currentUser != null) {
+                    Intent startIntent = new Intent(getApplicationContext(), HomePage.class);
+                    startActivity(startIntent);
+                }
+            }
+        };
     }
 
     private void register() {
@@ -149,8 +160,14 @@ public class RegisterPage extends AppCompatActivity {
                                     }
                                 }
                             });
-                        } else if (!task.isSuccessful()) {
-                            Toast.makeText(RegisterPage.this,"Registered Failed",Toast.LENGTH_LONG).show();
+                            Intent startActivity = new Intent(getApplicationContext(), HomePage.class);
+                            startActivity(startActivity);
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                Toast.makeText(RegisterPage.this,"User already registered",Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(RegisterPage.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 });

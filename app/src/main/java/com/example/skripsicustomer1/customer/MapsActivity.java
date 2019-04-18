@@ -97,7 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void moveCamera(LatLng latLng, float zoom,String title) {
+    private void moveCamera(final LatLng latLng, float zoom, String title) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         mMap.clear();
         if (!title.equals("My Location")) {
@@ -113,8 +113,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Intent intent = new Intent(getApplicationContext(), ServiceRutinPage3.class);
                     Bundle extra = new Bundle();
                     extra.putString("EXTRA_ADDRESS",address);
+                    extra.putDouble("EXTRA_LONGTITUDE",latLng.longitude);
+                    extra.putDouble("EXTRA_LATITUDE",latLng.latitude);
                     intent.putExtras(extra);
                     startActivity(intent);
+                } else if (flagActivity.equals("Check Up")) {
+
                 }
             }
         });

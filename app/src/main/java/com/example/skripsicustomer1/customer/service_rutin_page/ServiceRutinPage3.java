@@ -22,6 +22,8 @@ public class ServiceRutinPage3 extends AppCompatActivity{
     LocationManager locationManager;
     TextView locationText;
     private String valueLocation = "";
+    private Double latitudeLocation;
+    private Double longtitudeLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,8 @@ public class ServiceRutinPage3 extends AppCompatActivity{
         Bundle extras = intent.getExtras();
         if (extras != null) {
             valueLocation = extras.getString("EXTRA_ADDRESS");
+            longtitudeLocation = extras.getDouble("EXTRA_LONGTITUDE");
+            latitudeLocation = extras.getDouble("KEY_LATITUDE");
         }
-//        Toast.makeText(getApplicationContext()," " + extras.getString("EXTRA_ADDRESS"),Toast.LENGTH_LONG).show();
     }
 }

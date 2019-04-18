@@ -43,6 +43,12 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
     private boolean oliGanda = false;
     private int hours;
     private int minutes;
+
+    ImageButton btnInfoOliGanda;
+    ImageButton btnInfoOliMesin;
+    CheckBox checkButtonGantiOliMesin;
+    CheckBox checkButtonGantiOliGanda;
+    Spinner tanggalSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +56,7 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         getCurrentDate();
 
         getIntentValue();
-        ImageButton btnInfoOliGanda;
-        ImageButton btnInfoOliMesin;
-        CheckBox checkButtonGantiOliMesin;
-        CheckBox checkButtonGantiOliGanda;
+
 
         final TextView textHarga = (TextView)findViewById(R.id.hargaServiceRutin);
         Button btnHours = (Button) findViewById(R.id.getHours);
@@ -72,11 +75,13 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
                 extras.putString("EXTRA_JENIS",jenis);
                 extras.putString("EXTRA_TIPE",tipe);
                 extras.putInt("EXTRA_HARGA",harga);
+                extras.putString("EXTRA_TANGGAL",tanggalSpinner.getSelectedItem().toString());
                 extras.putInt("EXTRA_HOUR",hours);
                 extras.putInt("EXTRA_MINUTE",minutes);
                 extras.putBoolean("EXTRA_GANTI_OLI",oliMesin);
-                extras.putBoolean("EXTRA_GANTI_GANDA",oliGanda);
-
+                if (oliGanda) {
+                    extras.putBoolean("EXTRA_GANTI_GANDA", oliGanda);
+                }
                 intent.putExtras(extras);
 
                 startActivity(intent);
@@ -234,7 +239,8 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
 
 
 
-        Spinner tanggalSpinner = (Spinner) findViewById(R.id.spinnerTanggal);
+
+        tanggalSpinner = (Spinner) findViewById(R.id.spinnerTanggal);
 
 
         ArrayAdapter<String> datesSpinner = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_spinner_dropdown_item,dates);

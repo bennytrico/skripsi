@@ -1,5 +1,6 @@
 package com.example.skripsicustomer1.customer;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -11,11 +12,14 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
 
+import com.example.skripsicustomer1.MainActivity;
 import com.example.skripsicustomer1.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomePage extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private ActionBarDrawerToggle abdt;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +80,13 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
                 }else if(id == R.id.order){
                     Toast.makeText(HomePage.this, "Order", Toast.LENGTH_SHORT).show();
                 }else if(id == R.id.logout){
+                    mAuth.getInstance().signOut();
                     Toast.makeText(HomePage.this, "Logout", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    startActivity(intent);
                 }
 
                 return true;
