@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.skripsicustomer1.R;
+import com.example.skripsicustomer1.customer.check_up_page.CheckUpPage3;
 import com.example.skripsicustomer1.customer.service_rutin_page.ServiceRutinPage3;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -106,6 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         Button getLocation = (Button)findViewById(R.id.setMapLocation);
         final String address = title;
+
         getLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +120,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     intent.putExtras(extra);
                     startActivity(intent);
                 } else if (flagActivity.equals("Check Up")) {
-
+                    Intent intent = new Intent(getApplicationContext(), CheckUpPage3.class);
+                    Bundle extra = new Bundle();
+                    extra.putString("EXTRA_ADDRESS",address);
+                    extra.putDouble("EXTRA_LONGTITUDE",latLng.longitude);
+                    extra.putDouble("EXTRA_LATITUDE",latLng.latitude);
+                    intent.putExtras(extra);
+                    startActivity(intent);
                 }
             }
         });

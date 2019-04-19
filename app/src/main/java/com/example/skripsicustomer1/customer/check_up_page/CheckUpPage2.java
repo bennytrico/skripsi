@@ -1,6 +1,7 @@
 package com.example.skripsicustomer1.customer.check_up_page;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -40,7 +42,26 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
         getCurrentDate();
         Button btnHours = (Button) findViewById(R.id.getHoursCheckUp);
         String[] getTypeCheckup = getResources().getStringArray(R.array.CheckUpListType);
+        Button btnNextCheckUp = (Button) findViewById(R.id.btnNextCheckUp2);
 
+        getIntentValue();
+
+        btnNextCheckUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),CheckUpPage3.class);
+                Bundle extras = new Bundle();
+                extras.putString("EXTRA_TRANSMISI",transmisi);
+                extras.putString("EXTRA_JENIS",jenis);
+                extras.putString("EXTRA_TIPE",tipe);
+                extras.putString("EXTRA_TANGGAL",typeCheckupSpinner.getSelectedItem().toString());
+                extras.putInt("EXTRA_HOUR",hours);
+                extras.putInt("EXTRA_MINUTE",minutes);
+                intent.putExtras(extras);
+
+                startActivity(intent);
+            }
+        });
 
         btnHours.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +73,7 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
 
         typeCheckupSpinner = (Spinner) findViewById(R.id.jenisCheckUp);
         setSpinnerTypeCheckup(getTypeCheckup);
+
     }
     public void getCurrentDate(){
         Date dt = new Date();
@@ -108,5 +130,19 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
         typeCheckUpAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         typeCheckupSpinner.setAdapter(typeCheckUpAdapter);
+    }
+    public void getIntentValue(){
+        Intent intent = getIntent();
+        Bundle extra = intent.getExtras();
+        transmisi = extra.getString("EXTRA_TRANSMISI");
+        jenis = extra.getString("EXTRA_JENIS");
+        tipe = extra.getString("EXTRA_TIPE");
+        LinearLayout layoutOliganda = (LinearLayout) findViewById(R.id.oliGandaOption);
+        if(transmisi.equals("Matic")){
+            layoutOliganda.setVisibility(View.VISIBLE);
+        }else{
+            layoutOliganda.setVisibility(View.GONE);
+
+        }
     }
 }

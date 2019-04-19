@@ -86,7 +86,13 @@ public class RegisterPage extends AppCompatActivity {
     private void register() {
         final String email = regisEmail.getText().toString().trim();
         final String username = regisUsername.getText().toString().trim();
-        String password = regisPassword.getText().toString().trim();
+
+//        final String address = "KFC - Kemanggisan Jakarta, fast_food, Jakarta Special Capital Region, Indonesia";
+//        final Double latitude = -6.2003319;
+//        final Double longitude = 106.7825777;
+//        final String bankAccount = "1564987526";
+        final Integer wallet = 0;
+        final String password = regisPassword.getText().toString().trim();
         String rePassword = regisRePassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(email)) {
@@ -149,9 +155,20 @@ public class RegisterPage extends AppCompatActivity {
                                     email,
                                     role
                             );
-
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                            Montir montir = new Montir(
+//                                    username,
+//                                    address,
+//                                    email,
+//                                    password,
+//                                    role,
+//                                    bankAccount,
+//                                    latitude,
+//                                    longitude,
+//                                    wallet
+//                            );
+                            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            FirebaseDatabase.getInstance().getReference("Montirs")
+                                    .child(userID)
                                     .setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
