@@ -12,14 +12,21 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
 
+import com.example.skripsicustomer1.Customer;
 import com.example.skripsicustomer1.MainActivity;
 import com.example.skripsicustomer1.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class HomePage extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private ActionBarDrawerToggle abdt;
     private FirebaseAuth mAuth;
+    private Boolean flag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,28 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         loadFragment(new ServiceRutinPage());
         navigationBottom();
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (flag){
+            Toast.makeText(getApplicationContext(), "press again to exit", Toast.LENGTH_LONG).show();
+            flag = false;
+        } else{
+            mAuth.getInstance().signOut();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Customers");
 
     }
 

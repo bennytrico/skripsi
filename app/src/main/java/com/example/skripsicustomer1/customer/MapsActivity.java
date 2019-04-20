@@ -44,6 +44,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private float DEFAULT_ZOOM = 15.5f;
     private ImageView mobileGPS;
     private String flagActivity;
+
+    private String transmisi;
+    private String jenis;
+    private String tipe;
+    private Integer harga;
+    private String mTime1;
+    private String tanggal;
+    private Boolean oliMesin;
+    private Boolean oliGanda;
+    private String platNomor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +69,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent getValue = getIntent();
         Bundle extra = getValue.getExtras();
         flagActivity = extra.getString("flagActivity");
+            if (flagActivity.equals("Service Rutin")) {
+                Intent intent = getIntent();
+                Bundle extras = intent.getExtras();
+                transmisi = extras.getString("EXTRA_TRANSMISI");
+                jenis = extras.getString("EXTRA_JENIS");
+                tipe = extras.getString("EXTRA_TIPE");
+                harga = extras.getInt("EXTRA_HARGA");
+                tanggal = extras.getString("EXTRA_TANGGAL");
+                mTime1 = extras.getString("EXTRA_HOUR");
+                oliMesin = extras.getBoolean("EXTRA_GANTI_OLI");
+                oliGanda = extras.getBoolean("EXTRA_GANTI_GANDA");
+                platNomor =  extras.getString("EXTRA_PLATNOMOR");
+            }
 
 
     }
@@ -117,6 +141,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     extra.putString("EXTRA_ADDRESS",address);
                     extra.putDouble("EXTRA_LONGTITUDE",latLng.longitude);
                     extra.putDouble("EXTRA_LATITUDE",latLng.latitude);
+                    extra.putString("EXTRA_TRANSMISI",transmisi);
+                    extra.putString("EXTRA_JENIS",jenis);
+                    extra.putString("EXTRA_TIPE",tipe);
+                    extra.putInt("EXTRA_HARGA",harga);
+                    extra.putString("EXTRA_TANGGAL",tanggal);
+                    extra.putString("EXTRA_HOUR",mTime1);
+                    extra.putBoolean("EXTRA_GANTI_OLI",oliMesin);
+                    extra.putBoolean("EXTRA_GANTI_GANDA", oliGanda);
+                    extra.putString("EXTRA_PLATNOMOR",platNomor);
+
                     intent.putExtras(extra);
                     startActivity(intent);
                 } else if (flagActivity.equals("Check Up")) {

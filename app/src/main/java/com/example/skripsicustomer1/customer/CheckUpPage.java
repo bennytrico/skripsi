@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
@@ -30,6 +31,7 @@ public class CheckUpPage extends Fragment {
         ImageButton btnMatic = (ImageButton) view.findViewById(R.id.motorMaticCheckUp);
         ImageButton btnKopling = (ImageButton) view.findViewById(R.id.motorKoplingCheckUp);
         ImageButton btnManual = (ImageButton) view.findViewById(R.id.motorManualCheckUp);
+        final EditText platNomorCheckUp = (EditText) view.findViewById(R.id.platNomorCheckUp);
         final Button btnNextCheckUp = (Button) view.findViewById(R.id.btnNextCheckUp);
         final Spinner merekSpinner = (Spinner) view.findViewById(R.id.listMerekMotorCheckUp);
         tipeMotorSpinner = (Spinner) view.findViewById(R.id.tipeMotorCheckUp);;
@@ -75,6 +77,7 @@ public class CheckUpPage extends Fragment {
                 extras.putString("EXTRA_TRANSMISI",temp);
                 extras.putString("EXTRA_JENIS",merekSpinner.getSelectedItem().toString());
                 extras.putString("EXTRA_TIPE",tipeMotorSpinner.getSelectedItem().toString());
+                extras.putString("EXTRA_PLATNOMOR",platNomorCheckUp.getText().toString());
                 startActivityCheckUp.putExtras(extras);
 
                 startActivity(startActivityCheckUp);

@@ -51,7 +51,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/transmisiMotor"
         android:id="@+id/textMerekMotor"
+        android:orientation="vertical"
         android:gravity="center">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:hint="isi platnomor kendaraan anda"
+            android:layout_marginBottom="10dp"
+            android:singleLine="true"
+            android:id="@+id/platNomorServiceRutin"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -31,10 +31,9 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
     private String jenis;
     private String tipe;
     private String mTime1;
-    private int hours;
-    private int minutes;
+    private String platNomor;
     Spinner typeCheckupSpinner;
-
+    Spinner tanggalSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +53,10 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
                 extras.putString("EXTRA_TRANSMISI",transmisi);
                 extras.putString("EXTRA_JENIS",jenis);
                 extras.putString("EXTRA_TIPE",tipe);
-                extras.putString("EXTRA_TANGGAL",typeCheckupSpinner.getSelectedItem().toString());
-                extras.putInt("EXTRA_HOUR",hours);
-                extras.putInt("EXTRA_MINUTE",minutes);
+                extras.putString("EXTRA_TANGGAL",tanggalSpinner.getSelectedItem().toString());
+                extras.putString("EXTRA_TYPE_KERUSAKAN",typeCheckupSpinner.getSelectedItem().toString());
+                extras.putString("EXTRA_HOUR",mTime1);
+                extras.putString("EXTRA_PLATNOMOR",platNomor);
                 intent.putExtras(extras);
 
                 startActivity(intent);
@@ -90,7 +90,7 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
             dates.add(dateFormat.format(dt));
         }
 
-        Spinner tanggalSpinner = (Spinner) findViewById(R.id.spinnerTanggal);
+        tanggalSpinner = (Spinner) findViewById(R.id.spinnerTanggal);
 
 
         ArrayAdapter<String> datesSpinner = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_spinner_dropdown_item,dates);
@@ -121,8 +121,6 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
             jam.setTypeface(null, Typeface.BOLD);
             jam.setText(mTime1);
         }
-        hours = hourOfDay;
-        minutes = minute;
         jam.setText(mTime1);
     }
     public void setSpinnerTypeCheckup(String typeCheckup[]) {
@@ -137,12 +135,6 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
         transmisi = extra.getString("EXTRA_TRANSMISI");
         jenis = extra.getString("EXTRA_JENIS");
         tipe = extra.getString("EXTRA_TIPE");
-        LinearLayout layoutOliganda = (LinearLayout) findViewById(R.id.oliGandaOption);
-        if(transmisi.equals("Matic")){
-            layoutOliganda.setVisibility(View.VISIBLE);
-        }else{
-            layoutOliganda.setVisibility(View.GONE);
-
-        }
+        platNomor = extra.getString("EXTRA_PLATNOMOR");
     }
 }

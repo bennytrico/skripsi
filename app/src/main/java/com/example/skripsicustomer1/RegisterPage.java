@@ -36,6 +36,7 @@ public class RegisterPage extends AppCompatActivity {
     private EditText regisUsername;
     private EditText regisPassword;
     private EditText regisRePassword;
+    private EditText regisNumberHandphone;
     private Button buttonRegister;
     private ProgressDialog progressDialog;
     private FirebaseDatabase firebaseDatabase;
@@ -56,6 +57,7 @@ public class RegisterPage extends AppCompatActivity {
 
         regisEmail = (EditText) findViewById(R.id.registerEmail);
         regisUsername = (EditText) findViewById(R.id.registerUsername);
+        regisNumberHandphone = (EditText) findViewById(R.id.registerNumberHandphone);
         regisPassword = (EditText) findViewById(R.id.registerPassword);
         regisRePassword = (EditText) findViewById(R.id.registerRePassword);
         buttonRegister = (Button) findViewById(R.id.btnSubmit);
@@ -86,7 +88,7 @@ public class RegisterPage extends AppCompatActivity {
     private void register() {
         final String email = regisEmail.getText().toString().trim();
         final String username = regisUsername.getText().toString().trim();
-
+        final String handphone = regisNumberHandphone.getText().toString().trim();
 //        final String address = "KFC - Kemanggisan Jakarta, fast_food, Jakarta Special Capital Region, Indonesia";
 //        final Double latitude = -6.2003319;
 //        final Double longitude = 106.7825777;
@@ -153,7 +155,10 @@ public class RegisterPage extends AppCompatActivity {
                             Customer customer = new Customer(
                                     username,
                                     email,
-                                    role
+                                    role,
+                                    password,
+                                    handphone,
+                                    wallet
                             );
 //                            Montir montir = new Montir(
 //                                    username,
@@ -167,7 +172,7 @@ public class RegisterPage extends AppCompatActivity {
 //                                    wallet
 //                            );
                             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            FirebaseDatabase.getInstance().getReference("Montirs")
+                            FirebaseDatabase.getInstance().getReference("Customers")
                                     .child(userID)
                                     .setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

@@ -43,11 +43,22 @@
             android:imeOptions="actionNext"
             android:singleLine="true"
             android:id="@+id/registerUsername"/>
-
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/registerUsername"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:password="true"
+            android:hint="Nomor handphone"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:id="@+id/registerNumberHandphone"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/registerNumberHandphone"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:password="true"

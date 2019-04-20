@@ -38,11 +38,10 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
     private String transmisi;
     private String jenis;
     private String tipe;
+    private String platNomor;
     private String mTime1;
-    private boolean oliMesin = false;
-    private boolean oliGanda = false;
-    private int hours;
-    private int minutes;
+    private Boolean oliMesin = false;
+    private Boolean oliGanda = false;
 
     ImageButton btnInfoOliGanda;
     ImageButton btnInfoOliMesin;
@@ -76,9 +75,10 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
                 extras.putString("EXTRA_TIPE",tipe);
                 extras.putInt("EXTRA_HARGA",harga);
                 extras.putString("EXTRA_TANGGAL",tanggalSpinner.getSelectedItem().toString());
-                extras.putInt("EXTRA_HOUR",hours);
-                extras.putInt("EXTRA_MINUTE",minutes);
+                extras.putString("EXTRA_HOUR",mTime1);
                 extras.putBoolean("EXTRA_GANTI_OLI",oliMesin);
+                extras.putString("EXTRA_PLATNOMOR",platNomor);
+                extras.putString("EXTRA_CLASS","ServiceRutin2");
                 if (oliGanda) {
                     extras.putBoolean("EXTRA_GANTI_GANDA", oliGanda);
                 }
@@ -186,6 +186,8 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         transmisi = extra.getString("EXTRA_TRANSMISI");
         jenis = extra.getString("EXTRA_JENIS");
         tipe = extra.getString("EXTRA_TIPE");
+        platNomor = extra.getString("EXTRA_PLATNOMOR");
+
         harga += 60000;
         LinearLayout layoutOliganda = (LinearLayout) findViewById(R.id.oliGandaOption);
         if(transmisi.equals("Matic")){
@@ -217,8 +219,6 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             jam.setTypeface(null, Typeface.BOLD);
             jam.setText(mTime1);
         }
-        hours = hourOfDay;
-        minutes = minute;
         jam.setText(mTime1);
     }
 
@@ -257,7 +257,6 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         formatRp.setGroupingSeparator('.');
 
         kursIndonesia.setDecimalFormatSymbols(formatRp);
-//        System.out.printf("Hargaah: %s %n", kursIndonesia.format(harga));
         return kursIndonesia.format((money));
     }
 }
