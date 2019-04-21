@@ -18,6 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private String email;
     private String password;
+    private ProgressDialog progressDialog;
+
 
     EditText emailText;
     EditText passwordText;
@@ -45,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         }
         emailText = (EditText) findViewById(R.id.txtEmailUser);
         passwordText = (EditText) findViewById(R.id.txtPassword);
-
+        progressDialog = new ProgressDialog(this);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnRegister = (TextView) findViewById(R.id.btnRegister);
@@ -71,9 +78,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Intent startIntent = new Intent(getApplicationContext(), HomePage.class);
-                    startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(startIntent);
+                    progressDialog.setMessage("Loading . .");
+                    progressDialog.show();
+                    final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Customers");
+                    db.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            boolean flag = false;
+                            for (DataSnapshot data: dataSnapshot.getChildren()) {
+                                if (data.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                    flag = true;
+                                }
+                            }
+                            if (!flag) {
+                                progressDialog.dismiss();
+                                mAuth.getInstance().signOut();
+                                Toast.makeText(getApplicationContext(),"You are not customer",Toast.LENGTH_SHORT).show();
+                            } else {
+                                progressDialog.dismiss();
+                                Intent startIntent = new Intent(getApplicationContext(), HomePage.class);
+                                startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(startIntent);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 } else {
                     Toast.makeText(getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_LONG).show();
                 }

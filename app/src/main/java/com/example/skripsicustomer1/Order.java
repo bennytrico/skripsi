@@ -2,7 +2,7 @@ package com.example.skripsicustomer1;
 
 public class Order {
     private String customer_id,address,type_order,transmition,brand,type_motor,date,time,status_order,name_customer,
-            no_handphone_customer,number_plate,type_checkup;
+            no_handphone_customer,number_plate,type_checkup,id;
     private Boolean primary_oil,secondary_oil,flag_customer_agree,flag_montir_agree;
     private Integer amount;
 
@@ -207,5 +207,13 @@ public class Order {
 
     public void setType_checkup(String type_checkup) {
         this.type_checkup = type_checkup;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

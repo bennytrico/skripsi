@@ -29,7 +29,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CheckUpPage3 extends AppCompatActivity {
 
@@ -198,7 +202,55 @@ public class CheckUpPage3 extends AppCompatActivity {
     public void getListMontir () {
         final ArrayList<Montir> arrayList = new ArrayList<>();
         DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
+        final DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
 
+        final ArrayList<String> idMontir = new ArrayList<>();
+
+        dbOrders.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Date dateBooking = new Date();
+                Calendar calendar = Calendar.getInstance();
+                Date dateMaxHours = new Date();
+                Date dateMinHours = new Date();
+
+                String dateAndTimeBooking = tanggal + " " + mTime1;
+
+                SimpleDateFormat a = new SimpleDateFormat("dd MMM yyyy HH:mm");
+
+                try {
+                    dateBooking = a.parse(dateAndTimeBooking);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                calendar.setTime(dateBooking);
+                calendar.add(Calendar.HOUR,2);
+                dateMaxHours = calendar.getTime();
+                calendar.setTime(dateBooking);
+                calendar.add(Calendar.HOUR,-2);
+                dateMinHours = calendar.getTime();
+
+
+                for (DataSnapshot data:dataSnapshot.getChildren()) {
+                    Order order = data.getValue(Order.class);
+                    Date date = new Date();
+                    String dateAndTime = order.getDate()+" "+order.getTime();
+                    try {
+                        date = a.parse(dateAndTime);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(dateMinHours.compareTo(date) < 0 && dateMaxHours.compareTo(date) > 0 )
+                        idMontir.add(order.getMontir().getId());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         dbMontir.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -217,7 +269,7 @@ public class CheckUpPage3 extends AppCompatActivity {
                     montirLocation.setLongitude(latLngMontir.longitude);
 
                     int distance = (int) customerLocation.distanceTo(montirLocation);
-                    if (distance < 1000) {
+                    if (distance < 1000  && !idMontir.contains(m.getId())) {
                         arrayList.add(m);
                     }
 

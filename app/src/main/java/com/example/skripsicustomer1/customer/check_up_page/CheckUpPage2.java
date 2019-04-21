@@ -128,6 +128,7 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
             jam.setText(mTime1);
         }
         jam.setText(mTime1);
+
     }
     public void setSpinnerTypeCheckup(String typeCheckup[]) {
         ArrayAdapter<String> typeCheckUpAdapter = new ArrayAdapter<String>(CheckUpPage2.this,android.R.layout.simple_spinner_dropdown_item,typeCheckup);

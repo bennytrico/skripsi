@@ -68,9 +68,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
-
-
-
         searchText = (EditText) findViewById(R.id.inputSearch);
         mobileGPS = (ImageView) findViewById(R.id.ic_gps);
         init();

@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.helper.TimePickerFragment;
 
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -40,6 +42,7 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
     private String tipe;
     private String platNomor;
     private String mTime1;
+    private String time;
     private Boolean oliMesin = false;
     private Boolean oliGanda = false;
 
@@ -202,7 +205,6 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         TextView jam = (TextView) findViewById(R.id.jamServiceRutin);
         if (minute < 10) {
             mTime1 = hourOfDay + ":" + "0" + minute;
-
         } else {
             mTime1 = hourOfDay + ":" + minute;
 
@@ -220,6 +222,7 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             jam.setText(mTime1);
         }
         jam.setText(mTime1);
+
     }
 
     public void getCurrentDate(){

@@ -2,6 +2,7 @@ package com.example.skripsicustomer1.customer;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -16,6 +17,7 @@ import android.support.v4.app.Fragment;
 import com.example.skripsicustomer1.Customer;
 import com.example.skripsicustomer1.MainActivity;
 import com.example.skripsicustomer1.R;
+import com.example.skripsicustomer1.order_page.OrderPage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,7 +30,6 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
     private ActionBarDrawerToggle abdt;
     private FirebaseAuth mAuth;
     private Boolean flag = true;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +39,24 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         navigation();
         loadFragment(new ServiceRutinPage());
         navigationBottom();
-        progressDialog = new ProgressDialog(this);
-
-        progressDialog.setMessage("loading . .");
-        progressDialog.show();
 
     }
 
     @Override
     public void onBackPressed() {
         if (flag){
-            Toast.makeText(getApplicationContext(), "press again to exit", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "press again to exit", Toast.LENGTH_SHORT).show();
             flag = false;
+            final Handler handler = new Handler();
+
+            final Runnable r = new Runnable() {
+                public void run() {
+                    handler.postDelayed(this, 2000);
+                    flag = true;
+                }
+            };
+
+            handler.postDelayed(r, 1000);
         } else{
             mAuth.getInstance().signOut();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -60,38 +67,6 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Customers");
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                boolean flag = false;
-                for (DataSnapshot data: dataSnapshot.getChildren()) {
-                    if (data.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                        flag = true;
-                    }
-                }
-                if (!flag) {
-                    progressDialog.dismiss();
-                    mAuth.getInstance().signOut();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    Toast.makeText(getApplicationContext(),"You are not customer",Toast.LENGTH_SHORT).show();
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                } else {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     public void navigationBottom(){
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_nav);
@@ -136,7 +111,7 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
                 int id = menuItem.getItemId();
 
                 if(id == R.id.order){
-                    Toast.makeText(HomePage.this, "Order", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), OrderPage.class));
                 }else if(id == R.id.logout){
                     mAuth.getInstance().signOut();
                     Toast.makeText(HomePage.this, "Logout", Toast.LENGTH_SHORT).show();
