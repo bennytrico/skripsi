@@ -32,6 +32,7 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
     private String tipe;
     private String mTime1;
     private String platNomor;
+    private Integer harga = 60000;
     Spinner typeCheckupSpinner;
     Spinner tanggalSpinner;
     @Override
@@ -42,6 +43,10 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
         Button btnHours = (Button) findViewById(R.id.getHoursCheckUp);
         String[] getTypeCheckup = getResources().getStringArray(R.array.CheckUpListType);
         Button btnNextCheckUp = (Button) findViewById(R.id.btnNextCheckUp2);
+        TextView textHarga = (TextView) findViewById(R.id.hargaCheckUp);
+
+
+        textHarga.setText(""+harga);
 
         getIntentValue();
 
@@ -55,6 +60,7 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
                 extras.putString("EXTRA_TIPE",tipe);
                 extras.putString("EXTRA_TANGGAL",tanggalSpinner.getSelectedItem().toString());
                 extras.putString("EXTRA_TYPE_KERUSAKAN",typeCheckupSpinner.getSelectedItem().toString());
+                extras.putInt("EXTRA_HARGA",harga);
                 extras.putString("EXTRA_HOUR",mTime1);
                 extras.putString("EXTRA_PLATNOMOR",platNomor);
                 intent.putExtras(extras);

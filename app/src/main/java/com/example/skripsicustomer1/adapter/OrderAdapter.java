@@ -37,6 +37,21 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         TextView typeOrder = (TextView)listItem.findViewById(R.id.listOrderType);
         typeOrder.setText(currentOrder.getType_order());
 
+        TextView nameMechanic = (TextView)listItem.findViewById(R.id.listOrderNameMechanic);
+        nameMechanic.setText(currentOrder.getMontir().getName());
+
+        TextView addressOrder = (TextView)listItem.findViewById(R.id.listOrderAddress);
+        addressOrder.setText(currentOrder.getAddress());
+
+        TextView statusOrder = (TextView)listItem.findViewById(R.id.listOrderStatusOrder);
+        statusOrder.setText(currentOrder.getStatus_order());
+
         return listItem;
+    }
+
+    @Nullable
+    @Override
+    public Order getItem(int position) {
+        return super.getItem(position);
     }
 }

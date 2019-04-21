@@ -1,5 +1,6 @@
 package com.example.skripsicustomer1.customer;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -27,6 +28,7 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
     private ActionBarDrawerToggle abdt;
     private FirebaseAuth mAuth;
     private Boolean flag = true;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,10 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         navigation();
         loadFragment(new ServiceRutinPage());
         navigationBottom();
+        progressDialog = new ProgressDialog(this);
 
+        progressDialog.setMessage("loading . .");
+        progressDialog.show();
 
     }
 
@@ -59,7 +64,33 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
     protected void onStart() {
         super.onStart();
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Customers");
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean flag = false;
+                for (DataSnapshot data: dataSnapshot.getChildren()) {
+                    if (data.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        flag = true;
+                    }
+                }
+                if (!flag) {
+                    progressDialog.dismiss();
+                    mAuth.getInstance().signOut();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Toast.makeText(getApplicationContext(),"You are not customer",Toast.LENGTH_SHORT).show();
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                } else {
+                    progressDialog.dismiss();
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void navigationBottom(){
@@ -104,9 +135,7 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
 
-                if(id == R.id.notification){
-                    Toast.makeText(HomePage.this, "Notification", Toast.LENGTH_SHORT).show();
-                }else if(id == R.id.order){
+                if(id == R.id.order){
                     Toast.makeText(HomePage.this, "Order", Toast.LENGTH_SHORT).show();
                 }else if(id == R.id.logout){
                     mAuth.getInstance().signOut();

@@ -24,6 +24,7 @@ import com.example.skripsicustomer1.adapter.MontirAdapter;
 import com.example.skripsicustomer1.customer.HomePage;
 import com.example.skripsicustomer1.customer.MapsActivity;
 import com.example.skripsicustomer1.helper.Location;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -39,7 +40,6 @@ import java.util.ArrayList;
 public class ServiceRutinPage3 extends AppCompatActivity{
     public static Context context;
     private Intent intent;
-    LocationManager locationManager;
     TextView locationText;
 
     private Double latitudeLocation;
@@ -67,25 +67,23 @@ public class ServiceRutinPage3 extends AppCompatActivity{
     Customer customer = new Customer();
     ListView listViewMontir ;
     Button order;
+    TextView namaMontirSelected;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_rutin_page3);
-        Location location = new Location(this, this);
+        final Location location = new Location(this, this);
         location.requestPermission(ServiceRutinPage3.this);
         Button btnGetLocation = (Button) findViewById(R.id.getCurrentLocation);
         TextView textLocation = (TextView) findViewById(R.id.textLocation);
         order = (Button) findViewById(R.id.orderServiceRutin);
-        final TextView namaMontirSelected = (TextView) findViewById(R.id.namaMontir);
+        namaMontirSelected = (TextView) findViewById(R.id.namaMontir);
         listViewMontir = (ListView) findViewById(R.id.listViewMontir);
 
         if (transmisi == null) {
             getIntentValue();
         }
 
-        final ArrayList<Montir> arrayList = new ArrayList<>();
-
-        final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Montirs");
         final DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers");
         dbCustomer.orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid()).addChildEventListener(new ChildEventListener() {
             @Override
@@ -115,38 +113,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
 
             }
         });
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot data:dataSnapshot.getChildren()) {
-                    Montir c = data.getValue(Montir.class);
-                    c.setId(data.getKey());
 
-                    arrayList.add(c);
-                }
-                final MontirAdapter listViewMontirAdapater = new MontirAdapter(
-                        getApplicationContext(),
-                        0,
-                        arrayList
-                );
-
-                listViewMontir.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Montir c = listViewMontirAdapater.getItem(position);
-                        namaMontirSelected.setText(c.getName());
-                        montir = c;
-                    }
-                });
-
-                listViewMontir.setAdapter(listViewMontirAdapater);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,7 +177,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
         if (extras != null) {
             valueLocation = extras.getString("EXTRA_ADDRESS");
             longtitudeLocation = extras.getDouble("EXTRA_LONGTITUDE");
-            latitudeLocation = extras.getDouble("KEY_LATITUDE");
+            latitudeLocation = extras.getDouble("EXTRA_LATITUDE");
         }
     }
     public void getIntentValue () {
@@ -231,4 +198,62 @@ public class ServiceRutinPage3 extends AppCompatActivity{
         }
     }
 
+    @Override
+    protected void onStart() {
+        getListMontir();
+        super.onStart();
+    }
+
+    public void getListMontir() {
+        final ArrayList<Montir> arrayList = new ArrayList<>();
+        final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Montirs");
+
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                android.location.Location customerLocation = new android.location.Location("a");
+                LatLng latLng = new LatLng(latitudeLocation,longtitudeLocation);
+                customerLocation.setLatitude(latLng.latitude);
+                customerLocation.setLongitude(latLng.longitude);
+
+                for (DataSnapshot data:dataSnapshot.getChildren()) {
+                    Montir c = data.getValue(Montir.class);
+                    c.setId(data.getKey());
+
+                    android.location.Location montirLocation = new android.location.Location("b");
+                    LatLng latLngMontir = new LatLng(c.getLatitude(),c.getLongitude());
+                    montirLocation.setLatitude(latLngMontir.latitude);
+                    montirLocation.setLongitude(latLngMontir.longitude);
+
+                    int distance = (int) customerLocation.distanceTo(montirLocation);
+                    if (distance < 1000) {
+                        arrayList.add(c);
+                    }
+
+                }
+                final MontirAdapter listViewMontirAdapater = new MontirAdapter(
+                        getApplicationContext(),
+                        0,
+                        arrayList
+                );
+
+                listViewMontir.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Montir c = listViewMontirAdapater.getItem(position);
+                        namaMontirSelected.setText(c.getName());
+                        montir = c;
+                    }
+                });
+
+                listViewMontir.setAdapter(listViewMontirAdapater);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

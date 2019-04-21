@@ -8,6 +8,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -54,18 +55,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Boolean oliMesin;
     private Boolean oliGanda;
     private String platNomor;
+    private String typeCheckUp;
 
+    boolean hasLocation = false;
+
+    boolean flag = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        initMap();
+
+
+
+
         searchText = (EditText) findViewById(R.id.inputSearch);
         mobileGPS = (ImageView) findViewById(R.id.ic_gps);
         init();
+        initMap();
 
-        getDeviceLocation();
         Intent getValue = getIntent();
         Bundle extra = getValue.getExtras();
         flagActivity = extra.getString("flagActivity");
@@ -81,9 +91,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 oliMesin = extras.getBoolean("EXTRA_GANTI_OLI");
                 oliGanda = extras.getBoolean("EXTRA_GANTI_GANDA");
                 platNomor =  extras.getString("EXTRA_PLATNOMOR");
+
+            } else if (flagActivity.equals("Check Up")) {
+                Intent intent = getIntent();
+                Bundle extras = intent.getExtras();
+                transmisi = extras.getString("EXTRA_TRANSMISI");
+                jenis = extras.getString("EXTRA_JENIS");
+                tipe = extras.getString("EXTRA_TIPE");
+                harga = extras.getInt("EXTRA_HARGA");
+                tanggal = extras.getString("EXTRA_TANGGAL");
+                mTime1 = extras.getString("EXTRA_HOUR");
+                platNomor =  extras.getString("EXTRA_PLATNOMOR");
+                typeCheckUp = extras.getString("EXTRA_TYPE_KERUSAKAN");
             }
-
-
     }
 
     private void init() {
@@ -138,6 +158,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (flagActivity.equals("Service Rutin")) {
                     Intent intent = new Intent(getApplicationContext(), ServiceRutinPage3.class);
                     Bundle extra = new Bundle();
+                    Log.e("longtitude dari map: ", String.valueOf(latLng.latitude));
                     extra.putString("EXTRA_ADDRESS",address);
                     extra.putDouble("EXTRA_LONGTITUDE",latLng.longitude);
                     extra.putDouble("EXTRA_LATITUDE",latLng.latitude);
@@ -159,6 +180,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     extra.putString("EXTRA_ADDRESS",address);
                     extra.putDouble("EXTRA_LONGTITUDE",latLng.longitude);
                     extra.putDouble("EXTRA_LATITUDE",latLng.latitude);
+                    extra.putString("EXTRA_TRANSMISI",transmisi);
+                    extra.putString("EXTRA_JENIS",jenis);
+                    extra.putString("EXTRA_TIPE",tipe);
+                    extra.putInt("EXTRA_HARGA",harga);
+                    extra.putString("EXTRA_TANGGAL",tanggal);
+                    extra.putString("EXTRA_HOUR",mTime1);
+                    extra.putString("EXTRA_PLATNOMOR",platNomor);
+                    extra.putString("EXTRA_TYPE_KERUSAKAN",typeCheckUp);
+
                     intent.putExtras(extra);
                     startActivity(intent);
                 }
@@ -192,6 +222,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Address address = addressList.get(0);
 
                     moveCamera(latLng, DEFAULT_ZOOM, address.getAddressLine(0));
+
                     }
                 }
 
@@ -229,9 +260,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Address address = addressList.get(0);
 
                         moveCamera(latLng, DEFAULT_ZOOM, address.getAddressLine(0));
+
                     }
                 }
-
                 @Override
                 public void onStatusChanged(String provider, int status, Bundle extras) {
 
@@ -249,6 +280,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             });
         }
     }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -267,10 +299,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,13.2f));
     }
+
+
     public void initMap(){
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+
     }
     private void hideSoftKeyBoard() {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

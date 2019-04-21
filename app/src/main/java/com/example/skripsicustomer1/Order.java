@@ -2,11 +2,36 @@ package com.example.skripsicustomer1;
 
 public class Order {
     private String customer_id,address,type_order,transmition,brand,type_motor,date,time,status_order,name_customer,
-            no_handphone_customer,number_plate;
+            no_handphone_customer,number_plate,type_checkup;
     private Boolean primary_oil,secondary_oil,flag_customer_agree,flag_montir_agree;
     private Integer amount;
 
     private Montir montir;
+    public Order (){
+
+    }
+    public void OrderCheckup (String customer_id,String address, String type_order, String transmition,
+                  String brand, String type_motor, String date, String time,String status_order, String type_checkup,
+                  Boolean flag_customer_agree,Boolean flag_montir_agree,Integer amount,Montir montir,
+                  String name_customer, String no_handphone_customer,String number_plate) {
+        this.customer_id = customer_id;
+        this.address = address;
+        this.type_order = type_order;
+        this.transmition = transmition;
+        this.brand = brand;
+        this.type_motor = type_motor;
+        this.date = date;
+        this.time = time;
+        this.status_order = status_order;
+        this.type_checkup = type_checkup;
+        this.flag_customer_agree = flag_customer_agree;
+        this.flag_montir_agree = flag_montir_agree;
+        this.amount = amount;
+        this.montir = montir;
+        this.name_customer = name_customer;
+        this.no_handphone_customer = no_handphone_customer;
+        this.number_plate = number_plate;
+    }
 
     public Order (String customer_id,String address, String type_order, String transmition,
                   String brand, String type_motor, String date, String time,String status_order,Boolean oli_ganda,
@@ -174,5 +199,13 @@ public class Order {
 
     public void setNumber_plate(String number_plate) {
         this.number_plate = number_plate;
+    }
+
+    public String getType_checkup() {
+        return type_checkup;
+    }
+
+    public void setType_checkup(String type_checkup) {
+        this.type_checkup = type_checkup;
     }
 }
