@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Montir On Demand</string>
-    <string name="Open">Montir On Demand</string>
-    <string name="Close">Montir On Demand</string>
+    <string name="app_name">Pesan Montir</string>
+    <string name="Open">Pesan Montir</string>
+    <string name="Close">Pesan Montir</string>
 
     <string name="serviceRutin">Service Rutin</string>
     <string name="checkUp">Check Up</string>

@@ -137,7 +137,7 @@
                     android:id="@+id/btnNextCheckUp2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Next"/>
+                    android:text="Lanjutkan"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

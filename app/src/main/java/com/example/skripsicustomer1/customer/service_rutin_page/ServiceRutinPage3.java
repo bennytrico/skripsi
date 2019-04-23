@@ -64,7 +64,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
     private String valueLocation = "";
     private Boolean statusUserAgree = false;
     private Boolean statusMontirAgree = false;
-    private String statusOrder = "pending";
+    private String statusOrder = "menunggu";
     private String namaCustomer;
     private String noHpCustomer;
     private String platNomor;
@@ -157,7 +157,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
             public void onClick(View v) {
                intent = new Intent(getApplicationContext(), MapsActivity.class);
                Bundle extra = new Bundle();
-               extra.putString("flagActivity","Service Rutin");
+                extra.putString("flagActivity","Service Rutin");
                 extra.putString("EXTRA_TRANSMISI",transmisi);
                 extra.putString("EXTRA_JENIS",jenis);
                 extra.putString("EXTRA_TIPE",tipe);
@@ -190,7 +190,6 @@ public class ServiceRutinPage3 extends AppCompatActivity{
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
             if (extras != null) {
-
                 transmisi = extras.getString("EXTRA_TRANSMISI");
                 jenis = extras.getString("EXTRA_JENIS");
                 tipe = extras.getString("EXTRA_TIPE");
@@ -211,7 +210,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
 
     public void getListMontir() {
         final ArrayList<Montir> arrayList = new ArrayList<>();
-        final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Montirs");
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Montirs");
         final DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
 
         final ArrayList<String> idMontir = new ArrayList<>();
@@ -239,7 +238,6 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                 calendar.setTime(dateBooking);
                 calendar.add(Calendar.HOUR,-2);
                 dateMinHours = calendar.getTime();
-
 
                 for (DataSnapshot data:dataSnapshot.getChildren()) {
                     Order order = data.getValue(Order.class);

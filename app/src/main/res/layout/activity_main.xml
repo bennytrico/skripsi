@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="100dp"
-                android:text="Login"
+                android:text="Masuk"
                 android:textAlignment="center"
                 android:textSize="20dp" />
 
@@ -44,7 +44,7 @@
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:password="true"
-                android:hint="Password" />
+                android:hint="Kata sandi" />
 
             <Button
                 android:id="@+id/btnLogin"
@@ -52,15 +52,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="165dp"
                 android:layout_marginTop="15mm"
-                android:text="Login" />
+                android:text="Masuk" />
 
             <TextView
                 android:id="@+id/btnRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="179dp"
-                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
                 android:clickable="true"
-                android:text="Register ?" />
+                android:text="Daftar ?" />
         </LinearLayout>
 </RelativeLayout>

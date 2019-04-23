@@ -1,10 +1,13 @@
 package com.example.skripsicustomer1.order_page;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.skripsicustomer1.Order;
@@ -18,28 +21,30 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class OrderPage extends AppCompatActivity {
     ArrayList<Order> orderArrayList = new ArrayList<>();
     ListView listViewOrder;
+    OrderAdapter listViewOrderAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_page);
-        getSupportActionBar().setTitle("Order");
+        getSupportActionBar().setTitle("Pesanan");
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         listViewOrder = (ListView)findViewById(R.id.listOrder);
         DatabaseReference dbOrder = FirebaseDatabase.getInstance().getReference("Orders");
-
-
-        dbOrder.addListenerForSingleValueEvent(new ValueEventListener() {
+        dbOrder.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                orderArrayList.clear();
                 for (DataSnapshot data: dataSnapshot.getChildren()) {
                     Order r = data.getValue(Order.class);
                     r.setId(data.getKey());
@@ -48,12 +53,13 @@ public class OrderPage extends AppCompatActivity {
                         orderArrayList.add(r);
                     }
                 }
-                OrderAdapter listViewOrderAdapter = new OrderAdapter(
+                listViewOrderAdapter = new OrderAdapter(
                         getApplicationContext(),
                         0,
                         orderArrayList
                 );
                 listViewOrder.setAdapter(listViewOrderAdapter);
+
             }
 
             @Override
@@ -61,6 +67,44 @@ public class OrderPage extends AppCompatActivity {
 
             }
         });
+
+//        dbOrder.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for (DataSnapshot data: dataSnapshot.getChildren()) {
+//                    Order r = data.getValue(Order.class);
+//                    r.setId(data.getKey());
+//
+//                    if (r.getCustomer_id().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+//                        orderArrayList.add(r);
+//                    }
+//                }
+//                listViewOrderAdapter = new OrderAdapter(
+//                        getApplicationContext(),
+//                        0,
+//                        orderArrayList
+//                );
+//                listViewOrder.setAdapter(listViewOrderAdapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+        listViewOrder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Gson gson = new Gson();
+                Order orderSelected = listViewOrderAdapter.getItem(position);
+                String orderJson = gson.toJson(orderSelected);
+//                Order whoops = gson.fromJson(orderJson,Order.class);
+                Intent intent = new Intent(getApplicationContext(),OrderPage2.class);
+                intent.putExtra("ORDER_SELECTED",orderJson);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register"
+            android:text="Daftar"
             android:textAlignment="center"
             android:textSize="20dp"
             android:id="@+id/txtRegisterPage"
@@ -41,7 +41,7 @@
             android:layout_below="@+id/registerEmail"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:hint="Username"
+            android:hint="Nama User"
             android:imeOptions="actionNext"
             android:singleLine="true"
             android:id="@+id/registerUsername"/>
@@ -52,7 +52,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:password="true"
-            android:hint="Nomor handphone"
+            android:hint="Nomor telepon"
             android:imeOptions="actionNext"
             android:singleLine="true"
             android:id="@+id/registerNumberHandphone"/>
@@ -64,7 +64,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:password="true"
-            android:hint="Password"
+            android:hint="Kata sandi"
             android:imeOptions="actionNext"
             android:singleLine="true"
             android:id="@+id/registerPassword"/>
@@ -76,7 +76,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:password="true"
-            android:hint="Re-Password"
+            android:hint="Kata sandi kembali"
             android:imeOptions="actionDone"
             android:singleLine="true"
             android:id="@+id/registerRePassword"/>
@@ -89,7 +89,7 @@
             android:layout_marginRight="100dp"
             android:layout_marginTop="10dp"
             android:id="@+id/btnSubmit"
-            android:text="SUBMIT"/>
+            android:text="daftar"/>
         </RelativeLayout>
     </ScrollView>
 

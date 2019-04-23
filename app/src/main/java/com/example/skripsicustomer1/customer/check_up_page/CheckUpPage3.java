@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -42,8 +43,8 @@ public class CheckUpPage3 extends AppCompatActivity {
     private Location locationMontir;
 
     private String valueLocation;
-    private Double longtitudeLocation;
-    private Double latitudeLocation;
+    private Double longtitudeLocation1;
+    private Double latitudeLocation1;
     private Montir montir;
     private String transmisi;
     private String jenis;
@@ -54,7 +55,7 @@ public class CheckUpPage3 extends AppCompatActivity {
     private String  typeCheckUp;
     private Boolean statusUserAgree = false;
     private Boolean statusMontirAgree = false;
-    private String statusOrder = "pending";
+    private String statusOrder = "menunggu";
     private String namaCustomer;
     private String noHpCustomer;
     private String platNomor;
@@ -74,7 +75,6 @@ public class CheckUpPage3 extends AppCompatActivity {
             getIntentValue();
         }
 
-        getLocationFromMap();
 
         Button btnOpenMap = (Button) findViewById(R.id.getCurrentLocationCheckUp);
         TextView txtLocation = (TextView) findViewById(R.id.textLocationCheckUp);
@@ -114,9 +114,6 @@ public class CheckUpPage3 extends AppCompatActivity {
 
             }
         });
-
-
-
 
         order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,14 +164,16 @@ public class CheckUpPage3 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        getLocationFromMap();
+        txtLocation.setText(valueLocation);
     }
     private void getLocationFromMap () {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
             valueLocation = extras.getString("EXTRA_ADDRESS");
-            longtitudeLocation = extras.getDouble("EXTRA_LONGTITUDE");
-            latitudeLocation = extras.getDouble("KEY_LATITUDE");
+            longtitudeLocation1 = extras.getDouble("EXTRA_LONGTITUDE");
+            latitudeLocation1 = extras.getDouble("KEY_LATITUDE");
         }
     }
     public void getIntentValue () {
@@ -201,6 +200,8 @@ public class CheckUpPage3 extends AppCompatActivity {
 
     public void getListMontir () {
         final ArrayList<Montir> arrayList = new ArrayList<>();
+        Log.e("test ", String.valueOf(latitudeLocation1));
+        Log.e("test ", String.valueOf(longtitudeLocation1));
         DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
         final DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
 
@@ -256,7 +257,7 @@ public class CheckUpPage3 extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 android.location.Location customerLocation = new android.location.Location("a");
-                LatLng latLng = new LatLng(latitudeLocation,longtitudeLocation);
+                LatLng latLng = new LatLng(latitudeLocation1,longtitudeLocation1);
                 customerLocation.setLatitude(latLng.latitude);
                 customerLocation.setLongitude(latLng.longitude);
                 for (DataSnapshot data: dataSnapshot.getChildren()) {
@@ -273,7 +274,6 @@ public class CheckUpPage3 extends AppCompatActivity {
                         arrayList.add(m);
                     }
 
-                    arrayList.add(m);
                 }
                 final MontirAdapter montirAdapter  = new MontirAdapter(
                         getApplicationContext(),

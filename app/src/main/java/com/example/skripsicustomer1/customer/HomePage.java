@@ -141,5 +141,3 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         return loadFragment(fragment);
     }
 }
-
-

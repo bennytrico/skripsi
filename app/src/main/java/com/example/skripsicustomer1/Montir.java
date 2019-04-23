@@ -4,7 +4,7 @@ import android.content.Intent;
 
 public class Montir {
     private Integer wallet;
-    private String name,address,email,role,bank,bankAccountName,bankAccountNumber,id;
+    private String name,address,email,role,bank,bankAccountName,bankAccountNumber,id,image;
     private Double latitude,longitude;
 
     public Montir () {
@@ -109,5 +109,13 @@ public class Montir {
 
     public void setBankAccountNumber(String bankAccountNumber) {
         this.bankAccountNumber = bankAccountNumber;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
