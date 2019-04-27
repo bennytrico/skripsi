@@ -64,7 +64,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
     private String valueLocation = "";
     private Boolean statusUserAgree = false;
     private Boolean statusMontirAgree = false;
-    private String statusOrder = "menunggu";
+    private String statusOrder = "wait";
     private String namaCustomer;
     private String noHpCustomer;
     private String platNomor;

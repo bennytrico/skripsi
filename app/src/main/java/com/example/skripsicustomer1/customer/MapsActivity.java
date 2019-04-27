@@ -155,7 +155,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (flagActivity.equals("Service Rutin")) {
                     Intent intent = new Intent(getApplicationContext(), ServiceRutinPage3.class);
                     Bundle extra = new Bundle();
-                    Log.e("longtitude dari map: ", String.valueOf(latLng.latitude));
                     extra.putString("EXTRA_ADDRESS",address);
                     extra.putDouble("EXTRA_LONGTITUDE",latLng.longitude);
                     extra.putDouble("EXTRA_LATITUDE",latLng.latitude);

@@ -5,7 +5,12 @@
 
     <string name="serviceRutin">Service Rutin</string>
     <string name="checkUp">Check Up</string>
-
+    <string name="waitConfirmFromMontir">Menunggu diterima oleh montir</string>
+    <string name="confirmFromMontir">Montir menerima pesanan</string>
+    <string name="processService">Sedang dikerjakan</string>
+    <string name="canceledOrder">Pesanan dibatalkan</string>
+    <string name="serviceDone">Pesanan selesai</string>
+    
     <string-array name="CheckUpListType">
         <item>-</item>
         <item>Electrical</item>

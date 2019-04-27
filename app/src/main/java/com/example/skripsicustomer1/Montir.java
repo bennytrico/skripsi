@@ -3,21 +3,22 @@ package com.example.skripsicustomer1;
 import android.content.Intent;
 
 public class Montir {
+    private Double rating;
     private Integer wallet;
-    private String name,address,email,role,bank,bankAccountName,bankAccountNumber,id,image;
+    private String name,address,email,role,bank,bank_account_name,bank_account_number,id,image;
     private Double latitude,longitude;
 
     public Montir () {
 
     }
-    public Montir (String name, String address,String email,String role,String bank, String bankAccountName, String bankAccountNumber
+    public Montir (String name, String address,String email,String role,String bank, String bank_account_name, String bank_account_number
                    ,Double latitude, Double longitude, Integer wallet) {
         this.name = name;
         this.address = address;
         this.email = email;
         this.bank = bank;
-        this.bankAccountName = bankAccountName;
-        this.bankAccountNumber = bankAccountNumber;
+        this.bank_account_name = bank_account_name;
+        this.bank_account_number = bank_account_number;
         this.role = role;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -79,11 +80,11 @@ public class Montir {
         this.role = role;
     }
 
-    public String getBankAccount() {
+    public String getBank() {
         return bank;
     }
 
-    public void setBankAccount(String bank) {
+    public void setBank(String bank) {
         this.bank = bank;
     }
 
@@ -95,20 +96,20 @@ public class Montir {
         this.id = id;
     }
 
-    public String getBankAccountName() {
-        return bankAccountName;
+    public String getBank_account_nameount_name() {
+        return bank_account_name;
     }
 
-    public void setBankAccountName(String bankAccountName) {
-        this.bankAccountName = bankAccountName;
+    public void setBank_account_name(String bank_account_name) {
+        this.bank_account_name = bank_account_name;
     }
 
-    public String getBankAccountNumber() {
-        return bankAccountNumber;
+    public String getBank_account_number() {
+        return bank_account_number;
     }
 
-    public void setBankAccountNumber(String bankAccountNumber) {
-        this.bankAccountNumber = bankAccountNumber;
+    public void setBank_account_number(String bank_account_number) {
+        this.bank_account_number = bank_account_number;
     }
 
     public String getImage() {
@@ -117,5 +118,13 @@ public class Montir {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 }

@@ -44,7 +44,16 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         addressOrder.setText(currentOrder.getAddress());
 
         TextView statusOrder = (TextView)listItem.findViewById(R.id.listOrderStatusOrder);
-        statusOrder.setText(currentOrder.getStatus_order());
+        if (currentOrder.getStatus_order().equals("wait"))
+            statusOrder.setText(R.string.waitConfirmFromMontir);
+        else if (currentOrder.getStatus_order().equals("accept"))
+            statusOrder.setText(R.string.confirmFromMontir);
+        else if (currentOrder.getStatus_order().equals("cancel"))
+            statusOrder.setText(R.string.canceledOrder);
+        else if (currentOrder.getStatus_order().equals("proccess"))
+            statusOrder.setText(R.string.processService);
+        else if (currentOrder.getStatus_order().equals("done"))
+            statusOrder.setText(R.string.serviceDone);
 
         return listItem;
     }
