@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +16,9 @@ import android.widget.TextView;
 
 import com.example.skripsicustomer1.Order;
 import com.example.skripsicustomer1.R;
+import com.example.skripsicustomer1.customer.HomePage;
+import com.example.skripsicustomer1.helper.ConvertBase64;
+import com.example.skripsicustomer1.helper.FormatNumber;
 import com.google.gson.Gson;
 
 public class OrderPage2 extends AppCompatActivity {
@@ -37,9 +41,14 @@ public class OrderPage2 extends AppCompatActivity {
     LinearLayout oliGandaLayoutOrder;
     LinearLayout tipeKerusakanLayoutOrder;
 
+    FormatNumber formatNumber = new FormatNumber();
+    ConvertBase64 convertBase64 = new ConvertBase64();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.activity_order_page2);
         getIntentValue();
 
@@ -60,32 +69,32 @@ public class OrderPage2 extends AppCompatActivity {
         oliMesinLayoutOrder = (LinearLayout) findViewById(R.id.layoutOliMesinOrderPage);
         tipeKerusakanLayoutOrder = (LinearLayout) findViewById(R.id.layoutTypeServiceCheckup);
 
+        setDataOrderPage();
+
+
 
     }
     public void setDataOrderPage () {
-        byte[] imageBytes = Base64.decode(order.getMontir().getImage(),Base64.DEFAULT);
-        Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0 ,imageBytes.length);
 
-        fotoMontir.setImageBitmap(decodedImage);
-        hargaOrder.setText(order.getAmount());
+        fotoMontir.setImageBitmap(convertBase64.convertBase64toBitmap(order.getMontir().getImage()));
+        hargaOrder.setText(formatNumber.formatNumber(order.getAmount()));
         alamatOrder.setText(order.getAddress());
         namaMontirOrder.setText(order.getMontir().getName());
         transmisiMotorOrder.setText(order.getTransmition());
         jenisMotorOrder.setText(order.getBrand());
         merekMotorOrder.setText(order.getType_motor());
         tanggalOrder.setText(order.getDate());
-
-        if (order.getType_order().equals(R.string.serviceRutin)) {
+        if (order.getType_order().equals("Service Rutin")) {
             if (order.getOli_mesin())
                 oliMesinOrder.setText("Ganti");
             else
-                oliMesinOrder.setText("Tidak ganti");
+                oliMesinOrder.setText("Tidak");
             if (order.getOli_ganda())
                 oliGandaOrder.setText("Ganti");
             else
-                oliGandaOrder.setText("Tidak ganti");
+                oliGandaOrder.setText("Tidak");
             tipeKerusakanLayoutOrder.setVisibility(View.GONE);
-        } else if (order.getType_order().equals(R.id.checkUp)) {
+        } else if (order.getType_order().equals("Check Up")) {
             tipeKerusakanOrder.setText(order.getType_checkup());
             oliMesinLayoutOrder.setVisibility(View.GONE);
             oliGandaLayoutOrder.setVisibility(View.GONE);
@@ -95,5 +104,11 @@ public class OrderPage2 extends AppCompatActivity {
         Gson gson = new Gson();
         Intent intent = getIntent();
         order = gson.fromJson(intent.getExtras().getString("ORDER_SELECTED"),Order.class);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent myIntent = new Intent(getApplicationContext(), OrderPage.class);
+        startActivityForResult(myIntent, 0);
+        return true;
     }
 }

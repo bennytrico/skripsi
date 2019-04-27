@@ -22,6 +22,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.skripsicustomer1.R;
+import com.example.skripsicustomer1.helper.FormatNumber;
 import com.example.skripsicustomer1.helper.TimePickerFragment;
 
 import java.lang.reflect.Array;
@@ -45,6 +46,8 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
     private String time;
     private Boolean oliMesin = false;
     private Boolean oliGanda = false;
+
+    FormatNumber formatNumber = new FormatNumber();
 
     ImageButton btnInfoOliGanda;
     ImageButton btnInfoOliMesin;
@@ -91,7 +94,7 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             }
         });
 
-        textHarga.setText(formatNumber(harga));
+        textHarga.setText(formatNumber.formatNumber(harga));
         btnHours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,11 +121,11 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
                 if(((CheckBox)v).isChecked()){
                     harga+=45000;
                     oliMesin = true;
-                    textHarga.setText(formatNumber(harga));
+                    textHarga.setText(formatNumber.formatNumber(harga));
                 }else if(!((CheckBox)v).isChecked()){
                     harga-=45000;
                     oliMesin = false;
-                    textHarga.setText(formatNumber(harga));
+                    textHarga.setText(formatNumber.formatNumber(harga));
                 }
             }
         });
@@ -132,11 +135,11 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
                 if(((CheckBox)v).isChecked()){
                     harga+=25000;
                     oliGanda = true;
-                    textHarga.setText(formatNumber(harga));
+                    textHarga.setText(formatNumber.formatNumber(harga));
                 }else if(!((CheckBox)v).isChecked()){
                     harga-=25000;
                     oliGanda = false;
-                    textHarga.setText(formatNumber(harga));
+                    textHarga.setText(formatNumber.formatNumber(harga));
                 }
             }
         });
@@ -250,16 +253,5 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
 
         datesSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tanggalSpinner.setAdapter(datesSpinner);
-    }
-    public String formatNumber(int money){
-        DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
-        DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
-
-        formatRp.setCurrencySymbol("Rp. ");
-        formatRp.setMonetaryDecimalSeparator(',');
-        formatRp.setGroupingSeparator('.');
-
-        kursIndonesia.setDecimalFormatSymbols(formatRp);
-        return kursIndonesia.format((money));
     }
 }

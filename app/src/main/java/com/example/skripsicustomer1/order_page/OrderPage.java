@@ -67,38 +67,12 @@ public class OrderPage extends AppCompatActivity {
 
             }
         });
-
-//        dbOrder.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot data: dataSnapshot.getChildren()) {
-//                    Order r = data.getValue(Order.class);
-//                    r.setId(data.getKey());
-//
-//                    if (r.getCustomer_id().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-//                        orderArrayList.add(r);
-//                    }
-//                }
-//                listViewOrderAdapter = new OrderAdapter(
-//                        getApplicationContext(),
-//                        0,
-//                        orderArrayList
-//                );
-//                listViewOrder.setAdapter(listViewOrderAdapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
         listViewOrder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Gson gson = new Gson();
                 Order orderSelected = listViewOrderAdapter.getItem(position);
                 String orderJson = gson.toJson(orderSelected);
-//                Order whoops = gson.fromJson(orderJson,Order.class);
                 Intent intent = new Intent(getApplicationContext(),OrderPage2.class);
                 intent.putExtra("ORDER_SELECTED",orderJson);
                 startActivity(intent);

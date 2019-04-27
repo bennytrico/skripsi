@@ -17,6 +17,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.skripsicustomer1.R;
+import com.example.skripsicustomer1.helper.FormatNumber;
 import com.example.skripsicustomer1.helper.TimePickerFragment;
 
 import java.text.SimpleDateFormat;
@@ -35,6 +36,8 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
     private Integer harga = 60000;
     Spinner typeCheckupSpinner;
     Spinner tanggalSpinner;
+
+    FormatNumber formatNumber = new FormatNumber();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +49,7 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
         TextView textHarga = (TextView) findViewById(R.id.hargaCheckUp);
 
 
-        textHarga.setText(""+harga);
+        textHarga.setText(formatNumber.formatNumber(harga));
 
         getIntentValue();
 

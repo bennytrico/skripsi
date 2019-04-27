@@ -26,12 +26,15 @@ import android.widget.Toast;
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.customer.check_up_page.CheckUpPage3;
 import com.example.skripsicustomer1.customer.service_rutin_page.ServiceRutinPage3;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,7 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mobileGPS = (ImageView) findViewById(R.id.ic_gps);
         init();
         initMap();
-
+        getDeviceLocation();
         Intent getValue = getIntent();
         Bundle extra = getValue.getExtras();
         flagActivity = extra.getString("flagActivity");
@@ -195,21 +198,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void getDeviceLocation() {
 
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    LatLng latLng = new LatLng(latitude, longitude);
+        FusedLocationProviderClient mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocation.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null){
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                     List<Address> addressList = new ArrayList<>();
                     Geocoder geocoder = new Geocoder(getApplicationContext());
                     try {
-                        addressList = geocoder.getFromLocation(latitude, longitude, 1);
+                        addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -221,60 +219,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     }
                 }
-
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
-                @Override
-                public void onProviderEnabled(String provider) {
-
-                }
-
-                @Override
-                public void onProviderDisabled(String provider) {
-
-                }
-            });
-        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    LatLng latLng = new LatLng(latitude, longitude);
-                    List<Address> addressList = new ArrayList<>();
-                    Geocoder geocoder = new Geocoder(getApplicationContext());
-                    try {
-                        addressList = geocoder.getFromLocation(latitude, longitude, 1);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (addressList.size() > 0) {
-                        Address address = addressList.get(0);
-
-                        moveCamera(latLng, DEFAULT_ZOOM, address.getAddressLine(0));
-
-                    }
-                }
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
-                @Override
-                public void onProviderEnabled(String provider) {
-
-                }
-
-                @Override
-                public void onProviderDisabled(String provider) {
-
-                }
-            });
-        }
+            }
+        });
     }
 
     /**

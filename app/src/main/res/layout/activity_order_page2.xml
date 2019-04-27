@@ -22,7 +22,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/customborder">
+                android:background="@drawable/photo_border_order_page">
 
                 <ImageView
                     android:layout_width="100dp"
@@ -58,7 +58,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
-                            android:layout_marginRight="5dp"
+                            android:layout_marginRight="17dp"
                             android:layout_alignParentRight="true"
                             android:id="@+id/hargaOrderPage"/>
                     </RelativeLayout>
@@ -112,7 +112,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:textStyle="bold"
-                            android:layout_marginTop="15dp"
+                            android:layout_margin="17dp"
                             android:id="@+id/namaMontirOrderPage"/>
                     </RelativeLayout>
                 </LinearLayout>
@@ -283,33 +283,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="bottom">
-                <Button
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="false"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/red"
-                    android:elevation="3dp"
-                    android:translationZ="3dp"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/white"
-                    android:text="BATALKAN ORDER"
-                    android:id="@+id/batalOrder"
-                    />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:elevation="3dp"
-                    android:translationZ="3dp"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/changeStatusOrderPage"
-                    />
+                    android:orientation="vertical">
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:textColor="@color/white"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/changeStatusOrderPage"/>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/red"
+                        android:textColor="@color/white"
+                        android:text="BATALKAN ORDER"
+                        android:id="@+id/batalOrder"/>
+                    
+                </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
