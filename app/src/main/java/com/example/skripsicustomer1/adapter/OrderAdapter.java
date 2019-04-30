@@ -50,7 +50,7 @@ public class OrderAdapter extends ArrayAdapter<Order> {
             statusOrder.setText(R.string.confirmFromMontir);
         else if (currentOrder.getStatus_order().equals("cancel"))
             statusOrder.setText(R.string.canceledOrder);
-        else if (currentOrder.getStatus_order().equals("proccess"))
+        else if (currentOrder.getStatus_order().equals("process"))
             statusOrder.setText(R.string.processService);
         else if (currentOrder.getStatus_order().equals("done"))
             statusOrder.setText(R.string.serviceDone);

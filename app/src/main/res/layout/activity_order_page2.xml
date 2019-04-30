@@ -299,9 +299,8 @@
                         android:layout_height="wrap_content"
                         android:background="@color/red"
                         android:textColor="@color/white"
-                        android:text="BATALKAN ORDER"
+                        android:text="BATALKAN PESANAN"
                         android:id="@+id/batalOrder"/>
-                    
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    progressDialog.setMessage("Loading . .");
+                    progressDialog.setMessage("Sedang proses . .");
                     progressDialog.show();
                     final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Customers");
                     db.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                             if (!flag) {
                                 progressDialog.dismiss();
                                 mAuth.getInstance().signOut();
-                                Toast.makeText(getApplicationContext(),"You are not customer",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"Anda bukan pelanggan",Toast.LENGTH_SHORT).show();
                             } else {
                                 progressDialog.dismiss();
                                 Intent startIntent = new Intent(getApplicationContext(), HomePage.class);

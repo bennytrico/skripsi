@@ -43,7 +43,7 @@
                 android:layout_marginRight="50dp"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
-                android:password="true"
+                android:inputType="textPassword"
                 android:hint="Kata sandi" />
 
             <Button

@@ -96,7 +96,7 @@ public class Montir {
         this.id = id;
     }
 
-    public String getBank_account_nameount_name() {
+    public String getBank_account_name() {
         return bank_account_name;
     }
 

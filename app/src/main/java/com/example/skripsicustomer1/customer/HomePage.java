@@ -114,7 +114,7 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
                     startActivity(new Intent(getApplicationContext(), OrderPage.class));
                 }else if(id == R.id.logout){
                     mAuth.getInstance().signOut();
-                    Toast.makeText(HomePage.this, "Logout", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomePage.this, "Keluar", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

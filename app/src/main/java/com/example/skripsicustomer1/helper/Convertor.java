@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-public class ConvertBase64 {
+public class Convertor {
 
     public Bitmap convertBase64toBitmap(String value) {
 
