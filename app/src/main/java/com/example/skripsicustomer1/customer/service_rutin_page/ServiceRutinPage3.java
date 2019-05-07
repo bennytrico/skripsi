@@ -249,8 +249,9 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                         e.printStackTrace();
                     }
 
-                    if(dateMinHours.compareTo(date) < 0 && dateMaxHours.compareTo(date) > 0 )
+                    if(dateMinHours.compareTo(date) < 0 && dateMaxHours.compareTo(date) > 0 ) {
                         idMontir.add(order.getMontir().getId());
+                    }
                 }
             }
 

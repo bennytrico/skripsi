@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class OrderPage extends AppCompatActivity {
     ArrayList<Order> orderArrayList = new ArrayList<>();
@@ -58,6 +59,7 @@ public class OrderPage extends AppCompatActivity {
                         0,
                         orderArrayList
                 );
+                Collections.reverse(orderArrayList);
                 listViewOrder.setAdapter(listViewOrderAdapter);
 
             }

@@ -173,7 +173,7 @@ public class CheckUpPage3 extends AppCompatActivity {
         if (extras != null) {
             valueLocation = extras.getString("EXTRA_ADDRESS");
             longtitudeLocation1 = extras.getDouble("EXTRA_LONGTITUDE");
-            latitudeLocation1 = extras.getDouble("KEY_LATITUDE");
+            latitudeLocation1 = extras.getDouble("EXTRA_LATITUDE");
         }
     }
     public void getIntentValue () {
@@ -200,8 +200,6 @@ public class CheckUpPage3 extends AppCompatActivity {
 
     public void getListMontir () {
         final ArrayList<Montir> arrayList = new ArrayList<>();
-        Log.e("test ", String.valueOf(latitudeLocation1));
-        Log.e("test ", String.valueOf(longtitudeLocation1));
         DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
         final DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
 
@@ -242,8 +240,9 @@ public class CheckUpPage3 extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    if(dateMinHours.compareTo(date) < 0 && dateMaxHours.compareTo(date) > 0 )
+                    if(dateMinHours.compareTo(date) < 0 && dateMaxHours.compareTo(date) > 0 ) {
                         idMontir.add(order.getMontir().getId());
+                    }
                 }
             }
 
@@ -260,6 +259,7 @@ public class CheckUpPage3 extends AppCompatActivity {
                 LatLng latLng = new LatLng(latitudeLocation1,longtitudeLocation1);
                 customerLocation.setLatitude(latLng.latitude);
                 customerLocation.setLongitude(latLng.longitude);
+
                 for (DataSnapshot data: dataSnapshot.getChildren()) {
                     Montir m = data.getValue(Montir.class);
                     m.setId(data.getKey());
