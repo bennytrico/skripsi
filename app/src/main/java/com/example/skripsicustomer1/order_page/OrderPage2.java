@@ -160,6 +160,7 @@ public class OrderPage2 extends AppCompatActivity {
         }
 
         getValueAgreement();
+
         if (dateNow.compareTo(dateOrder) < 0) {
             changeStatusOrder.setText("Tombol akan aktif ketika " + dateOrderString);
             changeStatusOrder.setTextColor(getResources().getColor(R.color.black));
