@@ -17,6 +17,7 @@
     
     <string-array name="CheckUpListType">
         <item>-</item>
+        <item>All</item>
         <item>Electrical</item>
         <item>Bracking system</item>
         <item>Engine</item>

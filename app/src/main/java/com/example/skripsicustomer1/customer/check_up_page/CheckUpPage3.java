@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.skripsicustomer1.CheckUpList;
 import com.example.skripsicustomer1.Customer;
 import com.example.skripsicustomer1.Montir;
 import com.example.skripsicustomer1.Order;
@@ -46,6 +47,7 @@ public class CheckUpPage3 extends AppCompatActivity {
     private Double longtitudeLocation1;
     private Double latitudeLocation1;
     private Montir montir;
+    private CheckUpList checkUpList;
     private String transmisi;
     private String jenis;
     private String tipe;
@@ -83,6 +85,11 @@ public class CheckUpPage3 extends AppCompatActivity {
         listViewMontir = (ListView) findViewById(R.id.listViewMontirCheckUp);
 
 
+        checkUpList.setAll(false);
+        checkUpList.setBracking_system(false);
+        checkUpList.setElectrical(false);
+        checkUpList.setEngine(false);
+        checkUpList.setMechanical(false);
 
         DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers");
 
@@ -121,6 +128,17 @@ public class CheckUpPage3 extends AppCompatActivity {
                 DatabaseReference  dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
                 String customer = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String typeOrder = "Check Up";
+                if (typeCheckUp.equals("Electrical")) {
+                    checkUpList.setElectrical(true);
+                } else if (typeCheckUp.equals("Bracking system")) {
+                    checkUpList.setBracking_system(true);
+                } else if (typeCheckUp.equals("Engine")) {
+                    checkUpList.setEngine(true);
+                } else if (typeCheckUp.equals("Mechanical")) {
+                    checkUpList.setMechanical(true);
+                } else if (typeCheckUp.equals("All")) {
+                    checkUpList.setAll(true);
+                }
                 Order order = new Order();
                 order.OrderCheckup(
                         customer,
@@ -132,11 +150,11 @@ public class CheckUpPage3 extends AppCompatActivity {
                         tanggal,
                         mTime1,
                         statusOrder,
-                        typeCheckUp,
                         statusUserAgree,
                         statusMontirAgree,
                         harga,
                         montir,
+                        checkUpList,
                         namaCustomer,
                         noHpCustomer,
                         platNomor
