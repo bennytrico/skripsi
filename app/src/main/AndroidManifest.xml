@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-
+    
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,8 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        
-        <activity android:name=".order_page.OrderPage2"></activity>
+        <activity android:name=".topup_wallet.TopUpWalletPage"></activity>
+        <activity android:name=".order_page.OrderPage2" />
         <activity android:name=".order_page.OrderPage" />
         <activity android:name=".customer.check_up_page.CheckUpPage3" />
         <activity android:name=".customer.check_up_page.CheckUpPage2" />
@@ -38,14 +38,13 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
+        
         <activity
             android:name=".customer.MapsActivity"
             android:label="@string/title_activity_maps" />
         
-
         <uses-library android:name="com.google.android.maps" />
-
+        
         <activity android:name=".customer.service_rutin_page.ServiceRutinPage3" />
         <activity android:name=".customer.service_rutin_page.ServiceRutinPage2" />
         <activity android:name=".customer.CheckUpPage" />
@@ -55,12 +54,10 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+    
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        
     </application>
 
 </manifest>

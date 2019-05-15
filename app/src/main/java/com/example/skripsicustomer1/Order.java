@@ -5,14 +5,14 @@ public class Order {
             no_handphone_customer,number_plate,type_checkup,id;
     private Boolean primary_oil,secondary_oil,flag_customer_agree,flag_montir_agree;
     private Integer amount;
-    private CheckUpList checkUpList;
+    private CheckUpList check_up_list;
     private Montir montir;
     public Order (){
 
     }
     public void OrderCheckup (String customer_id,String address, String type_order, String transmition,
                   String brand, String type_motor, String date, String time,String status_order,
-                  Boolean flag_customer_agree,Boolean flag_montir_agree,Integer amount,Montir montir,CheckUpList checkUpList,
+                  Boolean flag_customer_agree,Boolean flag_montir_agree,Integer amount,Montir montir,CheckUpList check_up_list,
                   String name_customer, String no_handphone_customer,String number_plate) {
         this.customer_id = customer_id;
         this.address = address;
@@ -27,7 +27,7 @@ public class Order {
         this.flag_montir_agree = flag_montir_agree;
         this.amount = amount;
         this.montir = montir;
-        this.checkUpList = checkUpList;
+        this.check_up_list = check_up_list;
         this.name_customer = name_customer;
         this.no_handphone_customer = no_handphone_customer;
         this.number_plate = number_plate;
@@ -217,11 +217,12 @@ public class Order {
         this.id = id;
     }
 
-    public CheckUpList getCheckUpList() {
-        return checkUpList;
+
+    public CheckUpList getCheck_up_list() {
+        return check_up_list;
     }
 
-    public void setCheckUpList(CheckUpList checkUpList) {
-        this.checkUpList = checkUpList;
+    public void setCheck_up_list(CheckUpList check_up_list) {
+        this.check_up_list = check_up_list;
     }
 }

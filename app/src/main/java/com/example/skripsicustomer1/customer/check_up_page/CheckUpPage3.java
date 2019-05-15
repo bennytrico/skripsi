@@ -47,7 +47,7 @@ public class CheckUpPage3 extends AppCompatActivity {
     private Double longtitudeLocation1;
     private Double latitudeLocation1;
     private Montir montir;
-    private CheckUpList checkUpList;
+    private CheckUpList checkUpList = new CheckUpList();
     private String transmisi;
     private String jenis;
     private String tipe;
