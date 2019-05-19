@@ -1,6 +1,7 @@
 package com.example.skripsicustomer1.topup_wallet;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,9 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.skripsicustomer1.R;
+import com.example.skripsicustomer1.WalletConfirmations;
 import com.example.skripsicustomer1.customer.service_rutin_page.ServiceRutinPage2;
 import com.example.skripsicustomer1.helper.FormatNumber;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import static com.example.skripsicustomer1.CurrentUser.currentEmailUser;
+import static com.example.skripsicustomer1.CurrentUser.currentUserID;
+import static com.example.skripsicustomer1.CurrentUser.currentUserName;
 import static com.example.skripsicustomer1.CurrentUser.currentUserWallet;
 
 public class TopUpWalletPage extends AppCompatActivity {
@@ -90,7 +97,22 @@ public class TopUpWalletPage extends AppCompatActivity {
         agreeTopUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                dialog.dismiss();
+                DatabaseReference dbWalletConfirmations = FirebaseDatabase.getInstance().getReference("WalletConfirmations");
+                String status = "requested";
+                WalletConfirmations walletConfirmations = new WalletConfirmations(
+                        bankAccountName,
+                        bankAccountNumber,
+                        currentEmailUser,
+                        currentUserName,
+                        status,
+                        currentUserID,
+                        amountTopUp
+                );
+                dbWalletConfirmations.push().setValue(walletConfirmations);
+                Intent intent = new Intent(getApplicationContext(), TopUpWalletPage2.class);
+                intent.putExtra("EXTRA_AMOUNT",amountTopUp);
+                startActivity(intent);
             }
         });
         disAgreeTopUp.setOnClickListener(new View.OnClickListener() {
