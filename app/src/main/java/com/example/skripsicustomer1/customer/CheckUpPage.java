@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,10 @@ import android.widget.Spinner;
 
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.customer.check_up_page.CheckUpPage2;
+
+import static com.example.skripsicustomer1.CurrentUser.currentEmailUser;
+import static com.example.skripsicustomer1.CurrentUser.currentUserID;
+import static com.example.skripsicustomer1.CurrentUser.currentUserWallet;
 
 public class CheckUpPage extends Fragment {
     private String temp = "";
@@ -34,8 +39,8 @@ public class CheckUpPage extends Fragment {
         final EditText platNomorCheckUp = (EditText) view.findViewById(R.id.platNomorCheckUp);
         final Button btnNextCheckUp = (Button) view.findViewById(R.id.btnNextCheckUp);
         final Spinner merekSpinner = (Spinner) view.findViewById(R.id.listMerekMotorCheckUp);
-        tipeMotorSpinner = (Spinner) view.findViewById(R.id.tipeMotorCheckUp);;
-
+        tipeMotorSpinner = (Spinner) view.findViewById(R.id.tipeMotorCheckUp);
+        Log.e("uid", currentUserID);
         btnMatic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

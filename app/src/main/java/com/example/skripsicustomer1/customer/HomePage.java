@@ -10,20 +10,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
 
+import com.example.skripsicustomer1.CurrentUser;
 import com.example.skripsicustomer1.Customer;
 import com.example.skripsicustomer1.MainActivity;
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.order_page.OrderPage;
+import com.example.skripsicustomer1.topup_wallet.TopUpWalletPage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import static com.example.skripsicustomer1.CurrentUser.currentEmailUser;
+import static com.example.skripsicustomer1.CurrentUser.currentUserID;
+import static com.example.skripsicustomer1.CurrentUser.currentUserWallet;
+import static com.example.skripsicustomer1.CurrentUser.getCurrentCustomerData;
 
 public class HomePage extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -39,6 +47,7 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         navigation();
         loadFragment(new ServiceRutinPage());
         navigationBottom();
+        getCurrentCustomerData();
 
     }
 
@@ -119,6 +128,10 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
+                    startActivity(intent);
+                } else if (id == R.id.topUpwallet) {
+                    Intent intent = new Intent(getApplicationContext(), TopUpWalletPage.class);
+                    getCurrentCustomerData();
                     startActivity(intent);
                 }
 

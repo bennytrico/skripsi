@@ -19,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".topup_wallet.TopUpWalletPage"></activity>
+        <activity android:name=".topup_wallet.TopUpWalletPage2"></activity>
+        <activity android:name=".topup_wallet.TopUpWalletPage" />
         <activity android:name=".order_page.OrderPage2" />
         <activity android:name=".order_page.OrderPage" />
         <activity android:name=".customer.check_up_page.CheckUpPage3" />

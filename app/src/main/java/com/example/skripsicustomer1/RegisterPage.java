@@ -120,32 +120,6 @@ public class RegisterPage extends AppCompatActivity {
         progressDialog.setMessage("Registering User. . .");
         progressDialog.show();
 
-
-//        Map<String, Object> user = new HashMap<>();
-//        user.put("username",username);
-//        user.put("email",email);
-//        user.put("password",password);
-//        Customer customer = new Customer(
-//                username,
-//                email,
-//                password
-//        );
-//        db.collection("users")
-//                .add(customer)
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(RegisterPage.this,"Registered successfully",Toast.LENGTH_LONG).show();
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(RegisterPage.this,"Registered failed" + e,Toast.LENGTH_LONG).show();
-//                        progressDialog.dismiss();
-//                        Toast.makeText(RegisterPage.this,"Registered failed",Toast.LENGTH_LONG).show();
-//                    }
-//                });
         firebaseAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

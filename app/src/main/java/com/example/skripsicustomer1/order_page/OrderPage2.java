@@ -87,17 +87,7 @@ public class OrderPage2 extends AppCompatActivity {
         oliMesinLayoutOrder = (LinearLayout) findViewById(R.id.layoutOliMesinOrderPage);
         tipeKerusakanLayoutOrder = (LinearLayout) findViewById(R.id.layoutTypeServiceCheckup);
 
-        if (order.getCheck_up_list().getAll()) {
-            kerusakan = kerusakan + "all ;";
-        } else if (order.getCheck_up_list().getBracking_system()) {
-            kerusakan = kerusakan + "Bracking system ;";
-        } else if (order.getCheck_up_list().getElectrical()) {
-            kerusakan = kerusakan + "Electrical ;";
-        } else if (order.getCheck_up_list().getEngine()) {
-            kerusakan = kerusakan + "Engine ;";
-        } else if (order.getCheck_up_list().getMechanical()) {
-            kerusakan = kerusakan + "Mechanical ;";
-        }
+
 
         batalOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +116,19 @@ public class OrderPage2 extends AppCompatActivity {
             changeStatusOrder.setVisibility(View.GONE);
             batalOrder.setVisibility(View.GONE);
         }
-
+        if (order.getType_order().equals("Check up")) {
+            if (order.getCheck_up_list().getAll()) {
+                kerusakan = kerusakan + "all ;";
+            } else if (order.getCheck_up_list().getBracking_system()) {
+                kerusakan = kerusakan + "Bracking system ;";
+            } else if (order.getCheck_up_list().getElectrical()) {
+                kerusakan = kerusakan + "Electrical ;";
+            } else if (order.getCheck_up_list().getEngine()) {
+                kerusakan = kerusakan + "Engine ;";
+            } else if (order.getCheck_up_list().getMechanical()) {
+                kerusakan = kerusakan + "Mechanical ;";
+            }
+        }
     }
     public void setDataOrderPage () {
 

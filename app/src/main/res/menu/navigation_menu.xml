@@ -8,9 +8,14 @@
 
     </item>
     <item
+        android:id="@+id/topUpwallet"
+        android:title="Isi ulang dompet"
+        android:icon="@drawable/ic_account_balance_wallet_black_24dp">
+    
+    </item>
+    <item
         android:id="@+id/logout"
         android:title="Keluar"
         android:icon="@drawable/ic_exit_to_app_black_24dp">
-
     </item>
 </menu>
