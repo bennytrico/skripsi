@@ -296,10 +296,13 @@ public class CheckUpPage3 extends AppCompatActivity {
                     }
 
                     if(dateMinHours.compareTo(date) < 0
-                            && dateMaxHours.compareTo(date) > 0
-                            && order.getStatus_order().equals("cancel")
-                            && order.getStatus_order().equals("done")) {
+                            && dateMaxHours.compareTo(date) > 0 ) {
                         idMontir.add(order.getMontir().getId());
+                        if (order.getStatus_order().equals("done")) {
+                            idMontir.remove(order.getMontir().getId());
+                        } else if (order.getStatus_order().equals("cancel")) {
+                            idMontir.remove(order.getMontir().getId());
+                        }
                     }
                 }
             }
