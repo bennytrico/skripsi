@@ -5,14 +5,14 @@ import android.content.Intent;
 public class Montir {
     private Double rating;
     private Integer wallet;
-    private String name,address,email,role,bank,bank_account_name,bank_account_number,id,image;
+    private String name,address,email,role,bank,bank_account_name,bank_account_number,id,image, fcm_token;
     private Double latitude,longitude;
 
     public Montir () {
 
     }
     public Montir (String name, String address,String email,String role,String bank, String bank_account_name, String bank_account_number
-                   ,Double latitude, Double longitude, Integer wallet,Double rating) {
+                   ,Double latitude, Double longitude, Integer wallet,Double rating, String fcm_token) {
         this.name = name;
         this.address = address;
         this.email = email;
@@ -24,6 +24,7 @@ public class Montir {
         this.longitude = longitude;
         this.wallet = wallet;
         this.rating = rating;
+        this.fcm_token = fcm_token;
     }
 
     public Integer getWallet() {
@@ -127,5 +128,13 @@ public class Montir {
 
     public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+    public String getFcm_token() {
+        return fcm_token;
+    }
+
+    public void setFcm_token(String fcm_token) {
+        this.fcm_token = fcm_token;
     }
 }

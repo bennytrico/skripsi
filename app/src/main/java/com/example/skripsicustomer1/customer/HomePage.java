@@ -1,5 +1,6 @@
 package com.example.skripsicustomer1.customer;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import android.support.v4.app.Fragment;
 
 import com.example.skripsicustomer1.CurrentUser;
 import com.example.skripsicustomer1.Customer;
+import com.example.skripsicustomer1.FirebaseIDService;
 import com.example.skripsicustomer1.MainActivity;
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.order_page.OrderPage;
@@ -39,6 +41,7 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
     private FirebaseAuth mAuth;
     private Boolean flag = true;
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +51,8 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         loadFragment(new ServiceRutinPage());
         navigationBottom();
         getCurrentCustomerData();
-
+        FirebaseIDService service = new FirebaseIDService();
+        service.onTokenRefresh();
     }
 
     @Override

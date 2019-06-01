@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.skripsicustomer1.Customer;
 import com.example.skripsicustomer1.Montir;
 import com.example.skripsicustomer1.Order;
+import com.example.skripsicustomer1.PushNotif;
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.adapter.MontirAdapter;
 import com.example.skripsicustomer1.customer.HomePage;
@@ -35,6 +36,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.auth.User;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -148,6 +152,40 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                         platNomor
                 );
                 dbOrders.push().setValue(order);
+                DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
+                dbMontir.orderByChild(montir.getId()).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        Montir m = dataSnapshot.getValue(Montir.class);
+                        PushNotif pushNotif = new PushNotif();
+                        try {
+                            pushNotif.pushNotiftoMontir(getApplicationContext(),m.getFcm_token());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
                 startActivity(new Intent(ServiceRutinPage3.this, HomePage.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
             }
         });
@@ -249,7 +287,10 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                         e.printStackTrace();
                     }
 
-                    if(dateMinHours.compareTo(date) < 0 && dateMaxHours.compareTo(date) > 0 ) {
+                    if(dateMinHours.compareTo(date) < 0
+                            && dateMaxHours.compareTo(date) > 0
+                            && order.getStatus_order().equals("cancel")
+                            && order.getStatus_order().equals("done")) {gi
                         idMontir.add(order.getMontir().getId());
                     }
                 }
