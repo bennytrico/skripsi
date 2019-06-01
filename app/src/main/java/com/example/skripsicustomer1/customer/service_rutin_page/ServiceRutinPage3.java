@@ -290,7 +290,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                     if(dateMinHours.compareTo(date) < 0
                             && dateMaxHours.compareTo(date) > 0
                             && order.getStatus_order().equals("cancel")
-                            && order.getStatus_order().equals("done")) {gi
+                            && order.getStatus_order().equals("done")) {
                         idMontir.add(order.getMontir().getId());
                     }
                 }
