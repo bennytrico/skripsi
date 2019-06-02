@@ -15,8 +15,10 @@ import android.widget.Toast;
 
 import com.example.skripsicustomer1.Order;
 import com.example.skripsicustomer1.R;
+import com.example.skripsicustomer1.Rating;
 import com.example.skripsicustomer1.helper.Convertor;
 import com.example.skripsicustomer1.helper.FormatNumber;
+import com.example.skripsicustomer1.rating_page.RatingPage;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +29,8 @@ import com.google.gson.Gson;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OrderPage2 extends AppCompatActivity {
 
@@ -93,6 +97,28 @@ public class OrderPage2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dbOrder.child(order.getId()).child("status_order").setValue("cancel");
+                if (!order.getStatus_order().equals("wait")) {
+                    DatabaseReference dbRating = FirebaseDatabase.getInstance().getReference("Ratings").child(order.getMontir().getId());
+                    dbRating.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Rating rating = dataSnapshot.getValue(Rating.class);
+                            DatabaseReference dbRatingUpdate = FirebaseDatabase.getInstance().getReference("Ratings").child(order.getMontir().getId());
+
+                            if (rating.getCount_order() != 0) {
+                                Map<String, Object> update = new HashMap<String, Object>();
+                                update.put("count_order", rating.getCount_order() - 1);
+                                dbRatingUpdate.updateChildren(update);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
                 finish();
             }
         });
@@ -198,7 +224,22 @@ public class OrderPage2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dbOrder.child(order.getId()).child("flag_customer_agree").setValue(true);
-                finish();
+                dbOrder.child(order.getId()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Order r = dataSnapshot.getValue(Order.class);
+                        if (r.getStatus_order().equals("done")) {
+                            doneOrder();
+                        } else {
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
     }
@@ -227,7 +268,32 @@ public class OrderPage2 extends AppCompatActivity {
             dbOrder.child(order.getId()).child("status_order").setValue("done");
             dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
             dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
+
         }
+    }
+    public void doneOrder() {
+        dbOrder.child(order.getId()).child("flag_rating").setValue(true);
+        dbOrder.child(order.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Gson gson = new Gson();
+
+                Order orderSelected = dataSnapshot.getValue(Order.class);
+
+                String orderJson = gson.toJson(orderSelected);
+                Intent intent = new Intent(getApplicationContext(), RatingPage.class);
+                intent.putExtra("ORDER_DONE",orderJson);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

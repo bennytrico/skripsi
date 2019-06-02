@@ -20,6 +20,7 @@ import com.example.skripsicustomer1.CurrentUser;
 import com.example.skripsicustomer1.Customer;
 import com.example.skripsicustomer1.FirebaseIDService;
 import com.example.skripsicustomer1.MainActivity;
+import com.example.skripsicustomer1.Order;
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.order_page.OrderPage;
 import com.example.skripsicustomer1.rating_page.RatingPage;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import static com.example.skripsicustomer1.CurrentUser.currentEmailUser;
 import static com.example.skripsicustomer1.CurrentUser.currentUserID;
@@ -54,6 +56,14 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         getCurrentCustomerData();
         FirebaseIDService service = new FirebaseIDService();
         service.onTokenRefresh();
+
+        new android.os.Handler().postDelayed(
+            new Runnable() {
+                public void run() {
+                    getValidationFlagRatingSystem();
+                }
+            },
+            3000);
     }
 
     @Override
@@ -125,7 +135,7 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
                 int id = menuItem.getItemId();
 
                 if(id == R.id.order){
-                    startActivity(new Intent(getApplicationContext(), RatingPage.class));
+                    startActivity(new Intent(getApplicationContext(), OrderPage.class));
                 }else if(id == R.id.logout){
                     mAuth.getInstance().signOut();
                     Toast.makeText(HomePage.this, "Keluar", Toast.LENGTH_SHORT).show();
@@ -157,5 +167,36 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
                 break;
         }
         return loadFragment(fragment);
+    }
+    public void getValidationFlagRatingSystem () {
+        DatabaseReference dbOrder = FirebaseDatabase.getInstance().getReference("Orders");
+        dbOrder.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot data: dataSnapshot.getChildren()) {
+                    Order order = data.getValue(Order.class);
+                    if (order.getCustomer_id().equals(currentUserID)) {
+                        if (order.getFlag_rating()) {
+                            Gson gson = new Gson();
+
+                            Order orderSelected = data.getValue(Order.class);
+
+                            String orderJson = gson.toJson(orderSelected);
+                            Intent intent = new Intent(getApplicationContext(), RatingPage.class);
+                            intent.putExtra("ORDER_DONE",orderJson);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
