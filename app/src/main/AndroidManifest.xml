@@ -19,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".topup_wallet.TopUpWalletPage2"></activity>
+        <activity android:name=".rating_page.RatingPage"></activity>
+        <activity android:name=".topup_wallet.TopUpWalletPage2" />
         <activity android:name=".topup_wallet.TopUpWalletPage" />
         <activity android:name=".order_page.OrderPage2" />
         <activity android:name=".order_page.OrderPage" />
@@ -35,14 +36,15 @@
         -->
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <service android:name=".FirebaseIDService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

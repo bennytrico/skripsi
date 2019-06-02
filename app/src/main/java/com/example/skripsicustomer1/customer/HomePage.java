@@ -22,6 +22,7 @@ import com.example.skripsicustomer1.FirebaseIDService;
 import com.example.skripsicustomer1.MainActivity;
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.order_page.OrderPage;
+import com.example.skripsicustomer1.rating_page.RatingPage;
 import com.example.skripsicustomer1.topup_wallet.TopUpWalletPage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -124,7 +125,7 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
                 int id = menuItem.getItemId();
 
                 if(id == R.id.order){
-                    startActivity(new Intent(getApplicationContext(), OrderPage.class));
+                    startActivity(new Intent(getApplicationContext(), RatingPage.class));
                 }else if(id == R.id.logout){
                     mAuth.getInstance().signOut();
                     Toast.makeText(HomePage.this, "Keluar", Toast.LENGTH_SHORT).show();

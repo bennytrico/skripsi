@@ -3,7 +3,7 @@ package com.example.skripsicustomer1;
 public class Order {
     private String customer_id,address,type_order,transmition,brand,type_motor,date,time,status_order,name_customer,
             no_handphone_customer,number_plate,type_checkup,id;
-    private Boolean primary_oil,secondary_oil,flag_customer_agree,flag_montir_agree;
+    private Boolean primary_oil,secondary_oil,flag_customer_agree,flag_montir_agree, flag_rating;
     private Integer amount;
     private CheckUpList check_up_list;
     private Montir montir;
@@ -13,7 +13,7 @@ public class Order {
     public void OrderCheckup (String customer_id,String address, String type_order, String transmition,
                   String brand, String type_motor, String date, String time,String status_order,
                   Boolean flag_customer_agree,Boolean flag_montir_agree,Integer amount,Montir montir,CheckUpList check_up_list,
-                  String name_customer, String no_handphone_customer,String number_plate) {
+                  String name_customer, String no_handphone_customer,String number_plate, Boolean flag_rating) {
         this.customer_id = customer_id;
         this.address = address;
         this.type_order = type_order;
@@ -31,12 +31,13 @@ public class Order {
         this.name_customer = name_customer;
         this.no_handphone_customer = no_handphone_customer;
         this.number_plate = number_plate;
+        this.flag_rating = flag_rating;
     }
 
     public Order (String customer_id,String address, String type_order, String transmition,
                   String brand, String type_motor, String date, String time,String status_order,Boolean oli_ganda,
                   Boolean oli_mesin, Boolean flag_customer_agree,Boolean flag_montir_agree,Integer amount,Montir montir,
-                  String name_customer, String no_handphone_customer,String number_plate) {
+                  String name_customer, String no_handphone_customer,String number_plate, Boolean flag_rating) {
         this.customer_id = customer_id;
         this.address = address;
         this.type_order = type_order;
@@ -55,6 +56,7 @@ public class Order {
         this.name_customer = name_customer;
         this.no_handphone_customer = no_handphone_customer;
         this.number_plate = number_plate;
+        this.flag_rating = flag_rating;
     }
 
     public String getCustomer_id() {
@@ -224,5 +226,13 @@ public class Order {
 
     public void setCheck_up_list(CheckUpList check_up_list) {
         this.check_up_list = check_up_list;
+    }
+
+    public Boolean getFlag_rating() {
+        return flag_rating;
+    }
+
+    public void setFlag_rating(Boolean flag_rating) {
+        this.flag_rating = flag_rating;
     }
 }

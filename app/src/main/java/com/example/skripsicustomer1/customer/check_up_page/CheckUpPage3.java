@@ -142,6 +142,7 @@ public class CheckUpPage3 extends AppCompatActivity {
                 } else if (typeCheckUp.equals("All")) {
                     checkUpList.setAll(true);
                 }
+                Boolean flagRating = true;
                 Order order = new Order();
                 order.OrderCheckup(
                         customer,
@@ -160,7 +161,8 @@ public class CheckUpPage3 extends AppCompatActivity {
                         checkUpList,
                         namaCustomer,
                         noHpCustomer,
-                        platNomor
+                        platNomor,
+                        flagRating
                 );
                 dbOrders.push().setValue(order);
                 DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");

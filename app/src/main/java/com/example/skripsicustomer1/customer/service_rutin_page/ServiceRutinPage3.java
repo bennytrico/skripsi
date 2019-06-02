@@ -131,6 +131,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                 DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
                 String customer = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String typeOrder = "Service Rutin";
+                Boolean flagRating = true;
                 Order order = new Order(
                         customer,
                         valueLocation,
@@ -149,7 +150,8 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                         montir,
                         namaCustomer,
                         noHpCustomer,
-                        platNomor
+                        platNomor,
+                        flagRating
                 );
                 dbOrders.push().setValue(order);
                 DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
