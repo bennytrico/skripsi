@@ -41,6 +41,7 @@ public class RatingPage extends AppCompatActivity {
 
     Order order = new Order();
     Convertor convertor = new Convertor();
+    DatabaseReference dbOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class RatingPage extends AppCompatActivity {
         setContentView(R.layout.activity_rating_page);
 
         getIntentValue();
+        dbOrder = FirebaseDatabase.getInstance().getReference("Orders");
 
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         photoMontir = (ImageView) findViewById(R.id.fotoMontirRatingPage);
@@ -94,6 +96,7 @@ public class RatingPage extends AppCompatActivity {
                                     updateRating.put("average_rating",calculateRating / rtg.getCount_order());
                                     updateRating.put("rating_montir",calculateRating);
                                     dbRatingUpdate.updateChildren(updateRating);
+                                    dbOrder.child(order.getId()).child("flag_rating").setValue(false);
 
                                 }
 
@@ -119,7 +122,7 @@ public class RatingPage extends AppCompatActivity {
                                     .setValue(rating).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-
+                                    dbOrder.child(order.getId()).child("flag_rating").setValue(false);
                                 }
                             });
                         }
