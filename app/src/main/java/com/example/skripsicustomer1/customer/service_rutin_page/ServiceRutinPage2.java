@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -74,23 +75,28 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         btnServicePage3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),ServiceRutinPage3.class);
-                Bundle extras = new Bundle();
-                extras.putString("EXTRA_TRANSMISI",transmisi);
-                extras.putString("EXTRA_JENIS",jenis);
-                extras.putString("EXTRA_TIPE",tipe);
-                extras.putInt("EXTRA_HARGA",harga);
-                extras.putString("EXTRA_TANGGAL",tanggalSpinner.getSelectedItem().toString());
-                extras.putString("EXTRA_HOUR",mTime1);
-                extras.putBoolean("EXTRA_GANTI_OLI",oliMesin);
-                extras.putString("EXTRA_PLATNOMOR",platNomor);
-                extras.putString("EXTRA_CLASS","ServiceRutin2");
-                if (oliGanda) {
-                    extras.putBoolean("EXTRA_GANTI_GANDA", oliGanda);
-                }
-                intent.putExtras(extras);
+                if (TextUtils.isEmpty(mTime1)) {
+                    Toast.makeText(ServiceRutinPage2.this,"Harus mengisi jam servis", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(),ServiceRutinPage3.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("EXTRA_TRANSMISI",transmisi);
+                    extras.putString("EXTRA_JENIS",jenis);
+                    extras.putString("EXTRA_TIPE",tipe);
+                    extras.putInt("EXTRA_HARGA",harga);
+                    extras.putString("EXTRA_TANGGAL",tanggalSpinner.getSelectedItem().toString());
+                    extras.putString("EXTRA_HOUR",mTime1);
+                    extras.putBoolean("EXTRA_GANTI_OLI",oliMesin);
+                    extras.putString("EXTRA_PLATNOMOR",platNomor);
+                    extras.putString("EXTRA_CLASS","ServiceRutin2");
+                    if (oliGanda) {
+                        extras.putBoolean("EXTRA_GANTI_GANDA", oliGanda);
+                    }
+                    intent.putExtras(extras);
 
-                startActivity(intent);
+                    startActivity(intent);
+                }
+
             }
         });
 

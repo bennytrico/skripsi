@@ -229,6 +229,7 @@ public class OrderPage2 extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Order r = dataSnapshot.getValue(Order.class);
                         if (r.getStatus_order().equals("done")) {
+                            dbOrder.child(order.getId()).child("flag_rating").setValue(true);
                             doneOrder();
                         } else {
                             finish();
@@ -272,13 +273,13 @@ public class OrderPage2 extends AppCompatActivity {
         }
     }
     public void doneOrder() {
-        dbOrder.child(order.getId()).child("flag_rating").setValue(true);
         dbOrder.child(order.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Gson gson = new Gson();
-
-                Order orderSelected = dataSnapshot.getValue(Order.class);
+                order.setId(dataSnapshot.getKey());
+                Log.e("g", order.getId());
+                Order orderSelected = order;
 
                 String orderJson = gson.toJson(orderSelected);
                 Intent intent = new Intent(getApplicationContext(), RatingPage.class);

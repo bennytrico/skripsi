@@ -50,7 +50,6 @@ public class RatingPage extends AppCompatActivity {
 
         getIntentValue();
         dbOrder = FirebaseDatabase.getInstance().getReference("Orders");
-
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         photoMontir = (ImageView) findViewById(R.id.fotoMontirRatingPage);
         typeOrder = (TextView) findViewById(R.id.orderTypeRatingPage);
@@ -73,6 +72,8 @@ public class RatingPage extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dbOrder.child(order.getId()).child("status_order").setValue("end");
+                dbOrder.child(order.getId()).child("flag_rating").setValue(false);
                 DatabaseReference dbRating = FirebaseDatabase.getInstance().getReference("Ratings").child(order.getMontir().getId());
                 dbRating.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -85,18 +86,18 @@ public class RatingPage extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     DatabaseReference dbMontirUpdate = FirebaseDatabase.getInstance().getReference("Montirs").child(order.getMontir().getId());
                                     DatabaseReference dbRatingUpdate = FirebaseDatabase.getInstance().getReference("Ratings").child(order.getMontir().getId());
+
                                     Montir m = dataSnapshot.getValue(Montir.class);
 
-                                    Double calculateRating = m.getRating() + tempRating;
+                                    Double calculateRating = rtg.getRating_montir() + tempRating;
                                     Map<String, Object> updateMontir = new HashMap<String, Object>();
-                                    updateMontir.put("rating",calculateRating);
+                                    updateMontir.put("rating",calculateRating / rtg.getCount_order());
                                     dbMontirUpdate.updateChildren(updateMontir);
 
                                     Map<String, Object> updateRating = new HashMap<String, Object>();
                                     updateRating.put("average_rating",calculateRating / rtg.getCount_order());
                                     updateRating.put("rating_montir",calculateRating);
                                     dbRatingUpdate.updateChildren(updateRating);
-                                    dbOrder.child(order.getId()).child("flag_rating").setValue(false);
 
                                 }
 
@@ -122,7 +123,7 @@ public class RatingPage extends AppCompatActivity {
                                     .setValue(rating).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    dbOrder.child(order.getId()).child("flag_rating").setValue(false);
+
                                 }
                             });
                         }

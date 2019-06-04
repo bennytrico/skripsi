@@ -18,16 +18,29 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.skripsicustomer1.Order;
 import com.example.skripsicustomer1.R;
+import com.example.skripsicustomer1.customer.check_up_page.CheckUpPage2;
 import com.example.skripsicustomer1.customer.service_rutin_page.ServiceRutinPage2;
+import com.example.skripsicustomer1.rating_page.RatingPage;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
+
+import static com.example.skripsicustomer1.CurrentUser.currentUserID;
 
 
 public class ServiceRutinPage extends Fragment {
 
     private String temp = "";
     Spinner tipeMotorSpinner ;
+    Spinner merekSpinner;
+    EditText platNomorServiceRutin;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
@@ -36,9 +49,9 @@ public class ServiceRutinPage extends Fragment {
         ImageButton btnMatic = (ImageButton) view.findViewById(R.id.motorMatic);
         ImageButton btnKopling = (ImageButton) view.findViewById(R.id.motorKopling);
         ImageButton btnManual = (ImageButton) view.findViewById(R.id.motorManual);
-        final EditText platNomorServiceRutin = (EditText) view.findViewById(R.id.platNomorServiceRutin);
+        platNomorServiceRutin = (EditText) view.findViewById(R.id.platNomorServiceRutin);
         final Button btnNextServiceRutin = (Button) view.findViewById(R.id.btnNextServiceRutin);
-        final Spinner merekSpinner = (Spinner) view.findViewById(R.id.listMerekMotor);
+        merekSpinner = (Spinner) view.findViewById(R.id.listMerekMotor);
         tipeMotorSpinner = (Spinner) view.findViewById(R.id.tipeMotor);
         platNomorServiceRutin.setVisibility(View.INVISIBLE);
 
@@ -76,30 +89,7 @@ public class ServiceRutinPage extends Fragment {
         btnNextServiceRutin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean flag = true;
-                if (TextUtils.isEmpty(merekSpinner.getSelectedItem().toString())) {
-                    Toast.makeText(getActivity(),"pilih jenis motor terlebih dahulu",Toast.LENGTH_LONG).show();
-                    flag = false;
-                }
-                if (TextUtils.isEmpty(tipeMotorSpinner.getSelectedItem().toString())) {
-                    Toast.makeText(getActivity(),"pilih tipe motor terlebih dahulu",Toast.LENGTH_LONG).show();
-                    flag = false;
-                }
-                if (TextUtils.isEmpty(platNomorServiceRutin.getText().toString())) {
-                    Toast.makeText(getActivity(),"isi plat nomor",Toast.LENGTH_LONG).show();
-                    flag = false;
-                }
-                if (flag) {
-                    Intent startActivityServiceRutin = new Intent(getActivity(), ServiceRutinPage2.class);
-                    Bundle extras = new Bundle();
-                    extras.putString("EXTRA_TRANSMISI", temp);
-                    extras.putString("EXTRA_JENIS", merekSpinner.getSelectedItem().toString());
-                    extras.putString("EXTRA_TIPE", tipeMotorSpinner.getSelectedItem().toString());
-                    extras.putString("EXTRA_PLATNOMOR", platNomorServiceRutin.getText().toString());
-                    startActivityServiceRutin.putExtras(extras);
-
-                    startActivity(startActivityServiceRutin);
-                }
+                getValidationFlagRatingSystem();
             }
         });
 
@@ -186,6 +176,62 @@ public class ServiceRutinPage extends Fragment {
 
         tipeMotorSpinner.setAdapter(typeMotor);
     }
+    public void getValidationFlagRatingSystem () {
+        DatabaseReference dbOrder = FirebaseDatabase.getInstance().getReference("Orders");
+        dbOrder.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot data: dataSnapshot.getChildren()) {
+                    Order order = data.getValue(Order.class);
+                    if (order.getCustomer_id().equals(currentUserID)) {
+                        if (order.getFlag_rating()) {
+                            Gson gson = new Gson();
+                            order.setId(data.getKey());
 
+                            Order orderSelected = order;
+
+                            String orderJson = gson.toJson(orderSelected);
+                            Intent intent = new Intent(getActivity(), RatingPage.class);
+                            intent.putExtra("ORDER_DONE",orderJson);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        } else {
+                            boolean flag = true;
+                            if (TextUtils.isEmpty(merekSpinner.getSelectedItem().toString())) {
+                                Toast.makeText(getActivity(),"pilih jenis motor terlebih dahulu",Toast.LENGTH_LONG).show();
+                                flag = false;
+                            }
+                            if (TextUtils.isEmpty(tipeMotorSpinner.getSelectedItem().toString())) {
+                                Toast.makeText(getActivity(),"pilih tipe motor terlebih dahulu",Toast.LENGTH_LONG).show();
+                                flag = false;
+                            }
+                            if (TextUtils.isEmpty(platNomorServiceRutin.getText().toString())) {
+                                Toast.makeText(getActivity(),"isi plat nomor",Toast.LENGTH_LONG).show();
+                                flag = false;
+                            }
+                            if (flag) {
+                                Intent startActivityServiceRutin = new Intent(getActivity(), ServiceRutinPage2.class);
+                                Bundle extras = new Bundle();
+                                extras.putString("EXTRA_TRANSMISI", temp);
+                                extras.putString("EXTRA_JENIS", merekSpinner.getSelectedItem().toString());
+                                extras.putString("EXTRA_TIPE", tipeMotorSpinner.getSelectedItem().toString());
+                                extras.putString("EXTRA_PLATNOMOR", platNomorServiceRutin.getText().toString());
+                                startActivityServiceRutin.putExtras(extras);
+
+                                startActivity(startActivityServiceRutin);
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 }

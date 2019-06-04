@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -56,19 +57,26 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
         btnNextCheckUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),CheckUpPage3.class);
-                Bundle extras = new Bundle();
-                extras.putString("EXTRA_TRANSMISI",transmisi);
-                extras.putString("EXTRA_JENIS",jenis);
-                extras.putString("EXTRA_TIPE",tipe);
-                extras.putString("EXTRA_TANGGAL",tanggalSpinner.getSelectedItem().toString());
-                extras.putString("EXTRA_TYPE_KERUSAKAN",typeCheckupSpinner.getSelectedItem().toString());
-                extras.putInt("EXTRA_HARGA",harga);
-                extras.putString("EXTRA_HOUR",mTime1);
-                extras.putString("EXTRA_PLATNOMOR",platNomor);
-                intent.putExtras(extras);
+                if (TextUtils.isEmpty(mTime1)) {
+                    Toast.makeText(CheckUpPage2.this,"Harus mengisi jam servis", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(typeCheckupSpinner.getSelectedItem().toString())) {
+                    Toast.makeText(CheckUpPage2.this,"Harus mengisi tipe kerusakan",Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(),CheckUpPage3.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("EXTRA_TRANSMISI",transmisi);
+                    extras.putString("EXTRA_JENIS",jenis);
+                    extras.putString("EXTRA_TIPE",tipe);
+                    extras.putString("EXTRA_TANGGAL",tanggalSpinner.getSelectedItem().toString());
+                    extras.putString("EXTRA_TYPE_KERUSAKAN",typeCheckupSpinner.getSelectedItem().toString());
+                    extras.putInt("EXTRA_HARGA",harga);
+                    extras.putString("EXTRA_HOUR",mTime1);
+                    extras.putString("EXTRA_PLATNOMOR",platNomor);
+                    intent.putExtras(extras);
 
-                startActivity(intent);
+                    startActivity(intent);
+                }
+
             }
         });
 

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -127,68 +128,73 @@ public class ServiceRutinPage3 extends AppCompatActivity{
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
-                String customer = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                String typeOrder = "Service Rutin";
-                Boolean flagRating = true;
-                Order order = new Order(
-                        customer,
-                        valueLocation,
-                        typeOrder,
-                        transmisi,
-                        jenis,
-                        tipe,
-                        tanggal,
-                        mTime1,
-                        statusOrder,
-                        oliGanda,
-                        oliMesin,
-                        statusUserAgree,
-                        statusMontirAgree,
-                        harga,
-                        montir,
-                        namaCustomer,
-                        noHpCustomer,
-                        platNomor,
-                        flagRating
-                );
-                dbOrders.push().setValue(order);
-                DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
-                dbMontir.orderByChild(montir.getId()).addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        Montir m = dataSnapshot.getValue(Montir.class);
-                        PushNotif pushNotif = new PushNotif();
-                        try {
-                            pushNotif.pushNotiftoMontir(getApplicationContext(),m.getFcm_token());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                if (TextUtils.isEmpty(montir.getId())) {
+                    Toast.makeText(ServiceRutinPage3.this,"harus pilih montir",Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(valueLocation)) {
+                    Toast.makeText(ServiceRutinPage3.this, "harus menentukan alamat",Toast.LENGTH_SHORT).show();
+                } else {
+                    DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
+                    String customer = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    String typeOrder = "Service Rutin";
+                    Boolean flagRating = true;
+                    Order order = new Order(
+                            customer,
+                            valueLocation,
+                            typeOrder,
+                            transmisi,
+                            jenis,
+                            tipe,
+                            tanggal,
+                            mTime1,
+                            statusOrder,
+                            oliGanda,
+                            oliMesin,
+                            statusUserAgree,
+                            statusMontirAgree,
+                            harga,
+                            montir,
+                            namaCustomer,
+                            noHpCustomer,
+                            platNomor,
+                            flagRating
+                    );
+                    dbOrders.push().setValue(order);
+                    DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
+                    dbMontir.orderByChild(montir.getId()).addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            Montir m = dataSnapshot.getValue(Montir.class);
+                            PushNotif pushNotif = new PushNotif();
+                            try {
+                                pushNotif.pushNotiftoMontir(getApplicationContext(),m.getFcm_token());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
 
-                startActivity(new Intent(ServiceRutinPage3.this, HomePage.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                    startActivity(new Intent(ServiceRutinPage3.this, HomePage.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                }
             }
         });
 
@@ -296,6 +302,8 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                         if (order.getStatus_order().equals("done")) {
                             idMontir.remove(order.getMontir().getId());
                         } else if (order.getStatus_order().equals("cancel")) {
+                            idMontir.remove(order.getMontir().getId());
+                        } else if (order.getStatus_order().equals("end")) {
                             idMontir.remove(order.getMontir().getId());
                         }
                     }

@@ -178,8 +178,9 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
                     if (order.getCustomer_id().equals(currentUserID)) {
                         if (order.getFlag_rating()) {
                             Gson gson = new Gson();
+                            order.setId(data.getKey());
 
-                            Order orderSelected = data.getValue(Order.class);
+                            Order orderSelected = order;
 
                             String orderJson = gson.toJson(orderSelected);
                             Intent intent = new Intent(getApplicationContext(), RatingPage.class);
