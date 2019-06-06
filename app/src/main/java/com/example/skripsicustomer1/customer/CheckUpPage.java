@@ -198,6 +198,31 @@ public class CheckUpPage extends Fragment {
                                 startActivity(startActivityCheckUp);
                             }
                         }
+                    } else {
+                        boolean flag = true;
+                        if (TextUtils.isEmpty(merekSpinner.getSelectedItem().toString())) {
+                            Toast.makeText(getActivity(),"pilih jenis motor terlebih dahulu",Toast.LENGTH_LONG).show();
+                            flag = false;
+                        }
+                        if (TextUtils.isEmpty(tipeMotorSpinner.getSelectedItem().toString())) {
+                            Toast.makeText(getActivity(),"pilih tipe motor terlebih dahulu",Toast.LENGTH_LONG).show();
+                            flag = false;
+                        }
+                        if (TextUtils.isEmpty(platNomorCheckUp.getText().toString())) {
+                            Toast.makeText(getActivity(),"isi plat nomor",Toast.LENGTH_LONG).show();
+                            flag = false;
+                        }
+                        if (flag) {
+                            Intent startActivityCheckUp = new Intent(getActivity(), CheckUpPage2.class);
+                            Bundle extras = new Bundle();
+                            extras.putString("EXTRA_TRANSMISI",temp);
+                            extras.putString("EXTRA_JENIS",merekSpinner.getSelectedItem().toString());
+                            extras.putString("EXTRA_TIPE",tipeMotorSpinner.getSelectedItem().toString());
+                            extras.putString("EXTRA_PLATNOMOR",platNomorCheckUp.getText().toString());
+                            startActivityCheckUp.putExtras(extras);
+
+                            startActivity(startActivityCheckUp);
+                        }
                     }
                 }
 

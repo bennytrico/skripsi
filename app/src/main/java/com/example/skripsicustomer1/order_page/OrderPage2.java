@@ -53,6 +53,7 @@ public class OrderPage2 extends AppCompatActivity {
     TextView statusOrderPage;
     Button batalOrder;
     Button changeStatusOrder;
+    Button repairAcceptedOrder;
     LinearLayout oliMesinLayoutOrder;
     LinearLayout oliGandaLayoutOrder;
     LinearLayout tipeKerusakanLayoutOrder;
@@ -87,6 +88,7 @@ public class OrderPage2 extends AppCompatActivity {
         statusOrderPage = (TextView) findViewById(R.id.statusOrderPage);
         batalOrder = (Button) findViewById(R.id.batalOrder);
         changeStatusOrder = (Button) findViewById(R.id.changeStatusOrderPage);
+        repairAcceptedOrder = (Button) findViewById(R.id.repairAccepted);
         oliGandaLayoutOrder = (LinearLayout) findViewById(R.id.layoutOliGandaOrderPage);
         oliMesinLayoutOrder = (LinearLayout) findViewById(R.id.layoutOliMesinOrderPage);
         tipeKerusakanLayoutOrder = (LinearLayout) findViewById(R.id.layoutTypeServiceCheckup);
@@ -122,6 +124,7 @@ public class OrderPage2 extends AppCompatActivity {
                 finish();
             }
         });
+        repairAcceptedOrder.setVisibility(View.GONE);
 
         setDataOrderPage();
         if (order.getStatus_order().equals("wait")) {
@@ -261,15 +264,30 @@ public class OrderPage2 extends AppCompatActivity {
         });
     }
     public void checkValueAgreement () {
-        if (order.getStatus_order().equals("accept") && customerAgree && montirAgree) {
-            dbOrder.child(order.getId()).child("status_order").setValue("process");
-            dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
-            dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
-        } else if (order.getStatus_order().equals("process") && customerAgree && montirAgree) {
-            dbOrder.child(order.getId()).child("status_order").setValue("done");
-            dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
-            dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
-
+        if (order.getType_order().equals("Service Rutin")) {
+            if (order.getStatus_order().equals("accept") && customerAgree && montirAgree) {
+                dbOrder.child(order.getId()).child("status_order").setValue("process");
+                dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
+                dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
+            } else if (order.getStatus_order().equals("process") && customerAgree && montirAgree) {
+                dbOrder.child(order.getId()).child("status_order").setValue("done");
+                dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
+                dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
+            }
+        } else if (order.getType_order().equals("Check Up")) {
+            if (order.getStatus_order().equals("accept") && customerAgree && montirAgree) {
+                dbOrder.child(order.getId()).child("status_order").setValue("process");
+                dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
+                dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
+            } else if (order.getStatus_order().equals("process") && customerAgree && montirAgree) {
+                dbOrder.child(order.getId()).child("status_order").setValue("repair");
+                dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
+                dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
+            } else if (order.getStatus_order().equals("repair") && customerAgree && montirAgree) {
+                dbOrder.child(order.getId()).child("status_order").setValue("done");
+                dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
+                dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
+            }
         }
     }
     public void doneOrder() {
@@ -278,7 +296,6 @@ public class OrderPage2 extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Gson gson = new Gson();
                 order.setId(dataSnapshot.getKey());
-                Log.e("g", order.getId());
                 Order orderSelected = order;
 
                 String orderJson = gson.toJson(orderSelected);

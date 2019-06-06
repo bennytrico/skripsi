@@ -136,7 +136,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                     DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
                     String customer = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     String typeOrder = "Service Rutin";
-                    Boolean flagRating = true;
+                    Boolean flagRating = false;
                     Order order = new Order(
                             customer,
                             valueLocation,
@@ -226,9 +226,9 @@ public class ServiceRutinPage3 extends AppCompatActivity{
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            valueLocation = extras.getString("EXTRA_ADDRESS");
             longtitudeLocation = extras.getDouble("EXTRA_LONGTITUDE");
             latitudeLocation = extras.getDouble("EXTRA_LATITUDE");
+            valueLocation = extras.getString("EXTRA_ADDRESS");
         }
     }
     public void getIntentValue () {

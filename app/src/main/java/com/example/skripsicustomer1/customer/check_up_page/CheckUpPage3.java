@@ -149,7 +149,7 @@ public class CheckUpPage3 extends AppCompatActivity {
                     } else if (typeCheckUp.equals("All")) {
                         checkUpList.setAll(true);
                     }
-                    Boolean flagRating = true;
+                    Boolean flagRating = false;
                     Order order = new Order();
                     order.OrderCheckup(
                             customer,

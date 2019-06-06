@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.skripsicustomer1.CurrentUser;
 import com.example.skripsicustomer1.Order;
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.customer.check_up_page.CheckUpPage2;
@@ -210,6 +212,7 @@ public class ServiceRutinPage extends Fragment {
                                 Toast.makeText(getActivity(),"isi plat nomor",Toast.LENGTH_LONG).show();
                                 flag = false;
                             }
+                            Log.e("asdasd", String.valueOf(flag));
                             if (flag) {
                                 Intent startActivityServiceRutin = new Intent(getActivity(), ServiceRutinPage2.class);
                                 Bundle extras = new Bundle();
@@ -221,6 +224,31 @@ public class ServiceRutinPage extends Fragment {
 
                                 startActivity(startActivityServiceRutin);
                             }
+                        }
+                    }else {
+                        boolean flag = true;
+                        if (TextUtils.isEmpty(merekSpinner.getSelectedItem().toString())) {
+                            Toast.makeText(getActivity(),"pilih jenis motor terlebih dahulu",Toast.LENGTH_LONG).show();
+                            flag = false;
+                        }
+                        if (TextUtils.isEmpty(tipeMotorSpinner.getSelectedItem().toString())) {
+                            Toast.makeText(getActivity(),"pilih tipe motor terlebih dahulu",Toast.LENGTH_LONG).show();
+                            flag = false;
+                        }
+                        if (TextUtils.isEmpty(platNomorServiceRutin.getText().toString())) {
+                            Toast.makeText(getActivity(),"isi plat nomor",Toast.LENGTH_LONG).show();
+                            flag = false;
+                        }
+                        if (flag) {
+                            Intent startActivityServiceRutin = new Intent(getActivity(), ServiceRutinPage2.class);
+                            Bundle extras = new Bundle();
+                            extras.putString("EXTRA_TRANSMISI", temp);
+                            extras.putString("EXTRA_JENIS", merekSpinner.getSelectedItem().toString());
+                            extras.putString("EXTRA_TIPE", tipeMotorSpinner.getSelectedItem().toString());
+                            extras.putString("EXTRA_PLATNOMOR", platNomorServiceRutin.getText().toString());
+                            startActivityServiceRutin.putExtras(extras);
+
+                            startActivity(startActivityServiceRutin);
                         }
                     }
                 }

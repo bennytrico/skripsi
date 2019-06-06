@@ -290,6 +290,14 @@
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/grey"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/repairAccepted"
+                        android:text="Perbaiki"/>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="@color/colorPrimary"
                         android:textColor="@color/white"
                         android:layout_marginBottom="5dp"

@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,7 +49,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private float DEFAULT_ZOOM = 15.5f;
     private ImageView mobileGPS;
     private String flagActivity;
-
+    private String address;
     private String transmisi;
     private String jenis;
     private String tipe;
@@ -150,7 +151,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(options);
         }
         Button getLocation = (Button)findViewById(R.id.setMapLocation);
-        final String address = title;
+        if (TextUtils.isEmpty(searchText.getText().toString())) {
+            address = title + "," +searchText.getText().toString().trim();
+        } else {
+            address = title + ", " + latLng.longitude + ", " + latLng.latitude;
+        }
 
         getLocation.setOnClickListener(new View.OnClickListener() {
             @Override
