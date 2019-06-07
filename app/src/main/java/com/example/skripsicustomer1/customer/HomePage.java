@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -22,10 +23,12 @@ import com.example.skripsicustomer1.FirebaseIDService;
 import com.example.skripsicustomer1.MainActivity;
 import com.example.skripsicustomer1.Order;
 import com.example.skripsicustomer1.R;
+import com.example.skripsicustomer1.helper.FormatNumber;
 import com.example.skripsicustomer1.order_page.OrderPage;
 import com.example.skripsicustomer1.rating_page.RatingPage;
 import com.example.skripsicustomer1.topup_wallet.TopUpWalletPage;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +46,8 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
     private ActionBarDrawerToggle abdt;
     private FirebaseAuth mAuth;
     private Boolean flag = true;
+    FormatNumber formatNumber = new FormatNumber();
+
 
     @SuppressLint("WrongThread")
     @Override
@@ -50,10 +55,11 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+
         navigation();
         loadFragment(new ServiceRutinPage());
-        navigationBottom();
         getCurrentCustomerData();
+        navigationBottom();
         FirebaseIDService service = new FirebaseIDService();
         service.onTokenRefresh();
 
@@ -61,9 +67,38 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
             new Runnable() {
                 public void run() {
                     getValidationFlagRatingSystem();
+
                 }
             },
             3000);
+        DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers");
+        dbCustomer.orderByChild(mAuth.getInstance().getCurrentUser().getUid()).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Customer customer = dataSnapshot.getValue(Customer.class);
+                getSupportActionBar().setSubtitle(formatNumber.formatNumber(customer.getWallet()));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
