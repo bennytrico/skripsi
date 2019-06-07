@@ -274,20 +274,20 @@ public class OrderPage2 extends AppCompatActivity {
                 dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
                 dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
             }
-        } else if (order.getType_order().equals("Check Up")) {
-            if (order.getStatus_order().equals("accept") && customerAgree && montirAgree) {
-                dbOrder.child(order.getId()).child("status_order").setValue("process");
-                dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
-                dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
-            } else if (order.getStatus_order().equals("process") && customerAgree && montirAgree) {
-                dbOrder.child(order.getId()).child("status_order").setValue("repair");
-                dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
-                dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
-            } else if (order.getStatus_order().equals("repair") && customerAgree && montirAgree) {
-                dbOrder.child(order.getId()).child("status_order").setValue("done");
-                dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
-                dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
-            }
+//        } else if (order.getType_order().equals("Check Up")) {
+//            if (order.getStatus_order().equals("accept") && customerAgree && montirAgree) {
+//                dbOrder.child(order.getId()).child("status_order").setValue("process");
+//                dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
+//                dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
+//            } else if (order.getStatus_order().equals("process") && customerAgree && montirAgree) {
+//                dbOrder.child(order.getId()).child("status_order").setValue("repair");
+//                dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
+//                dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
+//            } else if (order.getStatus_order().equals("repair") && customerAgree && montirAgree) {
+//                dbOrder.child(order.getId()).child("status_order").setValue("done");
+//                dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
+//                dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
+//            }
         }
     }
     public void doneOrder() {
