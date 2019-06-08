@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
 
-import com.example.skripsicustomer1.CurrentUser;
 import com.example.skripsicustomer1.Customer;
 import com.example.skripsicustomer1.FirebaseIDService;
 import com.example.skripsicustomer1.MainActivity;
@@ -36,9 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
-import static com.example.skripsicustomer1.CurrentUser.currentEmailUser;
 import static com.example.skripsicustomer1.CurrentUser.currentUserID;
-import static com.example.skripsicustomer1.CurrentUser.currentUserWallet;
 import static com.example.skripsicustomer1.CurrentUser.getCurrentCustomerData;
 
 public class HomePage extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
