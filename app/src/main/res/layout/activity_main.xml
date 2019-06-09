@@ -7,15 +7,17 @@
     android:orientation="vertical"
     android:scrollbars="vertical"
     tools:context=".MainActivity">
-
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
-
+        
             <TextView
                 android:id="@+id/Login"
                 android:layout_width="match_parent"
@@ -24,42 +26,40 @@
                 android:text="Masuk"
                 android:textAlignment="center"
                 android:textSize="20dp" />
-
+        
             <EditText
                 android:id="@+id/txtEmailUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
                 android:imeOptions="actionNext"
                 android:singleLine="true"
                 android:hint="Email" />
-
+        
             <EditText
                 android:id="@+id/txtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:inputType="textPassword"
                 android:hint="Kata sandi" />
-
+        
             <Button
                 android:id="@+id/btnLogin"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="165dp"
-                android:layout_marginTop="15mm"
+                android:background="@color/colorPrimary"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="12dp"
                 android:text="Masuk" />
-
-            <TextView
+        
+            <Button
                 android:id="@+id/btnRegister"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:clickable="true"
+                android:background="@color/grey"
                 android:text="Daftar ?" />
         </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

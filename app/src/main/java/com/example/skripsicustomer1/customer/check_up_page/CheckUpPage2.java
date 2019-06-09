@@ -1,8 +1,10 @@
 package com.example.skripsicustomer1.customer.check_up_page;
 
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,9 +19,18 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.skripsicustomer1.Customer;
 import com.example.skripsicustomer1.R;
+import com.example.skripsicustomer1.customer.service_rutin_page.ServiceRutinPage2;
 import com.example.skripsicustomer1.helper.FormatNumber;
 import com.example.skripsicustomer1.helper.TimePickerFragment;
+import com.example.skripsicustomer1.topup_wallet.TopUpWalletPage;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,25 +68,41 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
         btnNextCheckUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(mTime1)) {
-                    Toast.makeText(CheckUpPage2.this,"Harus mengisi jam servis", Toast.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(typeCheckupSpinner.getSelectedItem().toString())) {
-                    Toast.makeText(CheckUpPage2.this,"Harus mengisi tipe kerusakan",Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(getApplicationContext(),CheckUpPage3.class);
-                    Bundle extras = new Bundle();
-                    extras.putString("EXTRA_TRANSMISI",transmisi);
-                    extras.putString("EXTRA_JENIS",jenis);
-                    extras.putString("EXTRA_TIPE",tipe);
-                    extras.putString("EXTRA_TANGGAL",tanggalSpinner.getSelectedItem().toString());
-                    extras.putString("EXTRA_TYPE_KERUSAKAN",typeCheckupSpinner.getSelectedItem().toString());
-                    extras.putInt("EXTRA_HARGA",harga);
-                    extras.putString("EXTRA_HOUR",mTime1);
-                    extras.putString("EXTRA_PLATNOMOR",platNomor);
-                    intent.putExtras(extras);
+                DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers");
+                dbCustomer.orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Customer c = dataSnapshot.getValue(Customer.class);
+                        if (c.getWallet() >= harga) {
+                            if (TextUtils.isEmpty(mTime1)) {
+                                Toast.makeText(CheckUpPage2.this,"Harus mengisi jam servis", Toast.LENGTH_SHORT).show();
+                            } else if (TextUtils.isEmpty(typeCheckupSpinner.getSelectedItem().toString())) {
+                                Toast.makeText(CheckUpPage2.this,"Harus mengisi tipe kerusakan",Toast.LENGTH_SHORT).show();
+                            } else {
+                                Intent intent = new Intent(getApplicationContext(),CheckUpPage3.class);
+                                Bundle extras = new Bundle();
+                                extras.putString("EXTRA_TRANSMISI",transmisi);
+                                extras.putString("EXTRA_JENIS",jenis);
+                                extras.putString("EXTRA_TIPE",tipe);
+                                extras.putString("EXTRA_TANGGAL",tanggalSpinner.getSelectedItem().toString());
+                                extras.putString("EXTRA_TYPE_KERUSAKAN",typeCheckupSpinner.getSelectedItem().toString());
+                                extras.putInt("EXTRA_HARGA",harga);
+                                extras.putString("EXTRA_HOUR",mTime1);
+                                extras.putString("EXTRA_PLATNOMOR",platNomor);
+                                intent.putExtras(extras);
 
-                    startActivity(intent);
-                }
+                                startActivity(intent);
+                            }
+                        } else {
+                            showDialogOpenTopWallet();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
             }
         });
@@ -91,6 +118,31 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
         typeCheckupSpinner = (Spinner) findViewById(R.id.jenisCheckUp);
         setSpinnerTypeCheckup(getTypeCheckup);
 
+    }
+    private void showDialogOpenTopWallet() {
+        final Dialog dialog = new Dialog(CheckUpPage2.this);
+        dialog.setContentView(R.layout.dialog_open_top_wallet_page);
+        dialog.setTitle("Info");
+
+        Button yesButton = (Button) dialog.findViewById(R.id.okButtonDialogWallet);
+        Button noButton = (Button) dialog.findViewById(R.id.cancelButtonDialogWallet);
+
+        yesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TopUpWalletPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+        noButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
     public void getCurrentDate(){
         Date dt = new Date();

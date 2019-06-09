@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".customer.check_up_page.CheckUpPage3">
 
     <RelativeLayout
@@ -25,21 +26,23 @@
                 android:id="@+id/textLocationCheckUp"/>
             <Button
                 android:id="@+id/getCurrentLocationCheckUp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
+                android:background="@color/colorPrimary"
                 android:text="pilih lokasi"/>
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:id="@+id/layoutListView"
             android:layout_below="@+id/setUpLocation">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="75dp"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
@@ -48,7 +51,7 @@
                     android:text="Daftar Montir"/>
                 <ListView
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:id="@+id/listViewMontirCheckUp">
                 </ListView>
@@ -56,9 +59,9 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/customborder"
-            android:layout_below="@+id/layoutListView">
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/customborder">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,6 +76,7 @@
                 android:layout_margin="15dp"
                 android:text="pesan"
                 android:layout_alignParentRight="true"
+                android:background="@color/colorPrimary"
                 android:id="@+id/orderCheckUp"/>
         </RelativeLayout>
     </RelativeLayout>

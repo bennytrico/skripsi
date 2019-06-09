@@ -28,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity {
 
     Button btnLogin;
-    TextView btnRegister;
+    Button btnRegister;
     private FirebaseAuth mAuth;
     private String email;
     private String password;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnRegister = (TextView) findViewById(R.id.btnRegister);
+        btnRegister = (Button) findViewById(R.id.btnRegister);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
