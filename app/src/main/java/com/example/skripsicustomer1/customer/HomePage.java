@@ -21,6 +21,7 @@ import com.example.skripsicustomer1.Customer;
 import com.example.skripsicustomer1.FirebaseIDService;
 import com.example.skripsicustomer1.MainActivity;
 import com.example.skripsicustomer1.Order;
+import com.example.skripsicustomer1.ProfilePage;
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.helper.FormatNumber;
 import com.example.skripsicustomer1.order_page.OrderPage;
@@ -179,6 +180,9 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
                 } else if (id == R.id.topUpwallet) {
                     Intent intent = new Intent(getApplicationContext(), TopUpWalletPage.class);
                     getCurrentCustomerData();
+                    startActivity(intent);
+                } else if (id == R.id.profile) {
+                    Intent intent = new Intent(getApplicationContext(), ProfilePage.class);
                     startActivity(intent);
                 }
 
