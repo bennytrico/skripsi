@@ -41,6 +41,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CheckUpPage3 extends AppCompatActivity {
 
@@ -136,6 +138,23 @@ public class CheckUpPage3 extends AppCompatActivity {
                     Toast.makeText(CheckUpPage3.this,"harus pilih montir",Toast.LENGTH_SHORT).show();
                 } else {
                     DatabaseReference  dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
+                    final DatabaseReference dbCustomers = FirebaseDatabase.getInstance().getReference("Customers");
+                    dbCustomers.orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Customer c = dataSnapshot.getValue(Customer.class);
+                            Map<String, Object> update = new HashMap<String, Object>();
+                            Integer calculatedWallet = c.getWallet() - harga;
+                            update.put("wallet",calculatedWallet);
+                            dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(update);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                     String customer = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     String typeOrder = "Check Up";
                     if (typeCheckUp.equals("Electrical")) {
