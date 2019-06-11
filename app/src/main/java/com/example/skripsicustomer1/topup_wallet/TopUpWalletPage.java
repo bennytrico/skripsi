@@ -32,11 +32,13 @@ public class TopUpWalletPage extends AppCompatActivity {
     TextView currentWallet;
     EditText bankAccountNameText;
     EditText bankAccountNumberText;
+    EditText mBankName;
     EditText amountTopUpText;
     Button nextStepTopUp;
 
     private String bankAccountName;
     private String bankAccountNumber;
+    private String bankName;
     private Integer amountTopUp;
 
     FormatNumber formatNumber = new FormatNumber();
@@ -49,6 +51,7 @@ public class TopUpWalletPage extends AppCompatActivity {
         currentWallet = (TextView) findViewById(R.id.currentWallet);
         bankAccountNameText = (EditText) findViewById(R.id.bankAccountNameTopUp);
         bankAccountNumberText = (EditText) findViewById(R.id.bankAccountNumberTopUp);
+        mBankName = (EditText) findViewById(R.id.bankName);
         amountTopUpText = (EditText) findViewById(R.id.amountTopUp);
         nextStepTopUp = (Button) findViewById(R.id.submitTopUp);
 
@@ -67,6 +70,7 @@ public class TopUpWalletPage extends AppCompatActivity {
         boolean flag = false;
         bankAccountName = bankAccountNameText.getText().toString().trim();
         bankAccountNumber = bankAccountNumberText.getText().toString().trim();
+        bankName = mBankName.getText().toString().trim();
         try {
             amountTopUp = Integer.parseInt(amountTopUpText.getText().toString());
         } catch (NumberFormatException e) {
@@ -79,7 +83,9 @@ public class TopUpWalletPage extends AppCompatActivity {
             Toast.makeText(this,"Nomor bank harus di isi",Toast.LENGTH_SHORT).show();
         } else if (amountTopUp == null) {
             Toast.makeText(this,"Jumlah uang harus di isi",Toast.LENGTH_SHORT).show();
-        } else {
+        } else if (TextUtils.isEmpty(bankName)) {
+            Toast.makeText(this,"Nama bank harus di isi",Toast.LENGTH_SHORT).show();
+        }else {
             flag = true;
         }
         if (flag) {
@@ -107,7 +113,8 @@ public class TopUpWalletPage extends AppCompatActivity {
                         currentUserName,
                         status,
                         currentUserID,
-                        amountTopUp
+                        amountTopUp,
+                        bankName
                 );
                 dbWalletConfirmations.push().setValue(walletConfirmations);
                 Intent intent = new Intent(getApplicationContext(), TopUpWalletPage2.class);

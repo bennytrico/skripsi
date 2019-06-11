@@ -85,7 +85,7 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             @Override
             public void onClick(View v) {
                 DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers");
-                dbCustomer.orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                dbCustomer.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Customer c = dataSnapshot.getValue(Customer.class);
@@ -108,6 +108,7 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
                                     extras.putBoolean("EXTRA_GANTI_GANDA", oliGanda);
                                 }
                                 intent.putExtras(extras);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                                 startActivity(intent);
                             }

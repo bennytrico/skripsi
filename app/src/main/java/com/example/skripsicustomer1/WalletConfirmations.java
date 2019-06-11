@@ -2,10 +2,10 @@ package com.example.skripsicustomer1;
 
 public class WalletConfirmations {
     private Integer amount;
-    private String bank_account_name, bank_account_number, email, name, status, userId;
+    private String bank_account_name, bank_account_number, email, name, status, userId, bank;
 
     public WalletConfirmations (String bank_account_name, String bank_account_number, String email,
-                                String name, String status, String userId, Integer amount) {
+                                String name, String status, String userId, Integer amount, String bank) {
         this.bank_account_name = bank_account_name;
         this.bank_account_number = bank_account_number;
         this.email = email;
@@ -13,6 +13,7 @@ public class WalletConfirmations {
         this.status = status;
         this.userId = userId;
         this.amount = amount;
+        this.bank = bank;
     }
 
     public Integer getAmount() {
@@ -69,5 +70,13 @@ public class WalletConfirmations {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
     }
 }

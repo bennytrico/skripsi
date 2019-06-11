@@ -212,7 +212,6 @@ public class ServiceRutinPage extends Fragment {
                                 Toast.makeText(getActivity(),"isi plat nomor",Toast.LENGTH_LONG).show();
                                 flag = false;
                             }
-                            Log.e("asdasd", String.valueOf(flag));
                             if (flag) {
                                 Intent startActivityServiceRutin = new Intent(getActivity(), ServiceRutinPage2.class);
                                 Bundle extras = new Bundle();
@@ -221,6 +220,7 @@ public class ServiceRutinPage extends Fragment {
                                 extras.putString("EXTRA_TIPE", tipeMotorSpinner.getSelectedItem().toString());
                                 extras.putString("EXTRA_PLATNOMOR", platNomorServiceRutin.getText().toString());
                                 startActivityServiceRutin.putExtras(extras);
+                                startActivityServiceRutin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                                 startActivity(startActivityServiceRutin);
                             }
@@ -247,6 +247,7 @@ public class ServiceRutinPage extends Fragment {
                             extras.putString("EXTRA_TIPE", tipeMotorSpinner.getSelectedItem().toString());
                             extras.putString("EXTRA_PLATNOMOR", platNomorServiceRutin.getText().toString());
                             startActivityServiceRutin.putExtras(extras);
+                            startActivityServiceRutin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                             startActivity(startActivityServiceRutin);
                         }

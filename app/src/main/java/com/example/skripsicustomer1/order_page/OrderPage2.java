@@ -144,6 +144,10 @@ public class OrderPage2 extends AppCompatActivity {
             statusOrderPage.setText(R.string.serviceDone);
             changeStatusOrder.setVisibility(View.GONE);
             batalOrder.setVisibility(View.GONE);
+        } else if (order.getStatus_order().equals("end")) {
+            statusOrderPage.setText(R.string.serviceDone);
+            changeStatusOrder.setVisibility(View.GONE);
+            batalOrder.setVisibility(View.GONE);
         }
         if (order.getType_order().equals("Check up")) {
             if (order.getCheck_up_list().getAll()) {

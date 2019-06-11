@@ -69,7 +69,7 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
             @Override
             public void onClick(View v) {
                 DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers");
-                dbCustomer.orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                dbCustomer.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Customer c = dataSnapshot.getValue(Customer.class);
@@ -90,6 +90,7 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
                                 extras.putString("EXTRA_HOUR",mTime1);
                                 extras.putString("EXTRA_PLATNOMOR",platNomor);
                                 intent.putExtras(extras);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                                 startActivity(intent);
                             }

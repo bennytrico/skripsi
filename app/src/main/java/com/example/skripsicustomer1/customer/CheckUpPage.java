@@ -194,6 +194,7 @@ public class CheckUpPage extends Fragment {
                                 extras.putString("EXTRA_TIPE",tipeMotorSpinner.getSelectedItem().toString());
                                 extras.putString("EXTRA_PLATNOMOR",platNomorCheckUp.getText().toString());
                                 startActivityCheckUp.putExtras(extras);
+                                startActivityCheckUp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                                 startActivity(startActivityCheckUp);
                             }
@@ -220,6 +221,7 @@ public class CheckUpPage extends Fragment {
                             extras.putString("EXTRA_TIPE",tipeMotorSpinner.getSelectedItem().toString());
                             extras.putString("EXTRA_PLATNOMOR",platNomorCheckUp.getText().toString());
                             startActivityCheckUp.putExtras(extras);
+                            startActivityCheckUp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                             startActivity(startActivityCheckUp);
                         }
