@@ -13,12 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.skripsicustomer1.Customer;
 import com.example.skripsicustomer1.Order;
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.Rating;
 import com.example.skripsicustomer1.helper.Convertor;
 import com.example.skripsicustomer1.helper.FormatNumber;
 import com.example.skripsicustomer1.rating_page.RatingPage;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -99,6 +101,23 @@ public class OrderPage2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dbOrder.child(order.getId()).child("status_order").setValue("cancel");
+                final DatabaseReference updateCustomer = FirebaseDatabase.getInstance().getReference("Customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                dbCustomer.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Customer c = dataSnapshot.getValue(Customer.class);
+                        Integer wallet = c.getWallet();
+                        Map<String, Object> update = new HashMap<String, Object>();
+                        update.put("wallet", wallet + order.getAmount());
+                        updateCustomer.updateChildren(update);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
                 if (!order.getStatus_order().equals("wait")) {
                     DatabaseReference dbRating = FirebaseDatabase.getInstance().getReference("Ratings").child(order.getMontir().getId());
                     dbRating.addListenerForSingleValueEvent(new ValueEventListener() {

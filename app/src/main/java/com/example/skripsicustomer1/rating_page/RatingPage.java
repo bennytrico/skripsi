@@ -79,33 +79,21 @@ public class RatingPage extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            final Rating rtg = dataSnapshot.getValue(Rating.class);
+                            Rating rtg = dataSnapshot.getValue(Rating.class);
 
-                            dbMontir.child(order.getMontir().getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    DatabaseReference dbMontirUpdate = FirebaseDatabase.getInstance().getReference("Montirs").child(order.getMontir().getId());
-                                    DatabaseReference dbRatingUpdate = FirebaseDatabase.getInstance().getReference("Ratings").child(order.getMontir().getId());
+                            DatabaseReference dbMontirUpdate = FirebaseDatabase.getInstance().getReference("Montirs").child(order.getMontir().getId());
+                            DatabaseReference dbRatingUpdate = FirebaseDatabase.getInstance().getReference("Ratings").child(order.getMontir().getId());
 
-                                    Montir m = dataSnapshot.getValue(Montir.class);
+                            Double calculateRating = rtg.getRating_montir() + tempRating;
+                            Map<String, Object> updateMontir = new HashMap<String, Object>();
+                            updateMontir.put("rating",calculateRating / rtg.getCount_order());
+                            dbMontirUpdate.updateChildren(updateMontir);
 
-                                    Double calculateRating = rtg.getRating_montir() + tempRating;
-                                    Map<String, Object> updateMontir = new HashMap<String, Object>();
-                                    updateMontir.put("rating",calculateRating / rtg.getCount_order());
-                                    dbMontirUpdate.updateChildren(updateMontir);
+                            Map<String, Object> updateRating = new HashMap<String, Object>();
+                            updateRating.put("average_rating",calculateRating / rtg.getCount_order());
+                            updateRating.put("rating_montir",calculateRating);
+                            dbRatingUpdate.updateChildren(updateRating);
 
-                                    Map<String, Object> updateRating = new HashMap<String, Object>();
-                                    updateRating.put("average_rating",calculateRating / rtg.getCount_order());
-                                    updateRating.put("rating_montir",calculateRating);
-                                    dbRatingUpdate.updateChildren(updateRating);
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
 
                         } else {
                             DatabaseReference dbMontirUpdate = FirebaseDatabase.getInstance().getReference("Montirs").child(order.getMontir().getId());
