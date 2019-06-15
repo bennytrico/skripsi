@@ -46,9 +46,6 @@ import java.util.Map;
 
 public class CheckUpPage3 extends AppCompatActivity {
 
-    private MontirAdapter mAdapter;
-    private Location locationCustomer;
-    private Location locationMontir;
 
     private String valueLocation;
     private Double longtitudeLocation1;
