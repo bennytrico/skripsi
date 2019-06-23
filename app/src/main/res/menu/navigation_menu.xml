@@ -8,7 +8,7 @@
     </item>
     <item
         android:id="@+id/order"
-        android:title="Pesan"
+        android:title="Pesanan"
         android:icon="@drawable/ic_assignment_black_24dp">
 
     </item>

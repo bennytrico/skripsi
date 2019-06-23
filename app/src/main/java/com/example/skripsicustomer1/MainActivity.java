@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
     EditText emailText;
     EditText passwordText;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
 
     @Override

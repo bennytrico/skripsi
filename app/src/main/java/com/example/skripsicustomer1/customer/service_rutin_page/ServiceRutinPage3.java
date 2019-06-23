@@ -52,13 +52,9 @@ import java.util.Map;
 public class ServiceRutinPage3 extends AppCompatActivity{
     public static Context context;
     private Intent intent;
-    TextView locationText;
 
     private Double latitudeLocation;
     private Double longtitudeLocation;
-    private MontirAdapter mAdapter;
-    private Location locationCustomer;
-    private Location locationMontir;
     private Montir montir;
     private String transmisi;
     private String jenis;
@@ -75,7 +71,6 @@ public class ServiceRutinPage3 extends AppCompatActivity{
     private String namaCustomer;
     private String noHpCustomer;
     private String platNomor;
-    private String flagClass;
     Customer customer = new Customer();
     ListView listViewMontir ;
     Button order;

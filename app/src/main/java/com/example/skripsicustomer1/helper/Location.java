@@ -9,8 +9,6 @@ import android.support.v4.content.ContextCompat;
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 public final class Location {
-    public FusedLocationProviderClient client;
-    private String message;
     private Context contexts;
     private Activity activity;
 
