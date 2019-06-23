@@ -5,14 +5,14 @@ public class Order {
             no_handphone_customer,number_plate,type_checkup,id;
     private Boolean primary_oil,secondary_oil,flag_customer_agree,flag_montir_agree, flag_rating;
     private Integer amount;
-    private CheckUpList check_up_list;
+    private String check_up_list;
     private Montir montir;
     public Order (){
 
     }
     public void OrderCheckup (String customer_id,String address, String type_order, String transmition,
                   String brand, String type_motor, String date, String time,String status_order,
-                  Boolean flag_customer_agree,Boolean flag_montir_agree,Integer amount,Montir montir,CheckUpList check_up_list,
+                  Boolean flag_customer_agree,Boolean flag_montir_agree,Integer amount,Montir montir,String check_up_list,
                   String name_customer, String no_handphone_customer,String number_plate, Boolean flag_rating) {
         this.customer_id = customer_id;
         this.address = address;
@@ -220,11 +220,11 @@ public class Order {
     }
 
 
-    public CheckUpList getCheck_up_list() {
+    public String getCheck_up_list() {
         return check_up_list;
     }
 
-    public void setCheck_up_list(CheckUpList check_up_list) {
+    public void setCheck_up_list(String check_up_list) {
         this.check_up_list = check_up_list;
     }
 

@@ -51,7 +51,6 @@ public class CheckUpPage3 extends AppCompatActivity {
     private Double longtitudeLocation1;
     private Double latitudeLocation1;
     private Montir montir;
-    private CheckUpList checkUpList = new CheckUpList();
     private String transmisi;
     private String jenis;
     private String tipe;
@@ -65,6 +64,7 @@ public class CheckUpPage3 extends AppCompatActivity {
     private String namaCustomer;
     private String noHpCustomer;
     private String platNomor;
+    private String checkUpList;
 
     ListView listViewMontir ;
     Button order;
@@ -88,12 +88,6 @@ public class CheckUpPage3 extends AppCompatActivity {
         order = (Button) findViewById(R.id.orderCheckUp);
         listViewMontir = (ListView) findViewById(R.id.listViewMontirCheckUp);
 
-
-        checkUpList.setAll(false);
-        checkUpList.setBracking_system(false);
-        checkUpList.setElectrical(false);
-        checkUpList.setEngine(false);
-        checkUpList.setMechanical(false);
 
         DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers");
 
@@ -155,15 +149,15 @@ public class CheckUpPage3 extends AppCompatActivity {
                     String customer = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     String typeOrder = "Check Up";
                     if (typeCheckUp.equals("Electrical")) {
-                        checkUpList.setElectrical(true);
-                    } else if (typeCheckUp.equals("Bracking system")) {
-                        checkUpList.setBracking_system(true);
+                        checkUpList += "Electrical , ";
+                    } else if (typeCheckUp.equals("Breaking system")) {
+                        checkUpList += "Breaking system , ";
                     } else if (typeCheckUp.equals("Engine")) {
-                        checkUpList.setEngine(true);
+                        checkUpList += "Engine , ";
                     } else if (typeCheckUp.equals("Mechanical")) {
-                        checkUpList.setMechanical(true);
+                        checkUpList += "Mechanical , ";
                     } else if (typeCheckUp.equals("All")) {
-                        checkUpList.setAll(true);
+                        checkUpList = "All";
                     }
                     Boolean flagRating = false;
                     Order order = new Order();

@@ -169,15 +169,15 @@ public class OrderPage2 extends AppCompatActivity {
             batalOrder.setVisibility(View.GONE);
         }
         if (order.getType_order().equals("Check up")) {
-            if (order.getCheck_up_list().getAll()) {
-                kerusakan = kerusakan + "all ;";
-            } else if (order.getCheck_up_list().getBracking_system()) {
-                kerusakan = kerusakan + "Bracking system ;";
-            } else if (order.getCheck_up_list().getElectrical()) {
+            if (order.getCheck_up_list().equals("All")) {
+                kerusakan = "All";
+            } else if (order.getCheck_up_list().contains("Breaking system")) {
+                kerusakan = kerusakan + "Breaking system ;";
+            } else if (order.getCheck_up_list().contains("Electrical")) {
                 kerusakan = kerusakan + "Electrical ;";
-            } else if (order.getCheck_up_list().getEngine()) {
+            } else if (order.getCheck_up_list().contains("Engine")) {
                 kerusakan = kerusakan + "Engine ;";
-            } else if (order.getCheck_up_list().getMechanical()) {
+            } else if (order.getCheck_up_list().contains("Mechanical")) {
                 kerusakan = kerusakan + "Mechanical ;";
             }
         }
