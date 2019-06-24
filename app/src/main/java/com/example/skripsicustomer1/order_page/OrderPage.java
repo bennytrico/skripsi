@@ -1,5 +1,6 @@
 package com.example.skripsicustomer1.order_page;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -39,12 +40,15 @@ public class OrderPage extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        final ProgressDialog progressDialog = new ProgressDialog(OrderPage.this);
 
         listViewOrder = (ListView)findViewById(R.id.listOrder);
         DatabaseReference dbOrder = FirebaseDatabase.getInstance().getReference("Orders");
         dbOrder.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                progressDialog.setMessage("Sedang proses . .");
+                progressDialog.show();
                 orderArrayList.clear();
                 for (DataSnapshot data: dataSnapshot.getChildren()) {
                     Order r = data.getValue(Order.class);
@@ -61,7 +65,7 @@ public class OrderPage extends AppCompatActivity {
                 );
                 Collections.reverse(orderArrayList);
                 listViewOrder.setAdapter(listViewOrderAdapter);
-
+                progressDialog.dismiss();
             }
 
             @Override

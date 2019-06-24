@@ -1,5 +1,6 @@
 package com.example.skripsicustomer1.customer.check_up_page;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -274,6 +275,7 @@ public class CheckUpPage3 extends AppCompatActivity {
     }
 
     public void getListMontir () {
+        final ProgressDialog progressDialog = new ProgressDialog(CheckUpPage3.this);
         final ArrayList<Montir> arrayList = new ArrayList<>();
         DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
         final DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
@@ -283,6 +285,8 @@ public class CheckUpPage3 extends AppCompatActivity {
         dbOrders.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                progressDialog.setMessage("Sedang proses . .");
+                progressDialog.show();
                 Date dateBooking = new Date();
                 Calendar calendar = Calendar.getInstance();
                 Date dateMaxHours = new Date();
@@ -375,6 +379,7 @@ public class CheckUpPage3 extends AppCompatActivity {
                 });
 
                 listViewMontir.setAdapter(montirAdapter);
+                progressDialog.dismiss();
             }
 
             @Override

@@ -1,5 +1,6 @@
 package com.example.skripsicustomer1.order_page;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.skripsicustomer1.Customer;
 import com.example.skripsicustomer1.Order;
+import com.example.skripsicustomer1.ProfilePage;
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.Rating;
 import com.example.skripsicustomer1.helper.Convertor;
@@ -100,47 +102,65 @@ public class OrderPage2 extends AppCompatActivity {
         batalOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbOrder.child(order.getId()).child("status_order").setValue("cancel");
-                final DatabaseReference updateCustomer = FirebaseDatabase.getInstance().getReference("Customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                dbCustomer.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Customer c = dataSnapshot.getValue(Customer.class);
-                        Integer wallet = c.getWallet();
-                        Map<String, Object> update = new HashMap<String, Object>();
-                        update.put("wallet", wallet + order.getAmount());
-                        updateCustomer.updateChildren(update);
-                    }
+                final Dialog dialog = new Dialog(OrderPage2.this);
+                dialog.setContentView(R.layout.dialog_confirmation);
+                dialog.setTitle("Info");
 
+                Button agree = (Button) dialog.findViewById(R.id.agreeTopUp);
+                Button disAgree = (Button) dialog.findViewById(R.id.disagreeTopUp);
+                disAgree.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    public void onClick(View v) {
+                        dialog.dismiss();
                     }
                 });
-                if (!order.getStatus_order().equals("wait")) {
-                    DatabaseReference dbRating = FirebaseDatabase.getInstance().getReference("Ratings").child(order.getMontir().getId());
-                    dbRating.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Rating rating = dataSnapshot.getValue(Rating.class);
-                            DatabaseReference dbRatingUpdate = FirebaseDatabase.getInstance().getReference("Ratings").child(order.getMontir().getId());
-
-                            if (rating.getCount_order() != 0) {
+                agree.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        dbOrder.child(order.getId()).child("status_order").setValue("cancel");
+                        final DatabaseReference updateCustomer = FirebaseDatabase.getInstance().getReference("Customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        dbCustomer.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Customer c = dataSnapshot.getValue(Customer.class);
+                                Integer wallet = c.getWallet();
                                 Map<String, Object> update = new HashMap<String, Object>();
-                                update.put("count_order", rating.getCount_order() - 1);
-                                dbRatingUpdate.updateChildren(update);
+                                update.put("wallet", wallet + order.getAmount());
+                                updateCustomer.updateChildren(update);
                             }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                        if (!order.getStatus_order().equals("wait")) {
+                            DatabaseReference dbRating = FirebaseDatabase.getInstance().getReference("Ratings").child(order.getMontir().getId());
+                            dbRating.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Rating rating = dataSnapshot.getValue(Rating.class);
+                                    DatabaseReference dbRatingUpdate = FirebaseDatabase.getInstance().getReference("Ratings").child(order.getMontir().getId());
+
+                                    if (rating.getCount_order() != 0) {
+                                        Map<String, Object> update = new HashMap<String, Object>();
+                                        update.put("count_order", rating.getCount_order() - 1);
+                                        dbRatingUpdate.updateChildren(update);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-
-                finish();
+                        finish();
+                    }
+                });
+                dialog.show();
             }
         });
         repairAcceptedOrder.setVisibility(View.GONE);

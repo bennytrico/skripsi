@@ -1,5 +1,6 @@
 package com.example.skripsicustomer1.customer.service_rutin_page;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -26,6 +27,7 @@ import com.example.skripsicustomer1.adapter.MontirAdapter;
 import com.example.skripsicustomer1.customer.HomePage;
 import com.example.skripsicustomer1.customer.MapsActivity;
 import com.example.skripsicustomer1.helper.Location;
+import com.example.skripsicustomer1.order_page.OrderPage;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -268,6 +270,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
     }
 
     public void getListMontir() {
+        final ProgressDialog progressDialog = new ProgressDialog(ServiceRutinPage3.this);
         final ArrayList<Montir> arrayList = new ArrayList<>();
         DatabaseReference db = FirebaseDatabase.getInstance().getReference("Montirs");
         final DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
@@ -277,6 +280,8 @@ public class ServiceRutinPage3 extends AppCompatActivity{
         dbOrders.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                progressDialog.setMessage("Sedang proses . .");
+                progressDialog.show();
                 Date dateBooking = new Date();
                 Calendar calendar = Calendar.getInstance();
                 Date dateMaxHours = new Date();
@@ -370,6 +375,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                 });
 
                 listViewMontir.setAdapter(listViewMontirAdapater);
+                progressDialog.dismiss();
             }
 
             @Override
