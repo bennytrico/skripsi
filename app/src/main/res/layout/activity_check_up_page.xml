@@ -28,23 +28,30 @@
         android:id="@+id/transmisiMotorCheckup">
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
             android:id="@+id/motorMaticCheckUp"
             android:layout_margin="10dp"
-            android:src="@drawable/matic"/>
+            android:scaleType="centerCrop"
+            android:background="@drawable/customborder"
+            android:src="@drawable/scooter"/>
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
             android:id="@+id/motorKoplingCheckUp"
             android:layout_margin="10dp"
-            android:src="@drawable/kopling"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/motorcycle"
+            android:background="@drawable/customborder"/>
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
             android:id="@+id/motorManualCheckUp"
             android:layout_margin="10dp"
-            android:src="@drawable/manual"/>
+            android:scaleType="centerCrop"
+            android:padding="10dp"
+            android:background="@drawable/customborder"
+            android:src="@drawable/manual1"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

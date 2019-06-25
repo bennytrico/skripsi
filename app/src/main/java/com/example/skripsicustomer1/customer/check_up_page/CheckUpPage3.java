@@ -92,27 +92,12 @@ public class CheckUpPage3 extends AppCompatActivity {
 
         DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers");
 
-        dbCustomer.orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid()).addChildEventListener(new ChildEventListener() {
+        dbCustomer.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 customer = dataSnapshot.getValue(Customer.class);
                 namaCustomer = customer.getUsername();
                 noHpCustomer = customer.getNumber_handphone();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
             }
 
             @Override
@@ -131,7 +116,7 @@ public class CheckUpPage3 extends AppCompatActivity {
                 } else {
                     DatabaseReference  dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
                     final DatabaseReference dbCustomers = FirebaseDatabase.getInstance().getReference("Customers");
-                    dbCustomers.orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Customer c = dataSnapshot.getValue(Customer.class);
@@ -184,7 +169,7 @@ public class CheckUpPage3 extends AppCompatActivity {
                     );
                     dbOrders.push().setValue(order);
                     DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
-                    dbMontir.orderByChild(montir.getId()).addChildEventListener(new ChildEventListener() {
+                    dbMontir.child(montir.getId()).addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             Montir m = dataSnapshot.getValue(Montir.class);
@@ -216,7 +201,7 @@ public class CheckUpPage3 extends AppCompatActivity {
 
                         }
                     });
-
+                    Toast.makeText(CheckUpPage3.this, "Pesanan berhasil",Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(CheckUpPage3.this, HomePage.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 }
             }

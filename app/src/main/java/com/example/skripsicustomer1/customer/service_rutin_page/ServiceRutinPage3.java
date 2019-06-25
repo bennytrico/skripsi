@@ -134,7 +134,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                 } else {
                     DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
                     final DatabaseReference dbCustomers = FirebaseDatabase.getInstance().getReference("Customers");
-                    dbCustomers.orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Customer c = dataSnapshot.getValue(Customer.class);
@@ -175,9 +175,9 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                     );
                     dbOrders.push().setValue(order);
                     DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
-                    dbMontir.orderByChild(montir.getId()).addChildEventListener(new ChildEventListener() {
+                    dbMontir.child(montir.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Montir m = dataSnapshot.getValue(Montir.class);
                             PushNotif pushNotif = new PushNotif();
                             try {
@@ -188,26 +188,11 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                         }
 
                         @Override
-                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                        }
-
-                        @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
                     });
-
+                    Toast.makeText(ServiceRutinPage3.this, "Pesanan berhasil",Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(ServiceRutinPage3.this, HomePage.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 }
             }
