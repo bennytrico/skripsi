@@ -1,6 +1,7 @@
 package com.example.skripsicustomer1.customer;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
@@ -14,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
 
@@ -25,6 +28,7 @@ import com.example.skripsicustomer1.ProfilePage;
 import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.helper.FormatNumber;
 import com.example.skripsicustomer1.order_page.OrderPage;
+import com.example.skripsicustomer1.order_page.OrderPage2;
 import com.example.skripsicustomer1.rating_page.RatingPage;
 import com.example.skripsicustomer1.topup_wallet.TopUpWalletPage;
 import com.google.firebase.auth.FirebaseAuth;
@@ -155,13 +159,32 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
                 if(id == R.id.order){
                     startActivity(new Intent(getApplicationContext(), OrderPage.class));
                 }else if(id == R.id.logout){
-                    mAuth.getInstance().signOut();
-                    Toast.makeText(HomePage.this, "Keluar", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    final Dialog dialog = new Dialog(HomePage.this);
+                    dialog.setContentView(R.layout.dialog_confirmation);
+                    dialog.setTitle("Info");
 
-                    startActivity(intent);
+                    Button agree = (Button) dialog.findViewById(R.id.agreeTopUp);
+                    Button disAgree = (Button) dialog.findViewById(R.id.disagreeTopUp);
+                    disAgree.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    agree.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            mAuth.getInstance().signOut();
+                            Toast.makeText(HomePage.this, "Keluar", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                            startActivity(intent);
+                        }
+                    });
+                    dialog.show();
                 } else if (id == R.id.topUpwallet) {
                     Intent intent = new Intent(getApplicationContext(), TopUpWalletPage.class);
                     getCurrentCustomerData();
