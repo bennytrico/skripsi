@@ -45,9 +45,9 @@ public class CheckUpPage extends Fragment {
         View view = inflater.inflate(R.layout.activity_check_up_page,container,false);
 
 
-        ImageButton btnMatic = (ImageButton) view.findViewById(R.id.motorMaticCheckUp);
-        ImageButton btnKopling = (ImageButton) view.findViewById(R.id.motorKoplingCheckUp);
-        ImageButton btnManual = (ImageButton) view.findViewById(R.id.motorManualCheckUp);
+        final ImageButton btnMatic = (ImageButton) view.findViewById(R.id.motorMaticCheckUp);
+        final ImageButton btnKopling = (ImageButton) view.findViewById(R.id.motorKoplingCheckUp);
+        final ImageButton btnManual = (ImageButton) view.findViewById(R.id.motorManualCheckUp);
         platNomorCheckUp = (EditText) view.findViewById(R.id.platNomorCheckUp);
         final Button btnNextCheckUp = (Button) view.findViewById(R.id.btnNextCheckUp);
         merekSpinner = (Spinner) view.findViewById(R.id.listMerekMotorCheckUp);
@@ -58,6 +58,9 @@ public class CheckUpPage extends Fragment {
             public void onClick(View v) {
 
                 temp = "Matic";
+                btnMatic.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                btnKopling.setBackgroundResource(R.drawable.customborder);
+                btnManual.setBackgroundResource(R.drawable.customborder);
                 merekSpinner.setVisibility(View.VISIBLE);
                 merekSpinner.setSelection(0);
                 tipeMotorSpinner.setVisibility(View.INVISIBLE);
@@ -69,6 +72,9 @@ public class CheckUpPage extends Fragment {
             @Override
             public void onClick(View v) {
                 temp = "Kopling";
+                btnKopling.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                btnManual.setBackgroundResource(R.drawable.customborder);
+                btnMatic.setBackgroundResource(R.drawable.customborder);
                 merekSpinner.setVisibility(View.VISIBLE);
                 merekSpinner.setSelection(0);
                 tipeMotorSpinner.setVisibility(View.INVISIBLE);
@@ -80,6 +86,9 @@ public class CheckUpPage extends Fragment {
             @Override
             public void onClick(View v) {
                 temp = "Manual";
+                btnManual.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                btnKopling.setBackgroundResource(R.drawable.customborder);
+                btnMatic.setBackgroundResource(R.drawable.customborder);
                 merekSpinner.setVisibility(View.VISIBLE);
                 merekSpinner.setSelection(0);
                 tipeMotorSpinner.setVisibility(View.INVISIBLE);

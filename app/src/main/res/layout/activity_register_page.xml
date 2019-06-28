@@ -41,7 +41,7 @@
             android:layout_below="@+id/registerEmail"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:hint="Nama User"
+            android:hint="Nama pengguna"
             android:imeOptions="actionNext"
             android:singleLine="true"
             android:id="@+id/registerUsername"/>
@@ -51,8 +51,8 @@
             android:layout_below="@+id/registerUsername"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:password="true"
             android:hint="Nomor telepon"
+            android:inputType="number"
             android:imeOptions="actionNext"
             android:singleLine="true"
             android:id="@+id/registerNumberHandphone"/>
@@ -76,7 +76,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:password="true"
-            android:hint="Kata sandi kembali"
+            android:hint="Ulang kata sandi"
             android:imeOptions="actionDone"
             android:singleLine="true"
             android:id="@+id/registerRePassword"/>

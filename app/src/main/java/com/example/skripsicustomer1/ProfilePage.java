@@ -105,9 +105,10 @@ public class ProfilePage extends AppCompatActivity {
                                 Map<String, Object> update = new HashMap<String, Object>();
                                 update.put("password",formNewPassword);
                                 dbCustomer.updateChildren(update);
+                                Toast.makeText(ProfilePage.this,"Berhasil ganti kata sandi",Toast.LENGTH_LONG).show();
                                 finish();
                             } else {
-                                Toast.makeText(ProfilePage.this, "Gagal ganti password", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ProfilePage.this, "Gagal ganti kata sandi", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

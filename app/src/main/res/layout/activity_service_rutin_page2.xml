@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorPrimary"
                     android:layout_margin="20dp"
-                    android:text="set Jam"/>
+                    android:text="pilih jam"/>
             </LinearLayout>
         
             <LinearLayout
@@ -172,7 +172,7 @@
                         android:id="@+id/checkboxOliGanda"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pergantian Oli Ganda"/>
+                        android:text="Pergantian Oli Gardan"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

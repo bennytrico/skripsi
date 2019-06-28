@@ -95,7 +95,6 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
                     android:singleLine="true"
-                    android:inputType="number"
                     android:id="@+id/bankName"/>
             </LinearLayout>
             <LinearLayout

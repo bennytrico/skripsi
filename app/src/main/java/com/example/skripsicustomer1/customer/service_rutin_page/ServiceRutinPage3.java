@@ -174,17 +174,21 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                             flagRating
                     );
                     dbOrders.push().setValue(order);
+                    Toast.makeText(ServiceRutinPage3.this,"Pesanan sukses",Toast.LENGTH_LONG).show();
                     DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
                     dbMontir.child(montir.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Montir m = dataSnapshot.getValue(Montir.class);
                             PushNotif pushNotif = new PushNotif();
-                            try {
-                                pushNotif.pushNotiftoMontir(getApplicationContext(),m.getFcm_token());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            if (m.getFcm_token() != null) {
+                                try {
+                                    pushNotif.pushNotiftoMontir(getApplicationContext(),m.getFcm_token());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
+
                         }
 
                         @Override

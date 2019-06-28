@@ -3,7 +3,7 @@
     
     <item
         android:id="@+id/profile"
-        android:title="Profie"
+        android:title="Profil"
         android:icon="@drawable/ic_account_circle_black_24dp">
     </item>
     <item

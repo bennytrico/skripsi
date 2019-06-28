@@ -48,9 +48,9 @@ public class ServiceRutinPage extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_service_rutin_page,container,false);
 
-        ImageButton btnMatic = (ImageButton) view.findViewById(R.id.motorMatic);
-        ImageButton btnKopling = (ImageButton) view.findViewById(R.id.motorKopling);
-        ImageButton btnManual = (ImageButton) view.findViewById(R.id.motorManual);
+        final ImageButton btnMatic = (ImageButton) view.findViewById(R.id.motorMatic);
+        final ImageButton btnKopling = (ImageButton) view.findViewById(R.id.motorKopling);
+        final ImageButton btnManual = (ImageButton) view.findViewById(R.id.motorManual);
         platNomorServiceRutin = (EditText) view.findViewById(R.id.platNomorServiceRutin);
         final Button btnNextServiceRutin = (Button) view.findViewById(R.id.btnNextServiceRutin);
         merekSpinner = (Spinner) view.findViewById(R.id.listMerekMotor);
@@ -64,6 +64,9 @@ public class ServiceRutinPage extends Fragment {
                 temp = "Matic";
                 merekSpinner.setVisibility(View.VISIBLE);
                 merekSpinner.setSelection(0);
+                btnMatic.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                btnKopling.setBackgroundResource(R.drawable.customborder);
+                btnManual.setBackgroundResource(R.drawable.customborder);
                 tipeMotorSpinner.setVisibility(View.INVISIBLE);
                 btnNextServiceRutin.setVisibility(View.INVISIBLE);
             }
@@ -73,6 +76,9 @@ public class ServiceRutinPage extends Fragment {
             public void onClick(View v) {
                 temp = "Kopling";
                 merekSpinner.setVisibility(View.VISIBLE);
+                btnKopling.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                btnManual.setBackgroundResource(R.drawable.customborder);
+                btnMatic.setBackgroundResource(R.drawable.customborder);
                 merekSpinner.setSelection(0);
                 tipeMotorSpinner.setVisibility(View.INVISIBLE);
                 btnNextServiceRutin.setVisibility(View.INVISIBLE);
@@ -83,6 +89,9 @@ public class ServiceRutinPage extends Fragment {
             public void onClick(View v) {
                 temp = "Manual";
                 merekSpinner.setVisibility(View.VISIBLE);
+                btnManual.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                btnKopling.setBackgroundResource(R.drawable.customborder);
+                btnMatic.setBackgroundResource(R.drawable.customborder);
                 merekSpinner.setSelection(0);
                 tipeMotorSpinner.setVisibility(View.INVISIBLE);
                 btnNextServiceRutin.setVisibility(View.INVISIBLE);

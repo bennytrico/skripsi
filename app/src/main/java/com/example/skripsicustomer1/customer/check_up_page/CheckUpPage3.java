@@ -168,16 +168,19 @@ public class CheckUpPage3 extends AppCompatActivity {
                             flagRating
                     );
                     dbOrders.push().setValue(order);
+                    Toast.makeText(CheckUpPage3.this,"Pesanan sukses",Toast.LENGTH_LONG).show();
                     DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
                     dbMontir.child(montir.getId()).addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             Montir m = dataSnapshot.getValue(Montir.class);
                             PushNotif pushNotif = new PushNotif();
-                            try {
-                                pushNotif.pushNotiftoMontir(getApplicationContext(),m.getFcm_token());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            if (m.getFcm_token() != null) {
+                                try {
+                                    pushNotif.pushNotiftoMontir(getApplicationContext(),m.getFcm_token());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
 

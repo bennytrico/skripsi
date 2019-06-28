@@ -89,83 +89,69 @@ public class RegisterPage extends AppCompatActivity {
         final String email = regisEmail.getText().toString().trim();
         final String username = regisUsername.getText().toString().trim();
         final String handphone = regisNumberHandphone.getText().toString().trim();
-//        final String address = "KFC - Kemanggisan Jakarta, fast_food, Jakarta Special Capital Region, Indonesia";
-//        final Double latitude = -6.2003319;
-//        final Double longitude = 106.7825777;
-//        final String bankAccount = "1564987526";
         final Integer wallet = 0;
         final String password = regisPassword.getText().toString().trim();
         String rePassword = regisRePassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this,"Please enter your email",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Masukkan email",Toast.LENGTH_LONG).show();
         }
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(this,"Please enter your password",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Masukkan kata sandi",Toast.LENGTH_LONG).show();
         }
         if (TextUtils.isEmpty(rePassword)) {
-            Toast.makeText(this,"Please enter Repassword",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Masukkan ulang kata sandi",Toast.LENGTH_LONG).show();
         }
         if (TextUtils.isEmpty(username)) {
-            Toast.makeText(this,"Please enter Username",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Masukkan nama pengguna",Toast.LENGTH_LONG).show();
         }
         if (password.length() < 6) {
-            Toast.makeText(this, "Password minimal 6 character",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Kata sandi minimal 6 karakter",Toast.LENGTH_LONG).show();
         }
         if (!password.equals(rePassword)) {
-            Toast.makeText(this,"RePassword and Password must be same",Toast.LENGTH_LONG).show();
-        }
-        final String role = "customer";
+            Toast.makeText(this,"Kata sandi sandi harus sama",Toast.LENGTH_LONG).show();
+        } else {
+            final String role = "customer";
 
-        progressDialog.setMessage("Registering User. . .");
-        progressDialog.show();
+            progressDialog.setMessage("Mendaftarkan pengguna. . .");
+            progressDialog.show();
 
-        firebaseAuth.createUserWithEmailAndPassword(email,password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-                        if (task.isSuccessful()) {
-                            Customer customer = new Customer(
-                                    username,
-                                    email,
-                                    role,
-                                    password,
-                                    handphone,
-                                    wallet
-                            );
-//                            Montir montir = new Montir(
-//                                    username,
-//                                    address,
-//                                    email,
-//                                    password,
-//                                    role,
-//                                    bankAccount,
-//                                    latitude,
-//                                    longitude,
-//                                    wallet
-//                            );
-                            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            FirebaseDatabase.getInstance().getReference("Customers")
-                                    .child(userID)
-                                    .setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(RegisterPage.this,"Registered successfully",Toast.LENGTH_LONG).show();
+            firebaseAuth.createUserWithEmailAndPassword(email,password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressDialog.dismiss();
+                            if (task.isSuccessful()) {
+                                Customer customer = new Customer(
+                                        username,
+                                        email,
+                                        role,
+                                        password,
+                                        handphone,
+                                        wallet
+                                );
+                                String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                FirebaseDatabase.getInstance().getReference("Customers")
+                                        .child(userID)
+                                        .setValue(customer).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(RegisterPage.this,"Registered successfully",Toast.LENGTH_LONG).show();
+                                        }
                                     }
-                                }
-                            });
-                            Intent startActivity = new Intent(getApplicationContext(), HomePage.class);
-                            startActivity(startActivity);
-                        } else {
-                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                Toast.makeText(RegisterPage.this,"User already registered",Toast.LENGTH_LONG).show();
+                                });
+                                Intent startActivity = new Intent(getApplicationContext(), HomePage.class);
+                                startActivity(startActivity);
                             } else {
-                                Toast.makeText(RegisterPage.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                    Toast.makeText(RegisterPage.this,"User already registered",Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(RegisterPage.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
     }
 }
