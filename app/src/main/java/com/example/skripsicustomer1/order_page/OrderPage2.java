@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.skripsicustomer1.Customer;
+import com.example.skripsicustomer1.Montir;
 import com.example.skripsicustomer1.Order;
 import com.example.skripsicustomer1.ProfilePage;
 import com.example.skripsicustomer1.R;
@@ -315,6 +316,22 @@ public class OrderPage2 extends AppCompatActivity {
             dbOrder.child(order.getId()).child("status_order").setValue("done");
             dbOrder.child(order.getId()).child("flag_customer_agree").setValue(false);
             dbOrder.child(order.getId()).child("flag_montir_agree").setValue(false);
+
+            final DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs").child(order.getMontir().getId());
+            dbMontir.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Montir montir = dataSnapshot.getValue(Montir.class);
+                    Map<String, Object> update = new HashMap<String, Object>();
+                    update.put("wallet",montir.getWallet() + (order.getAmount() - 20000));
+                    dbMontir.updateChildren(update);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
     public void doneOrder() {

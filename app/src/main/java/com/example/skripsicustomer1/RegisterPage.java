@@ -137,7 +137,7 @@ public class RegisterPage extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(RegisterPage.this,"Registered successfully",Toast.LENGTH_LONG).show();
+                                            Toast.makeText(RegisterPage.this,"Daftar berhasil",Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 });
@@ -145,9 +145,7 @@ public class RegisterPage extends AppCompatActivity {
                                 startActivity(startActivity);
                             } else {
                                 if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                    Toast.makeText(RegisterPage.this,"User already registered",Toast.LENGTH_LONG).show();
-                                } else {
-                                    Toast.makeText(RegisterPage.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(RegisterPage.this,"Pengguna sudah mendaftar",Toast.LENGTH_LONG).show();
                                 }
                             }
                         }

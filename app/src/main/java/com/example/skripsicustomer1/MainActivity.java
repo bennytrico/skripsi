@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -73,43 +74,49 @@ public class MainActivity extends AppCompatActivity {
     public void userLogin () {
         email = emailText.getText().toString().trim();
         password = passwordText.getText().toString().trim();
-        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    progressDialog.setMessage("Sedang proses . .");
-                    progressDialog.show();
-                    final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Customers");
-                    db.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            boolean flag = false;
-                            for (DataSnapshot data: dataSnapshot.getChildren()) {
-                                if (data.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                                    flag = true;
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this,"Email harus diisi",Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this,"Kata sandi harus diisi", Toast.LENGTH_SHORT).show();
+        } else {
+            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        progressDialog.setMessage("Sedang proses . .");
+                        progressDialog.show();
+                        final DatabaseReference db = FirebaseDatabase.getInstance().getReference("Customers");
+                        db.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                boolean flag = false;
+                                for (DataSnapshot data: dataSnapshot.getChildren()) {
+                                    if (data.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                        flag = true;
+                                    }
+                                }
+                                if (!flag) {
+                                    progressDialog.dismiss();
+                                    mAuth.getInstance().signOut();
+                                    Toast.makeText(getApplicationContext(),"Anda bukan pelanggan",Toast.LENGTH_SHORT).show();
+                                } else {
+                                    progressDialog.dismiss();
+                                    Intent startIntent = new Intent(getApplicationContext(), HomePage.class);
+                                    startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(startIntent);
                                 }
                             }
-                            if (!flag) {
-                                progressDialog.dismiss();
-                                mAuth.getInstance().signOut();
-                                Toast.makeText(getApplicationContext(),"Anda bukan pelanggan",Toast.LENGTH_SHORT).show();
-                            } else {
-                                progressDialog.dismiss();
-                                Intent startIntent = new Intent(getApplicationContext(), HomePage.class);
-                                startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(startIntent);
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
                             }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                } else {
-                    Toast.makeText(getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                        });
+                    } else {
+                        Toast.makeText(getApplicationContext(),"Email tidak ditemukan",Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 }
