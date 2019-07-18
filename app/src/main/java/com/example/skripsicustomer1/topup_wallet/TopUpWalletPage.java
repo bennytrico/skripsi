@@ -105,7 +105,7 @@ public class TopUpWalletPage extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.dismiss();
                 DatabaseReference dbWalletConfirmations = FirebaseDatabase.getInstance().getReference("WalletConfirmations");
-                String status = "requested";
+                String status = "paid";
                 WalletConfirmations walletConfirmations = new WalletConfirmations(
                         bankAccountName,
                         bankAccountNumber,

@@ -65,7 +65,7 @@ public class CheckUpPage3 extends AppCompatActivity {
     private String namaCustomer;
     private String noHpCustomer;
     private String platNomor;
-    private String checkUpList;
+    private String checkUpList = "";
 
     ListView listViewMontir ;
     Button order;
@@ -145,6 +145,7 @@ public class CheckUpPage3 extends AppCompatActivity {
                     } else if (typeCheckUp.equals("All")) {
                         checkUpList = "All";
                     }
+                    Log.e("asdasd",checkUpList);
                     Boolean flagRating = false;
                     Order order = new Order();
                     order.OrderCheckup(
@@ -170,9 +171,9 @@ public class CheckUpPage3 extends AppCompatActivity {
                     dbOrders.push().setValue(order);
                     Toast.makeText(CheckUpPage3.this,"Pesanan sukses",Toast.LENGTH_LONG).show();
                     DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
-                    dbMontir.child(montir.getId()).addChildEventListener(new ChildEventListener() {
+                    dbMontir.child(montir.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Montir m = dataSnapshot.getValue(Montir.class);
                             PushNotif pushNotif = new PushNotif();
                             if (m.getFcm_token() != null) {
@@ -182,21 +183,6 @@ public class CheckUpPage3 extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
-                        }
-
-                        @Override
-                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
                         }
 
                         @Override

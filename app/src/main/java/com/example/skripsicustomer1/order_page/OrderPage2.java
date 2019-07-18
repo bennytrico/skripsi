@@ -189,8 +189,8 @@ public class OrderPage2 extends AppCompatActivity {
             changeStatusOrder.setVisibility(View.GONE);
             batalOrder.setVisibility(View.GONE);
         }
-        if (order.getType_order().equals("Check up")) {
-            if (order.getCheck_up_list().equals("All")) {
+        if (order.getType_order().equals("Check Up")) {
+            if (order.getCheck_up_list().contains("All")) {
                 kerusakan = "All";
             } else if (order.getCheck_up_list().contains("Breaking system")) {
                 kerusakan = kerusakan + "Breaking system ;";
@@ -201,6 +201,7 @@ public class OrderPage2 extends AppCompatActivity {
             } else if (order.getCheck_up_list().contains("Mechanical")) {
                 kerusakan = kerusakan + "Mechanical ;";
             }
+            setDataOrderPage();
         }
     }
     public void setDataOrderPage () {

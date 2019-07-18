@@ -62,15 +62,28 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="center">
-        <EditText
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:imeOptions="actionNext"
-            android:hint="isi platnomor kendaraan anda"
-            android:layout_marginBottom="10dp"
-            android:singleLine="true"
-            android:id="@+id/platNomorServiceRutin"
-            />
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Plat Motor"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:hint="isi platnomor kendaraan anda"
+                android:layout_marginBottom="10dp"
+                android:singleLine="true"
+                android:id="@+id/platNomorServiceRutin"
+                />
+        </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,44 +96,44 @@
         android:layout_below="@+id/textMerekMotor"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_margin="20dp">
+        android:paddingTop="20dp"
+        android:layout_margin="10dp">
         <Spinner
             android:id="@+id/listMerekMotor"
             android:layout_width="200dp"
             android:layout_height="30dp"
-            android:textAlignment="center"
-            android:background="@drawable/customborder"
             android:visibility="invisible"
+            android:background="@drawable/customborder"
             android:entries="@array/merekMotor">
         </Spinner>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_margin="20dp">
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical">
             <Spinner
                 android:id="@+id/tipeMotor"
                 android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:textAlignment="center"
+                android:layout_height="30dp"
                 android:visibility="invisible"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:background="@drawable/customborder">
             </Spinner>
         </LinearLayout>
-
         <Button
             android:id="@+id/btnNextServiceRutin"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:background="@color/colorPrimary"
             android:text="Lanjutkan"
             android:visibility="invisible"
             android:drawableRight="@drawable/ic_navigate_next_black_24dp"/>
-
     </LinearLayout>
+    
 
 </RelativeLayout>

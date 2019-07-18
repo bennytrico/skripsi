@@ -76,7 +76,7 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
                         if (c.getWallet() >= harga) {
                             if (TextUtils.isEmpty(mTime1)) {
                                 Toast.makeText(CheckUpPage2.this,"Harus mengisi jam servis", Toast.LENGTH_SHORT).show();
-                            } else if (TextUtils.isEmpty(typeCheckupSpinner.getSelectedItem().toString())) {
+                            } else if (typeCheckupSpinner.getSelectedItem().toString().contains("-")) {
                                 Toast.makeText(CheckUpPage2.this,"Harus mengisi tipe kerusakan",Toast.LENGTH_SHORT).show();
                             } else {
                                 Intent intent = new Intent(getApplicationContext(),CheckUpPage3.class);

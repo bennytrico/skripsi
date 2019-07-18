@@ -47,8 +47,6 @@ public class OrderPage extends AppCompatActivity {
         dbOrder.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                progressDialog.setMessage("Sedang proses . .");
-                progressDialog.show();
                 orderArrayList.clear();
                 for (DataSnapshot data: dataSnapshot.getChildren()) {
                     Order r = data.getValue(Order.class);
@@ -65,7 +63,6 @@ public class OrderPage extends AppCompatActivity {
                 );
                 Collections.reverse(orderArrayList);
                 listViewOrder.setAdapter(listViewOrderAdapter);
-                progressDialog.dismiss();
             }
 
             @Override
