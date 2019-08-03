@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProfilePage extends AppCompatActivity {
@@ -51,31 +54,53 @@ public class ProfilePage extends AppCompatActivity {
         submitChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(ProfilePage.this);
-                dialog.setContentView(R.layout.dialog_confirmation);
-                dialog.setTitle("Info");
+                if (! validateForm()) {
+                    final Dialog dialog = new Dialog(ProfilePage.this);
+                    dialog.setContentView(R.layout.custom_dialog_confirmation_with_password);
+                    dialog.setTitle("Info");
 
-                Button agree = (Button) dialog.findViewById(R.id.agreeTopUp);
-                Button disAgree = (Button) dialog.findViewById(R.id.disagreeTopUp);
+                    Button agree = (Button) dialog.findViewById(R.id.agreeTopUpWithPassword);
+                    Button disAgree = (Button) dialog.findViewById(R.id.disagreeTopUpWithPassword);
+                    final EditText password = (EditText) dialog.findViewById(R.id.customDialogPassword);
 
-                disAgree.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-                agree.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                        validateForm();
-                    }
-                });
-                dialog.show();
+                    disAgree.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    agree.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String passwordConfirmation = password.getText().toString().trim();
+                            if (customer.getPassword().equals(passwordConfirmation)) {
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                user.updatePassword(formNewPassword)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                    Map<String, Object> update = new HashMap<String, Object>();
+                                                    update.put("password",formNewPassword);
+                                                    dbCustomer.updateChildren(update);
+                                                    Toast.makeText(ProfilePage.this,"Berhasil ganti kata sandi",Toast.LENGTH_LONG).show();
+                                                    finish();
+                                                    dialog.dismiss();
+                                                } else {
+                                                    Toast.makeText(ProfilePage.this, "Gagal ganti kata sandi", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    });
+                    dialog.show();
+                }
             }
         });
     }
-    public void validateForm() {
+    public boolean validateForm() {
         formOldPassword = oldPassword.getText().toString().trim();
         formNewPassword = newPassword.getText().toString().trim();
         formReNewPassword = reNewPassword.getText().toString().trim();
@@ -92,27 +117,11 @@ public class ProfilePage extends AppCompatActivity {
         } else if (!formNewPassword.equals(formReNewPassword)) {
             flag = true;
             Toast.makeText(this,"Password baru harus sama dengan password ulang baru",Toast.LENGTH_SHORT).show();
+        } else if (!customer.getPassword().equals(formOldPassword)) {
+            flag = true;
+            Toast.makeText(this,"Password lama salah",Toast.LENGTH_SHORT).show();
         }
-
-        if (!flag) {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            user.updatePassword(formNewPassword)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                Map<String, Object> update = new HashMap<String, Object>();
-                                update.put("password",formNewPassword);
-                                dbCustomer.updateChildren(update);
-                                Toast.makeText(ProfilePage.this,"Berhasil ganti kata sandi",Toast.LENGTH_LONG).show();
-                                finish();
-                            } else {
-                                Toast.makeText(ProfilePage.this, "Gagal ganti kata sandi", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        }
+        return flag;
     }
     public void initVariable() {
         oldPassword = (EditText) findViewById(R.id.oldPassword);

@@ -228,7 +228,7 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         dialog.setTitle("Info");
 
         TextView text = (TextView)dialog.findViewById(R.id.textTitleDialog);
-        text.setText("Oli menggunakan standart Oli dari merek ");
+        text.setText("Oli menggunakan standart Oli dari merek kendaraan");
         text.setTypeface(null,Typeface.BOLD);
         ImageView image = (ImageView)dialog.findViewById(R.id.imgIconInfo);
         image.setImageResource(R.drawable.info_dialog_fragment);

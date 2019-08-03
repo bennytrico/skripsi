@@ -31,6 +31,7 @@ import com.example.skripsicustomer1.order_page.OrderPage;
 import com.example.skripsicustomer1.order_page.OrderPage2;
 import com.example.skripsicustomer1.rating_page.RatingPage;
 import com.example.skripsicustomer1.topup_wallet.TopUpWalletPage;
+import com.example.skripsicustomer1.topup_wallet.WalletHistoryActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -191,6 +192,9 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
                     startActivity(intent);
                 } else if (id == R.id.profile) {
                     Intent intent = new Intent(getApplicationContext(), ProfilePage.class);
+                    startActivity(intent);
+                } else if (id == R.id.historyWallet) {
+                    Intent intent = new Intent(getApplicationContext(), WalletHistoryActivity.class);
                     startActivity(intent);
                 }
 

@@ -72,6 +72,8 @@ public class CheckUpPage3 extends AppCompatActivity {
     Customer customer = new Customer();
     TextView namaMontirCheckUp;
 
+    ProgressDialog progressDialog = new ProgressDialog(CheckUpPage3.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,9 +87,7 @@ public class CheckUpPage3 extends AppCompatActivity {
 
         Button btnOpenMap = (Button) findViewById(R.id.getCurrentLocationCheckUp);
         TextView txtLocation = (TextView) findViewById(R.id.textLocationCheckUp);
-        namaMontirCheckUp = (TextView) findViewById(R.id.namaMontirCheckUp);
         order = (Button) findViewById(R.id.orderCheckUp);
-        listViewMontir = (ListView) findViewById(R.id.listViewMontirCheckUp);
 
 
         DatabaseReference dbCustomer = FirebaseDatabase.getInstance().getReference("Customers");
@@ -109,90 +109,10 @@ public class CheckUpPage3 extends AppCompatActivity {
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(valueLocation)) {
+                if (TextUtils.isEmpty(valueLocation))
                     Toast.makeText(CheckUpPage3.this, "harus menentukan alamat",Toast.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(montir.getId())) {
-                    Toast.makeText(CheckUpPage3.this,"harus pilih montir",Toast.LENGTH_SHORT).show();
-                } else {
-                    DatabaseReference  dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
-                    final DatabaseReference dbCustomers = FirebaseDatabase.getInstance().getReference("Customers");
-                    dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Customer c = dataSnapshot.getValue(Customer.class);
-                            Map<String, Object> update = new HashMap<String, Object>();
-                            Integer calculatedWallet = c.getWallet() - harga;
-                            update.put("wallet",calculatedWallet);
-                            dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(update);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                    String customer = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    String typeOrder = "Check Up";
-                    if (typeCheckUp.equals("Electrical")) {
-                        checkUpList += "Electrical , ";
-                    } else if (typeCheckUp.equals("Breaking system")) {
-                        checkUpList += "Breaking system , ";
-                    } else if (typeCheckUp.equals("Engine")) {
-                        checkUpList += "Engine , ";
-                    } else if (typeCheckUp.equals("Mechanical")) {
-                        checkUpList += "Mechanical , ";
-                    } else if (typeCheckUp.equals("All")) {
-                        checkUpList = "All";
-                    }
-                    Log.e("asdasd",checkUpList);
-                    Boolean flagRating = false;
-                    Order order = new Order();
-                    order.OrderCheckup(
-                            customer,
-                            valueLocation,
-                            typeOrder,
-                            transmisi,
-                            jenis,
-                            tipe,
-                            tanggal,
-                            mTime1,
-                            statusOrder,
-                            statusUserAgree,
-                            statusMontirAgree,
-                            harga,
-                            montir,
-                            checkUpList,
-                            namaCustomer,
-                            noHpCustomer,
-                            platNomor,
-                            flagRating
-                    );
-                    dbOrders.push().setValue(order);
-                    Toast.makeText(CheckUpPage3.this,"Pesanan sukses",Toast.LENGTH_LONG).show();
-                    DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
-                    dbMontir.child(montir.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Montir m = dataSnapshot.getValue(Montir.class);
-                            PushNotif pushNotif = new PushNotif();
-                            if (m.getFcm_token() != null) {
-                                try {
-                                    pushNotif.pushNotiftoMontir(getApplicationContext(),m.getFcm_token());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                    Toast.makeText(CheckUpPage3.this, "Pesanan berhasil",Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(CheckUpPage3.this, HomePage.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
-                }
+                else
+                    getListMontir();
             }
         });
 
@@ -242,24 +162,17 @@ public class CheckUpPage3 extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        getListMontir();
-        super.onStart();
-    }
-
     public void getListMontir () {
-        final ProgressDialog progressDialog = new ProgressDialog(CheckUpPage3.this);
         final ArrayList<Montir> arrayList = new ArrayList<>();
         DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
         final DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
 
         final ArrayList<String> idMontir = new ArrayList<>();
+        progressDialog.setMessage("Mencari motor");
 
         dbOrders.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                progressDialog.setMessage("Sedang proses . .");
                 progressDialog.show();
                 Date dateBooking = new Date();
                 Calendar calendar = Calendar.getInstance();
@@ -337,23 +250,10 @@ public class CheckUpPage3 extends AppCompatActivity {
                     }
 
                 }
-                final MontirAdapter montirAdapter  = new MontirAdapter(
-                        getApplicationContext(),
-                        0,
-                        arrayList
-                );
 
-                listViewMontir.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Montir m = montirAdapter.getItem(position);
-                        namaMontirCheckUp.setText(m.getName());
-                        montir = m;
-                    }
-                });
+                montir = arrayList.get(0);
 
-                listViewMontir.setAdapter(montirAdapter);
-                progressDialog.dismiss();
+                createOrder();
             }
 
             @Override
@@ -361,5 +261,90 @@ public class CheckUpPage3 extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void createOrder() {
+        DatabaseReference  dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
+        final DatabaseReference dbCustomers = FirebaseDatabase.getInstance().getReference("Customers");
+
+        dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Customer c = dataSnapshot.getValue(Customer.class);
+                Map<String, Object> update = new HashMap<String, Object>();
+                Integer calculatedWallet = c.getWallet() - harga;
+                update.put("wallet",calculatedWallet);
+                dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(update);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        String customer = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String typeOrder = "Check Up";
+        if (typeCheckUp.equals("Electrical")) {
+            checkUpList += "Electrical , ";
+        } else if (typeCheckUp.equals("Breaking system")) {
+            checkUpList += "Breaking system , ";
+        } else if (typeCheckUp.equals("Engine")) {
+            checkUpList += "Engine , ";
+        } else if (typeCheckUp.equals("Mechanical")) {
+            checkUpList += "Mechanical , ";
+        } else if (typeCheckUp.equals("All")) {
+            checkUpList = "All";
+        }
+        Boolean flagRating = false;
+        Order order = new Order();
+        order.OrderCheckup(
+                customer,
+                valueLocation,
+                typeOrder,
+                transmisi,
+                jenis,
+                tipe,
+                tanggal,
+                mTime1,
+                statusOrder,
+                statusUserAgree,
+                statusMontirAgree,
+                harga,
+                montir,
+                checkUpList,
+                namaCustomer,
+                noHpCustomer,
+                platNomor,
+                flagRating
+        );
+
+        dbOrders.push().setValue(order);
+        DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
+        dbMontir.child(montir.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Montir m = dataSnapshot.getValue(Montir.class);
+                PushNotif pushNotif = new PushNotif();
+                if (m.getFcm_token() != null) {
+                    try {
+                        pushNotif.pushNotiftoMontir(getApplicationContext(),m.getFcm_token());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        progressDialog.dismiss();
+
+        Toast.makeText(CheckUpPage3.this, "Pesanan berhasil, silahkan lihat di menu Pesanan",Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(CheckUpPage3.this, HomePage.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
     }
 }

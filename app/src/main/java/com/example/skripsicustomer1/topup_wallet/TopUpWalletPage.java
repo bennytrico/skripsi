@@ -3,6 +3,7 @@ package com.example.skripsicustomer1.topup_wallet;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,8 +20,16 @@ import com.example.skripsicustomer1.R;
 import com.example.skripsicustomer1.WalletConfirmations;
 import com.example.skripsicustomer1.customer.service_rutin_page.ServiceRutinPage2;
 import com.example.skripsicustomer1.helper.FormatNumber;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
 
 import static com.example.skripsicustomer1.CurrentUser.currentEmailUser;
 import static com.example.skripsicustomer1.CurrentUser.currentUserID;
@@ -40,6 +49,7 @@ public class TopUpWalletPage extends AppCompatActivity {
     private String bankAccountNumber;
     private String bankName;
     private Integer amountTopUp;
+    private String walletConfirmationId;
 
     FormatNumber formatNumber = new FormatNumber();
     @Override
@@ -105,8 +115,14 @@ public class TopUpWalletPage extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.dismiss();
                 DatabaseReference dbWalletConfirmations = FirebaseDatabase.getInstance().getReference("WalletConfirmations");
+                final DatabaseReference dbWalletHistory = FirebaseDatabase.getInstance().getReference("WalletConfirmationHistory")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
                 String status = "paid";
-                WalletConfirmations walletConfirmations = new WalletConfirmations(
+                Date createdAt = new Date();
+                SimpleDateFormat formater = new SimpleDateFormat("dd MMMM yyyy");
+
+                final WalletConfirmations walletConfirmations = new WalletConfirmations(
                         bankAccountName,
                         bankAccountNumber,
                         currentEmailUser,
@@ -114,14 +130,37 @@ public class TopUpWalletPage extends AppCompatActivity {
                         status,
                         currentUserID,
                         amountTopUp,
-                        bankName
+                        bankName,
+                        formater.format(createdAt)
                 );
-                dbWalletConfirmations.push().setValue(walletConfirmations);
+                walletConfirmationId = dbWalletConfirmations.push().getKey();
+
+                dbWalletConfirmations.child(walletConfirmationId).setValue(walletConfirmations);
+
+                dbWalletHistory.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            dbWalletHistory.child(walletConfirmationId).setValue(walletConfirmations);
+                        } else {
+                            DatabaseReference dbWalletHistoryRegisterUserId = FirebaseDatabase.getInstance()
+                                    .getReference("WalletConfirmationHistory");
+                            dbWalletHistoryRegisterUserId.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .child(walletConfirmationId).setValue(walletConfirmations);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
                 Intent intent = new Intent(getApplicationContext(), TopUpWalletPage2.class);
                 intent.putExtra("EXTRA_AMOUNT",amountTopUp);
                 startActivity(intent);
             }
         });
+
         disAgreeTopUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

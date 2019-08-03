@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    
     <item
         android:id="@+id/profile"
         android:title="Profil"
@@ -10,13 +9,16 @@
         android:id="@+id/order"
         android:title="Pesanan"
         android:icon="@drawable/ic_assignment_black_24dp">
-
     </item>
     <item
         android:id="@+id/topUpwallet"
         android:title="Isi ulang dompet"
         android:icon="@drawable/ic_account_balance_wallet_black_24dp">
-    
+    </item>
+    <item
+        android:id="@+id/historyWallet"
+        android:title="Riwayat isi dompet"
+        android:icon="@drawable/ic_history_black_24dp">
     </item>
     <item
         android:id="@+id/logout"

@@ -10,11 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +59,10 @@ public class ServiceRutinPage extends Fragment {
         merekSpinner = (Spinner) view.findViewById(R.id.listMerekMotor);
         tipeMotorSpinner = (Spinner) view.findViewById(R.id.tipeMotor);
         platNomorServiceRutin.setVisibility(View.INVISIBLE);
+        RelativeLayout LayoutMasterServiceRutin = (RelativeLayout) view.findViewById(R.id.LayoutMasterServiceRutin);
+        Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.custom_animate);
+        LayoutMasterServiceRutin.startAnimation(slide_down);
+
 
         btnMatic.setOnClickListener(new View.OnClickListener() {
             @Override

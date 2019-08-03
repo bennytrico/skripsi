@@ -2,10 +2,13 @@ package com.example.skripsicustomer1;
 
 public class WalletConfirmations {
     private Integer amount;
-    private String bank_account_name, bank_account_number, email, name, status, userId, bank;
+    private String bank_account_name, bank_account_number, email, name, status, userId, bank, created_at;
+    public WalletConfirmations() {
 
+    }
     public WalletConfirmations (String bank_account_name, String bank_account_number, String email,
-                                String name, String status, String userId, Integer amount, String bank) {
+                                String name, String status, String userId, Integer amount, String bank,
+                                String created_at) {
         this.bank_account_name = bank_account_name;
         this.bank_account_number = bank_account_number;
         this.email = email;
@@ -14,6 +17,7 @@ public class WalletConfirmations {
         this.userId = userId;
         this.amount = amount;
         this.bank = bank;
+        this.created_at = created_at;
     }
 
     public Integer getAmount() {
@@ -78,5 +82,13 @@ public class WalletConfirmations {
 
     public void setBank(String bank) {
         this.bank = bank;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 }

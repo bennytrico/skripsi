@@ -77,6 +77,8 @@ public class ServiceRutinPage3 extends AppCompatActivity{
     ListView listViewMontir ;
     Button order;
     TextView namaMontirSelected;
+
+    ProgressDialog progressDialog = new ProgressDialog(ServiceRutinPage3.this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,8 +88,6 @@ public class ServiceRutinPage3 extends AppCompatActivity{
         Button btnGetLocation = (Button) findViewById(R.id.getCurrentLocation);
         TextView textLocation = (TextView) findViewById(R.id.textLocation);
         order = (Button) findViewById(R.id.orderServiceRutin);
-        namaMontirSelected = (TextView) findViewById(R.id.namaMontir);
-        listViewMontir = (ListView) findViewById(R.id.listViewMontir);
 
         if (transmisi == null) {
             getIntentValue();
@@ -112,78 +112,10 @@ public class ServiceRutinPage3 extends AppCompatActivity{
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(montir.getId())) {
-                    Toast.makeText(ServiceRutinPage3.this,"harus pilih montir",Toast.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(valueLocation)) {
+                if (TextUtils.isEmpty(valueLocation))
                     Toast.makeText(ServiceRutinPage3.this, "harus menentukan alamat",Toast.LENGTH_SHORT).show();
-                } else {
-                    DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
-                    final DatabaseReference dbCustomers = FirebaseDatabase.getInstance().getReference("Customers");
-                    dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Customer c = dataSnapshot.getValue(Customer.class);
-                            Map<String, Object> update = new HashMap<String, Object>();
-                            Integer calculatedWallet = c.getWallet() - harga;
-                            update.put("wallet",calculatedWallet);
-                            dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(update);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                    String customer = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    String typeOrder = "Service Rutin";
-                    Boolean flagRating = false;
-                    Order order = new Order(
-                            customer,
-                            valueLocation,
-                            typeOrder,
-                            transmisi,
-                            jenis,
-                            tipe,
-                            tanggal,
-                            mTime1,
-                            statusOrder,
-                            oliGanda,
-                            oliMesin,
-                            statusUserAgree,
-                            statusMontirAgree,
-                            harga,
-                            montir,
-                            namaCustomer,
-                            noHpCustomer,
-                            platNomor,
-                            flagRating
-                    );
-                    dbOrders.push().setValue(order);
-                    Toast.makeText(ServiceRutinPage3.this,"Pesanan sukses",Toast.LENGTH_LONG).show();
-                    DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
-                    dbMontir.child(montir.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Montir m = dataSnapshot.getValue(Montir.class);
-                            PushNotif pushNotif = new PushNotif();
-                            if (m.getFcm_token() != null) {
-                                try {
-                                    pushNotif.pushNotiftoMontir(getApplicationContext(),m.getFcm_token());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                    Toast.makeText(ServiceRutinPage3.this, "Pesanan berhasil",Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(ServiceRutinPage3.this, HomePage.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
-                }
+                else
+                    getListMontir();
             }
         });
 
@@ -237,24 +169,17 @@ public class ServiceRutinPage3 extends AppCompatActivity{
         }
     }
 
-    @Override
-    protected void onStart() {
-        getListMontir();
-        super.onStart();
-    }
-
     public void getListMontir() {
-        final ProgressDialog progressDialog = new ProgressDialog(ServiceRutinPage3.this);
         final ArrayList<Montir> arrayList = new ArrayList<>();
         DatabaseReference db = FirebaseDatabase.getInstance().getReference("Montirs");
         final DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
 
         final ArrayList<String> idMontir = new ArrayList<>();
+        progressDialog.setMessage("Mencari montir");
 
         dbOrders.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                progressDialog.setMessage("Sedang proses . .");
                 progressDialog.show();
                 Date dateBooking = new Date();
                 Calendar calendar = Calendar.getInstance();
@@ -333,23 +258,9 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                     }
 
                 }
-                final MontirAdapter listViewMontirAdapater = new MontirAdapter(
-                        getApplicationContext(),
-                        0,
-                        arrayList
-                );
+                montir = arrayList.get(0);
 
-                listViewMontir.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Montir c = listViewMontirAdapater.getItem(position);
-                        namaMontirSelected.setText(c.getName());
-                        montir = c;
-                    }
-                });
-
-                listViewMontir.setAdapter(listViewMontirAdapater);
-                progressDialog.dismiss();
+                createOrder();
             }
 
             @Override
@@ -357,5 +268,79 @@ public class ServiceRutinPage3 extends AppCompatActivity{
 
             }
         });
+    }
+
+    public void createOrder() {
+        DatabaseReference dbOrders = FirebaseDatabase.getInstance().getReference("Orders");
+        final DatabaseReference dbCustomers = FirebaseDatabase.getInstance().getReference("Customers");
+
+        dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Customer c = dataSnapshot.getValue(Customer.class);
+                Map<String, Object> update = new HashMap<String, Object>();
+                Integer calculatedWallet = c.getWallet() - harga;
+                update.put("wallet",calculatedWallet);
+                dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(update);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        String customer = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String typeOrder = "Service Rutin";
+        Boolean flagRating = false;
+        Order order = new Order(
+                customer,
+                valueLocation,
+                typeOrder,
+                transmisi,
+                jenis,
+                tipe,
+                tanggal,
+                mTime1,
+                statusOrder,
+                oliGanda,
+                oliMesin,
+                statusUserAgree,
+                statusMontirAgree,
+                harga,
+                montir,
+                namaCustomer,
+                noHpCustomer,
+                platNomor,
+                flagRating
+        );
+
+        dbOrders.push().setValue(order);
+        DatabaseReference dbMontir = FirebaseDatabase.getInstance().getReference("Montirs");
+        dbMontir.child(montir.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Montir m = dataSnapshot.getValue(Montir.class);
+                PushNotif pushNotif = new PushNotif();
+                if (m.getFcm_token() != null) {
+                    try {
+                        pushNotif.pushNotiftoMontir(getApplicationContext(),m.getFcm_token());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        progressDialog.dismiss();
+        Toast.makeText(ServiceRutinPage3.this, "Pesanan berhasil, silahkan lihat di menu Pesanan",Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(ServiceRutinPage3.this, HomePage.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
     }
 }

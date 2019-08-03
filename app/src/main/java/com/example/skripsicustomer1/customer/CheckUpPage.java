@@ -10,11 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -52,6 +55,10 @@ public class CheckUpPage extends Fragment {
         final Button btnNextCheckUp = (Button) view.findViewById(R.id.btnNextCheckUp);
         merekSpinner = (Spinner) view.findViewById(R.id.listMerekMotorCheckUp);
         tipeMotorSpinner = (Spinner) view.findViewById(R.id.tipeMotorCheckUp);
+        RelativeLayout LayoutMasterCheckUp = (RelativeLayout) view.findViewById(R.id.LayoutMasterCheckUp);
+        Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.custom_animate);
+        LayoutMasterCheckUp.startAnimation(slide_down);
+
         Log.e("uid", currentUserID);
         btnMatic.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -94,7 +94,6 @@ public class RatingPage extends AppCompatActivity {
                             updateRating.put("rating_montir",calculateRating);
                             dbRatingUpdate.updateChildren(updateRating);
 
-
                         } else {
                             DatabaseReference dbMontirUpdate = FirebaseDatabase.getInstance().getReference("Montirs").child(order.getMontir().getId());
                             Map<String, Object> updateMontir = new HashMap<String, Object>();
