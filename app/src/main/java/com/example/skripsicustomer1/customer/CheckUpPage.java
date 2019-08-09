@@ -32,6 +32,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.example.skripsicustomer1.CurrentUser.currentEmailUser;
 import static com.example.skripsicustomer1.CurrentUser.currentUserID;
 import static com.example.skripsicustomer1.CurrentUser.currentUserWallet;
@@ -42,6 +45,14 @@ public class CheckUpPage extends Fragment {
 
     Spinner merekSpinner;
     EditText platNomorCheckUp;
+
+    List<String> koplingYamaha = new ArrayList<String>();
+    List<String> koplingHonda = new ArrayList<String>();
+    List<String> maticHonda = new ArrayList<String>();
+    List<String> maticYamaha = new ArrayList<String>();
+    List<String> manualYamaha = new ArrayList<String>();
+    List<String> manualHonda = new ArrayList<String>();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,7 +70,24 @@ public class CheckUpPage extends Fragment {
         Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.custom_animate);
         LayoutMasterCheckUp.startAnimation(slide_down);
 
-        Log.e("uid", currentUserID);
+        DatabaseReference dbBikes = FirebaseDatabase.getInstance().getReference("Bikes");
+        dbBikes.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                koplingYamaha = (ArrayList<String>) dataSnapshot.child("kopling").child("yamaha").getValue();
+                koplingHonda = (ArrayList<String>) dataSnapshot.child("kopling").child("honda").getValue();
+                maticYamaha = (ArrayList<String>) dataSnapshot.child("matic").child("yamaha").getValue();
+                maticHonda = (ArrayList<String>) dataSnapshot.child("matic").child("honda").getValue();
+                manualYamaha = (ArrayList<String>) dataSnapshot.child("manual").child("yamaha").getValue();
+                manualHonda = (ArrayList<String>) dataSnapshot.child("manual").child("honda").getValue();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         btnMatic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,39 +143,33 @@ public class CheckUpPage extends Fragment {
                     tipeMotorSpinner.setVisibility(View.INVISIBLE);
                     btnNextCheckUp.setVisibility(View.INVISIBLE);
                 }else if(parent.getItemAtPosition(position).toString().equals("Honda") && temp.equals("Matic")) {
-                    String tipeMotors[] = getResources().getStringArray(R.array.HondaMatic);
 
-                    setSpinnerTypeMotor(tipeMotors);
+                    setSpinnerTypeMotor(maticHonda);
                     tipeMotorSpinner.setVisibility(View.VISIBLE);
                     btnNextCheckUp.setVisibility(View.VISIBLE);
                 }else if(parent.getItemAtPosition(position).toString().equals("Honda") && temp.equals("Manual")){
-                    String tipeMotors[] = getResources().getStringArray(R.array.HondaManual);
 
-                    setSpinnerTypeMotor(tipeMotors);
+                    setSpinnerTypeMotor(manualHonda);
                     tipeMotorSpinner.setVisibility(View.VISIBLE);
                     btnNextCheckUp.setVisibility(View.VISIBLE);
                 }else if(parent.getItemAtPosition(position).toString().equals("Honda") && temp.equals("Kopling")){
-                    String tipeMotors[] = getResources().getStringArray(R.array.HondaKopling);
 
-                    setSpinnerTypeMotor(tipeMotors);
+                    setSpinnerTypeMotor(koplingHonda);
                     tipeMotorSpinner.setVisibility(View.VISIBLE);
                     btnNextCheckUp.setVisibility(View.VISIBLE);
                 }else if(parent.getItemAtPosition(position).toString().equals("Yamaha") && temp.equals("Matic")){
-                    String tipeMotors[] = getResources().getStringArray(R.array.YamahaMatic);
 
-                    setSpinnerTypeMotor(tipeMotors);
+                    setSpinnerTypeMotor(maticYamaha);
                     tipeMotorSpinner.setVisibility(View.VISIBLE);
                     btnNextCheckUp.setVisibility(View.VISIBLE);
                 }else if(parent.getItemAtPosition(position).toString().equals("Yamaha") && temp.equals("Manual")){
-                    String tipeMotors[] = getResources().getStringArray(R.array.YamahaManual);
 
-                    setSpinnerTypeMotor(tipeMotors);
+                    setSpinnerTypeMotor(manualYamaha);
                     tipeMotorSpinner.setVisibility(View.VISIBLE);
                     btnNextCheckUp.setVisibility(View.VISIBLE);
                 }else if(parent.getItemAtPosition(position).toString().equals("Yamaha")&& temp.equals("Kopling")){
-                    String tipeMotors[] = getResources().getStringArray(R.array.YamahaKopling);
 
-                    setSpinnerTypeMotor(tipeMotors);
+                    setSpinnerTypeMotor(koplingYamaha);
                     tipeMotorSpinner.setVisibility(View.VISIBLE);
                     btnNextCheckUp.setVisibility(View.VISIBLE);
                 }
@@ -161,7 +183,7 @@ public class CheckUpPage extends Fragment {
 
         return view;
     }
-    public void setSpinnerTypeMotor(String tipeMotors[]){
+    public void setSpinnerTypeMotor(List<String> tipeMotors){
 
         ArrayAdapter<String> typeMotor = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_spinner_dropdown_item,tipeMotors);
         typeMotor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -37,6 +37,10 @@ import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import static com.example.skripsicustomer1.CurrentUser.currentUserID;
 
 
@@ -46,6 +50,13 @@ public class ServiceRutinPage extends Fragment {
     Spinner tipeMotorSpinner ;
     Spinner merekSpinner;
     EditText platNomorServiceRutin;
+    List<String> koplingYamaha = new ArrayList<String>();
+    List<String> koplingHonda = new ArrayList<String>();
+    List<String> maticHonda = new ArrayList<String>();
+    List<String> maticYamaha = new ArrayList<String>();
+    List<String> manualYamaha = new ArrayList<String>();
+    List<String> manualHonda = new ArrayList<String>();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
@@ -63,6 +74,23 @@ public class ServiceRutinPage extends Fragment {
         Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.custom_animate);
         LayoutMasterServiceRutin.startAnimation(slide_down);
 
+        DatabaseReference dbBikes = FirebaseDatabase.getInstance().getReference("Bikes");
+        dbBikes.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                koplingYamaha = (ArrayList<String>) dataSnapshot.child("kopling").child("yamaha").getValue();
+                koplingHonda = (ArrayList<String>) dataSnapshot.child("kopling").child("honda").getValue();
+                maticYamaha = (ArrayList<String>) dataSnapshot.child("matic").child("yamaha").getValue();
+                maticHonda = (ArrayList<String>) dataSnapshot.child("matic").child("honda").getValue();
+                manualYamaha = (ArrayList<String>) dataSnapshot.child("manual").child("yamaha").getValue();
+                manualHonda = (ArrayList<String>) dataSnapshot.child("manual").child("honda").getValue();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         btnMatic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,63 +147,50 @@ public class ServiceRutinPage extends Fragment {
                     btnNextServiceRutin.setVisibility(View.INVISIBLE);
                     platNomorServiceRutin.setVisibility(View.VISIBLE);
 
-
                 }else if(parent.getItemAtPosition(position).toString().equals("Honda") && temp.equals("Matic")) {
-                    String tipeMotors[] = getResources().getStringArray(R.array.HondaMatic);
 
-                    setSpinnerTypeMotor(tipeMotors);
+                    setSpinnerTypeMotor(maticHonda);
                     tipeMotorSpinner.setVisibility(View.VISIBLE);
                     btnNextServiceRutin.setVisibility(View.VISIBLE);
                     platNomorServiceRutin.setVisibility(View.VISIBLE);
 
 
                 }else if(parent.getItemAtPosition(position).toString().equals("Honda") && temp.equals("Manual")){
-                    String tipeMotors[] = getResources().getStringArray(R.array.HondaManual);
 
-                    setSpinnerTypeMotor(tipeMotors);
+                    setSpinnerTypeMotor(manualHonda);
                     tipeMotorSpinner.setVisibility(View.VISIBLE);
                     btnNextServiceRutin.setVisibility(View.VISIBLE);
                     platNomorServiceRutin.setVisibility(View.VISIBLE);
-
 
                 }else if(parent.getItemAtPosition(position).toString().equals("Honda") && temp.equals("Kopling")){
-                    String tipeMotors[] = getResources().getStringArray(R.array.HondaKopling);
 
-                    setSpinnerTypeMotor(tipeMotors);
+                    setSpinnerTypeMotor(koplingHonda);
                     tipeMotorSpinner.setVisibility(View.VISIBLE);
                     btnNextServiceRutin.setVisibility(View.VISIBLE);
                     platNomorServiceRutin.setVisibility(View.VISIBLE);
 
-
                 }else if(parent.getItemAtPosition(position).toString().equals("Yamaha") && temp.equals("Matic")){
-                    String tipeMotors[] = getResources().getStringArray(R.array.YamahaMatic);
 
-                    setSpinnerTypeMotor(tipeMotors);
+                    setSpinnerTypeMotor(maticYamaha);
                     tipeMotorSpinner.setVisibility(View.VISIBLE);
                     btnNextServiceRutin.setVisibility(View.VISIBLE);
                     platNomorServiceRutin.setVisibility(View.VISIBLE);
 
                 }else if(parent.getItemAtPosition(position).toString().equals("Yamaha") && temp.equals("Manual")){
-                    String tipeMotors[] = getResources().getStringArray(R.array.YamahaManual);
 
-                    setSpinnerTypeMotor(tipeMotors);
+                    setSpinnerTypeMotor(manualYamaha);
                     tipeMotorSpinner.setVisibility(View.VISIBLE);
                     btnNextServiceRutin.setVisibility(View.VISIBLE);
                     platNomorServiceRutin.setVisibility(View.VISIBLE);
-
-
 
                 }else if(parent.getItemAtPosition(position).toString().equals("Yamaha")&& temp.equals("Kopling")){
-                    String tipeMotors[] = getResources().getStringArray(R.array.YamahaKopling);
 
-                    setSpinnerTypeMotor(tipeMotors);
+                    setSpinnerTypeMotor(koplingYamaha);
                     tipeMotorSpinner.setVisibility(View.VISIBLE);
                     btnNextServiceRutin.setVisibility(View.VISIBLE);
                     platNomorServiceRutin.setVisibility(View.VISIBLE);
 
-
                 }
-
             }
 
             @Override
@@ -187,7 +202,7 @@ public class ServiceRutinPage extends Fragment {
 
         return view;
     }
-    public void setSpinnerTypeMotor(String tipeMotors[]){
+    public void setSpinnerTypeMotor(List<String> tipeMotors){
 
         ArrayAdapter<String> typeMotor = new ArrayAdapter<String>(getActivity().getBaseContext(),android.R.layout.simple_spinner_dropdown_item,tipeMotors);
         typeMotor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

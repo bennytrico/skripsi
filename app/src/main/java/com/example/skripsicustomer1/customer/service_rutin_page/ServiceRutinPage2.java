@@ -77,6 +77,7 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         checkButtonGantiOliMesin = (CheckBox) findViewById(R.id.checkboxOliMesin);
         checkButtonGantiOliGanda = (CheckBox) findViewById(R.id.checkboxOliGanda);
         Button btnServicePage3 = (Button) findViewById(R.id.btnNextServiceRutin2);
+
         DatabaseReference dbPrices = FirebaseDatabase.getInstance().getReference("Prices");
         dbPrices.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -91,6 +92,7 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
 
             }
         });
+
         getIntentValue();
         btnServicePage3.setOnClickListener(new View.OnClickListener() {
             @Override
