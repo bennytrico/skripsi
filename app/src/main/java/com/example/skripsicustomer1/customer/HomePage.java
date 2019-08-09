@@ -64,7 +64,8 @@ public class HomePage extends AppCompatActivity implements BottomNavigationView.
         getCurrentCustomerData();
         navigationBottom();
         FirebaseIDService service = new FirebaseIDService();
-        service.onTokenRefresh();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+            service.onTokenRefresh();
 
         new android.os.Handler().postDelayed(
             new Runnable() {

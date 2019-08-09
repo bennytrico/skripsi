@@ -35,14 +35,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
@@ -70,7 +68,6 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         setContentView(R.layout.activity_service_rutin_page2);
         getCurrentDate();
 
-        getIntentValue();
 
 
         final TextView textHarga = (TextView)findViewById(R.id.hargaServiceRutin);
@@ -80,7 +77,21 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         checkButtonGantiOliMesin = (CheckBox) findViewById(R.id.checkboxOliMesin);
         checkButtonGantiOliGanda = (CheckBox) findViewById(R.id.checkboxOliGanda);
         Button btnServicePage3 = (Button) findViewById(R.id.btnNextServiceRutin2);
+        DatabaseReference dbPrices = FirebaseDatabase.getInstance().getReference("Prices");
+        dbPrices.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String, Long> data = (Map<String, Long>) dataSnapshot.getValue();
+                harga = (int) (long) (data.get("price"));
+                textHarga.setText(formatNumber.formatNumber(harga));
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        getIntentValue();
         btnServicePage3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +137,6 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
             }
         });
 
-        textHarga.setText(formatNumber.formatNumber(harga));
         btnHours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,7 +261,6 @@ public class ServiceRutinPage2 extends AppCompatActivity implements TimePickerDi
         tipe = extra.getString("EXTRA_TIPE");
         platNomor = extra.getString("EXTRA_PLATNOMOR");
 
-        harga += 60000;
         LinearLayout layoutOliganda = (LinearLayout) findViewById(R.id.oliGandaOption);
         if(transmisi.equals("Matic")){
             layoutOliganda.setVisibility(View.VISIBLE);

@@ -72,7 +72,7 @@ public class CheckUpPage3 extends AppCompatActivity {
     Customer customer = new Customer();
     TextView namaMontirCheckUp;
 
-    ProgressDialog progressDialog = new ProgressDialog(CheckUpPage3.this);
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +83,7 @@ public class CheckUpPage3 extends AppCompatActivity {
         if (transmisi == null) {
             getIntentValue();
         }
-
+        progressDialog = new ProgressDialog(CheckUpPage3.this);
 
         Button btnOpenMap = (Button) findViewById(R.id.getCurrentLocationCheckUp);
         TextView txtLocation = (TextView) findViewById(R.id.textLocationCheckUp);
@@ -274,7 +274,8 @@ public class CheckUpPage3 extends AppCompatActivity {
                 Map<String, Object> update = new HashMap<String, Object>();
                 Integer calculatedWallet = c.getWallet() - harga;
                 update.put("wallet",calculatedWallet);
-                dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(update);
+                DatabaseReference dbCustomersUpdate = FirebaseDatabase.getInstance().getReference("Customers");
+                dbCustomersUpdate.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(update);
             }
 
             @Override
@@ -316,7 +317,9 @@ public class CheckUpPage3 extends AppCompatActivity {
                 namaCustomer,
                 noHpCustomer,
                 platNomor,
-                flagRating
+                flagRating,
+                latitudeLocation1,
+                longtitudeLocation1
         );
 
         dbOrders.push().setValue(order);

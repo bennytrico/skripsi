@@ -173,21 +173,49 @@ public class CheckUpPage extends Fragment {
         dbOrder.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot data: dataSnapshot.getChildren()) {
-                    Order order = data.getValue(Order.class);
-                    if (order.getCustomer_id().equals(currentUserID)) {
-                        if (order.getFlag_rating()) {
-                            Gson gson = new Gson();
-                            order.setId(data.getKey());
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot data: dataSnapshot.getChildren()) {
+                        Order order = data.getValue(Order.class);
+                        if (order.getCustomer_id().equals(currentUserID)) {
+                            if (order.getFlag_rating()) {
+                                Gson gson = new Gson();
+                                order.setId(data.getKey());
 
-                            Order orderSelected = order;
+                                Order orderSelected = order;
 
-                            String orderJson = gson.toJson(orderSelected);
-                            Intent intent = new Intent(getActivity(), RatingPage.class);
-                            intent.putExtra("ORDER_DONE",orderJson);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                                String orderJson = gson.toJson(orderSelected);
+                                Intent intent = new Intent(getActivity(), RatingPage.class);
+                                intent.putExtra("ORDER_DONE",orderJson);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            } else {
+                                boolean flag = true;
+                                if (TextUtils.isEmpty(merekSpinner.getSelectedItem().toString())) {
+                                    Toast.makeText(getActivity(),"pilih jenis motor terlebih dahulu",Toast.LENGTH_LONG).show();
+                                    flag = false;
+                                }
+                                if (TextUtils.isEmpty(tipeMotorSpinner.getSelectedItem().toString())) {
+                                    Toast.makeText(getActivity(),"pilih tipe motor terlebih dahulu",Toast.LENGTH_LONG).show();
+                                    flag = false;
+                                }
+                                if (TextUtils.isEmpty(platNomorCheckUp.getText().toString())) {
+                                    Toast.makeText(getActivity(),"isi plat nomor",Toast.LENGTH_LONG).show();
+                                    flag = false;
+                                }
+                                if (flag) {
+                                    Intent startActivityCheckUp = new Intent(getActivity(), CheckUpPage2.class);
+                                    Bundle extras = new Bundle();
+                                    extras.putString("EXTRA_TRANSMISI",temp);
+                                    extras.putString("EXTRA_JENIS",merekSpinner.getSelectedItem().toString());
+                                    extras.putString("EXTRA_TIPE",tipeMotorSpinner.getSelectedItem().toString());
+                                    extras.putString("EXTRA_PLATNOMOR",platNomorCheckUp.getText().toString());
+                                    startActivityCheckUp.putExtras(extras);
+                                    startActivityCheckUp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                                    startActivity(startActivityCheckUp);
+                                }
+                            }
                         } else {
                             boolean flag = true;
                             if (TextUtils.isEmpty(merekSpinner.getSelectedItem().toString())) {
@@ -215,35 +243,34 @@ public class CheckUpPage extends Fragment {
                                 startActivity(startActivityCheckUp);
                             }
                         }
-                    } else {
-                        boolean flag = true;
-                        if (TextUtils.isEmpty(merekSpinner.getSelectedItem().toString())) {
-                            Toast.makeText(getActivity(),"pilih jenis motor terlebih dahulu",Toast.LENGTH_LONG).show();
-                            flag = false;
-                        }
-                        if (TextUtils.isEmpty(tipeMotorSpinner.getSelectedItem().toString())) {
-                            Toast.makeText(getActivity(),"pilih tipe motor terlebih dahulu",Toast.LENGTH_LONG).show();
-                            flag = false;
-                        }
-                        if (TextUtils.isEmpty(platNomorCheckUp.getText().toString())) {
-                            Toast.makeText(getActivity(),"isi plat nomor",Toast.LENGTH_LONG).show();
-                            flag = false;
-                        }
-                        if (flag) {
-                            Intent startActivityCheckUp = new Intent(getActivity(), CheckUpPage2.class);
-                            Bundle extras = new Bundle();
-                            extras.putString("EXTRA_TRANSMISI",temp);
-                            extras.putString("EXTRA_JENIS",merekSpinner.getSelectedItem().toString());
-                            extras.putString("EXTRA_TIPE",tipeMotorSpinner.getSelectedItem().toString());
-                            extras.putString("EXTRA_PLATNOMOR",platNomorCheckUp.getText().toString());
-                            startActivityCheckUp.putExtras(extras);
-                            startActivityCheckUp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    }
+                } else {
+                    boolean flag = true;
+                    if (TextUtils.isEmpty(merekSpinner.getSelectedItem().toString())) {
+                        Toast.makeText(getActivity(),"pilih jenis motor terlebih dahulu",Toast.LENGTH_LONG).show();
+                        flag = false;
+                    }
+                    if (TextUtils.isEmpty(tipeMotorSpinner.getSelectedItem().toString())) {
+                        Toast.makeText(getActivity(),"pilih tipe motor terlebih dahulu",Toast.LENGTH_LONG).show();
+                        flag = false;
+                    }
+                    if (TextUtils.isEmpty(platNomorCheckUp.getText().toString())) {
+                        Toast.makeText(getActivity(),"isi plat nomor",Toast.LENGTH_LONG).show();
+                        flag = false;
+                    }
+                    if (flag) {
+                        Intent startActivityCheckUp = new Intent(getActivity(), CheckUpPage2.class);
+                        Bundle extras = new Bundle();
+                        extras.putString("EXTRA_TRANSMISI",temp);
+                        extras.putString("EXTRA_JENIS",merekSpinner.getSelectedItem().toString());
+                        extras.putString("EXTRA_TIPE",tipeMotorSpinner.getSelectedItem().toString());
+                        extras.putString("EXTRA_PLATNOMOR",platNomorCheckUp.getText().toString());
+                        startActivityCheckUp.putExtras(extras);
+                        startActivityCheckUp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                            startActivity(startActivityCheckUp);
-                        }
+                        startActivity(startActivityCheckUp);
                     }
                 }
-
             }
 
             @Override

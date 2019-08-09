@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
@@ -58,10 +59,23 @@ public class CheckUpPage2 extends AppCompatActivity implements TimePickerDialog.
         Button btnHours = (Button) findViewById(R.id.getHoursCheckUp);
         String[] getTypeCheckup = getResources().getStringArray(R.array.CheckUpListType);
         Button btnNextCheckUp = (Button) findViewById(R.id.btnNextCheckUp2);
-        TextView textHarga = (TextView) findViewById(R.id.hargaCheckUp);
+        final TextView textHarga = (TextView) findViewById(R.id.hargaCheckUp);
 
 
-        textHarga.setText(formatNumber.formatNumber(harga));
+        DatabaseReference dbPrices = FirebaseDatabase.getInstance().getReference("Prices");
+        dbPrices.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String, Long> data = (Map<String, Long>) dataSnapshot.getValue();
+                harga = (int) (long) (data.get("price"));
+                textHarga.setText(formatNumber.formatNumber(harga));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         getIntentValue();
 

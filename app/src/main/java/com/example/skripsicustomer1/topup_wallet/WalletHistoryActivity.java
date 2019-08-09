@@ -31,7 +31,7 @@ public class WalletHistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet_history);
-        getSupportActionBar().setTitle("Riwayat isi wallet");
+        getSupportActionBar().setTitle("Riwayat isi dompet");
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

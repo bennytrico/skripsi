@@ -78,7 +78,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
     Button order;
     TextView namaMontirSelected;
 
-    ProgressDialog progressDialog = new ProgressDialog(ServiceRutinPage3.this);
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +88,7 @@ public class ServiceRutinPage3 extends AppCompatActivity{
         Button btnGetLocation = (Button) findViewById(R.id.getCurrentLocation);
         TextView textLocation = (TextView) findViewById(R.id.textLocation);
         order = (Button) findViewById(R.id.orderServiceRutin);
-
+        progressDialog =  new ProgressDialog(ServiceRutinPage3.this);
         if (transmisi == null) {
             getIntentValue();
         }
@@ -281,7 +281,8 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                 Map<String, Object> update = new HashMap<String, Object>();
                 Integer calculatedWallet = c.getWallet() - harga;
                 update.put("wallet",calculatedWallet);
-                dbCustomers.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(update);
+                DatabaseReference dbCustomersUpdate = FirebaseDatabase.getInstance().getReference("Customers");
+                dbCustomersUpdate.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(update);
             }
 
             @Override
@@ -312,7 +313,9 @@ public class ServiceRutinPage3 extends AppCompatActivity{
                 namaCustomer,
                 noHpCustomer,
                 platNomor,
-                flagRating
+                flagRating,
+                latitudeLocation,
+                longtitudeLocation
         );
 
         dbOrders.push().setValue(order);
